@@ -1,7 +1,7 @@
 # Project State: Mestres Course Platform
 
 **Last Updated:** 2026-01-26
-**Session:** Plan 01-03 execution (Database schema + RLS)
+**Session:** Plan 01-01 execution (Supabase packages + client utilities)
 
 ---
 
@@ -23,16 +23,16 @@
 
 ```
 Phase: 1 of 6 (Foundation + Database Security)
-Plan:  3 of 4 complete
+Plan:  2 of 4 complete (01-01, 01-03)
 Status: In progress
 
-Progress: [=.........] 8%
-          3/36 requirements complete (DATA-01, DATA-03, DATA-04)
+Progress: [=.........] 11%
+          4/36 requirements complete (DATA-01, DATA-03, DATA-04, DATA-05)
 ```
 
-**Current Focus:** Complete Phase 1 (remaining: 01-04 env config)
+**Current Focus:** Complete Phase 1 (remaining: 01-02, 01-04)
 
-**Next Action:** Execute plan 01-04 for environment variables and Supabase client
+**Next Action:** Execute plan 01-02 (Supabase types generation) or 01-04 (env config)
 
 ---
 
@@ -40,7 +40,7 @@ Progress: [=.........] 8%
 
 | # | Phase | Status | Progress |
 |---|-------|--------|----------|
-| 1 | Foundation + Database Security | In Progress | 3/4 plans |
+| 1 | Foundation + Database Security | In Progress | 2/4 plans |
 | 2 | Authentication | Blocked | 0/7 |
 | 3 | Course Display + User Dashboard | Blocked | 0/10 |
 | 4 | Video Delivery + Progress Tracking | Blocked | 0/6 |
@@ -53,10 +53,10 @@ Progress: [=.........] 8%
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 1 |
-| Tasks completed | 2 |
-| Requirements delivered | 3/36 |
-| Session count | 2 |
+| Plans completed | 2 |
+| Tasks completed | 5 |
+| Requirements delivered | 4/36 |
+| Session count | 3 |
 | Blockers encountered | 0 |
 | Blockers resolved | 0 |
 
@@ -76,6 +76,8 @@ Progress: [=.........] 8%
 | Wrapped auth.uid() in policies | (SELECT auth.uid()) gives 100x+ performance vs bare call | 2026-01-26 |
 | Separate CRUD policies | Never FOR ALL; granular SELECT/INSERT/UPDATE/DELETE | 2026-01-26 |
 | Helper functions with SECURITY DEFINER | is_enrolled(), is_admin() for consistent role checks | 2026-01-26 |
+| @supabase/ssr over auth-helpers | auth-helpers-nextjs is deprecated, ssr is recommended | 2026-01-26 |
+| Async server client | Next.js 14+ requires await cookies(), server client is async | 2026-01-26 |
 
 ### Known Issues
 
@@ -109,15 +111,15 @@ Progress: [=.........] 8%
 ## Session Continuity
 
 ### Last Session Summary
-Executed plan 01-03: Created complete Supabase database schema with 7 tables, RLS policies on all tables, 19 indexes for query performance, and helper functions for enrollment/progress checks.
+Executed plan 01-01: Installed Supabase packages (@supabase/ssr, @supabase/supabase-js), created browser and server client utilities, set up .env.local template and .gitignore.
 
 ### Where We Left Off
-Plan 01-03 complete. Database schema ready. Next is 01-04 for environment configuration.
+Plans 01-01 and 01-03 complete. Supabase packages installed, client utilities ready, database schema defined. Remaining: 01-02 (types) and 01-04 (env config).
 
 ### Recommended Next Steps
-1. Execute plan 01-04 - Environment variables and Supabase client setup
-2. Create Supabase project in dashboard (if not done)
-3. Link local schema to remote project
+1. Execute plan 01-02 - Generate TypeScript types from database schema
+2. Execute plan 01-04 - Environment variables configuration
+3. Create Supabase project in dashboard and link local schema
 
 ---
 
@@ -129,8 +131,11 @@ Plan 01-03 complete. Database schema ready. Next is 01-04 for environment config
 | `.planning/REQUIREMENTS.md` | All requirements with traceability |
 | `.planning/ROADMAP.md` | Phase structure and success criteria |
 | `.planning/research/SUMMARY.md` | Stack, architecture, pitfalls |
+| `.planning/phases/01-foundation-database-security/01-01-SUMMARY.md` | Supabase packages + client utilities |
 | `.planning/phases/01-foundation-database-security/01-03-SUMMARY.md` | Schema + RLS completion |
 | `supabase/migrations/20260126000000_initial_schema.sql` | Database schema |
+| `src/lib/supabase/client.ts` | Browser client factory |
+| `src/lib/supabase/server.ts` | Server client factory |
 
 ---
 *State updated: 2026-01-26*
