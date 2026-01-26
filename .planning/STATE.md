@@ -1,7 +1,7 @@
 # Project State: Mestres Course Platform
 
 **Last Updated:** 2026-01-26
-**Session:** Initial roadmap creation
+**Session:** Plan 01-03 execution (Database schema + RLS)
 
 ---
 
@@ -22,17 +22,17 @@
 ## Current Position
 
 ```
-Phase: 1 - Foundation + Database Security
-Plan:  Not yet created
-Status: Not Started
+Phase: 1 of 6 (Foundation + Database Security)
+Plan:  3 of 4 complete
+Status: In progress
 
-Progress: [..........] 0%
-          0/36 requirements complete
+Progress: [=.........] 8%
+          3/36 requirements complete (DATA-01, DATA-03, DATA-04)
 ```
 
-**Current Focus:** Database schema and RLS security policies
+**Current Focus:** Complete Phase 1 (remaining: 01-04 env config)
 
-**Next Action:** Run `/gsd:plan-phase 1` to create detailed execution plan
+**Next Action:** Execute plan 01-04 for environment variables and Supabase client
 
 ---
 
@@ -40,7 +40,7 @@ Progress: [..........] 0%
 
 | # | Phase | Status | Progress |
 |---|-------|--------|----------|
-| 1 | Foundation + Database Security | Not Started | 0/4 |
+| 1 | Foundation + Database Security | In Progress | 3/4 plans |
 | 2 | Authentication | Blocked | 0/7 |
 | 3 | Course Display + User Dashboard | Blocked | 0/10 |
 | 4 | Video Delivery + Progress Tracking | Blocked | 0/6 |
@@ -53,10 +53,10 @@ Progress: [..........] 0%
 
 | Metric | Value |
 |--------|-------|
-| Plans completed | 0 |
-| Tasks completed | 0 |
-| Requirements delivered | 0/36 |
-| Session count | 1 |
+| Plans completed | 1 |
+| Tasks completed | 2 |
+| Requirements delivered | 3/36 |
+| Session count | 2 |
 | Blockers encountered | 0 |
 | Blockers resolved | 0 |
 
@@ -73,6 +73,9 @@ Progress: [..........] 0%
 | Self-hosted video with signed URLs | Full control, piracy prevention, Supabase-only constraint | 2026-01-26 |
 | Custom admin vs CMS framework | Tighter Supabase integration, course-specific workflows | 2026-01-26 |
 | Vidstack over Video.js | Lighter bundle, better React integration, HLS support | 2026-01-26 |
+| Wrapped auth.uid() in policies | (SELECT auth.uid()) gives 100x+ performance vs bare call | 2026-01-26 |
+| Separate CRUD policies | Never FOR ALL; granular SELECT/INSERT/UPDATE/DELETE | 2026-01-26 |
+| Helper functions with SECURITY DEFINER | is_enrolled(), is_admin() for consistent role checks | 2026-01-26 |
 
 ### Known Issues
 
@@ -92,18 +95,29 @@ Progress: [..........] 0%
 
 ---
 
+## Requirements Delivered
+
+| ID | Requirement | Plan | Status |
+|----|-------------|------|--------|
+| DATA-01 | RLS on all tables | 01-03 | Done |
+| DATA-03 | Enrollment tracking | 01-03 | Done |
+| DATA-04 | Progress tracking | 01-03 | Done |
+| DATA-05 | Policy column indexes | 01-03 | Done |
+
+---
+
 ## Session Continuity
 
 ### Last Session Summary
-Initial roadmap created with 6 phases covering all 36 v1 requirements. Research-informed phase ordering prioritizes security (RLS before data, auth before features). Ready for Phase 1 planning.
+Executed plan 01-03: Created complete Supabase database schema with 7 tables, RLS policies on all tables, 19 indexes for query performance, and helper functions for enrollment/progress checks.
 
 ### Where We Left Off
-Roadmap and state files created. No implementation started.
+Plan 01-03 complete. Database schema ready. Next is 01-04 for environment configuration.
 
 ### Recommended Next Steps
-1. `/gsd:plan-phase 1` - Create detailed execution plan for Foundation + Database Security
-2. Set up Supabase project in dashboard
-3. Create database migrations with RLS policies
+1. Execute plan 01-04 - Environment variables and Supabase client setup
+2. Create Supabase project in dashboard (if not done)
+3. Link local schema to remote project
 
 ---
 
@@ -115,6 +129,8 @@ Roadmap and state files created. No implementation started.
 | `.planning/REQUIREMENTS.md` | All requirements with traceability |
 | `.planning/ROADMAP.md` | Phase structure and success criteria |
 | `.planning/research/SUMMARY.md` | Stack, architecture, pitfalls |
+| `.planning/phases/01-foundation-database-security/01-03-SUMMARY.md` | Schema + RLS completion |
+| `supabase/migrations/20260126000000_initial_schema.sql` | Database schema |
 
 ---
-*State initialized: 2026-01-26*
+*State updated: 2026-01-26*
