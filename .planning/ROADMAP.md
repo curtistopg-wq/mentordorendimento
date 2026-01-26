@@ -19,6 +19,14 @@ The critical path addresses the top three risks identified in research: RLS misc
 
 **Dependencies:** None (starting phase)
 
+**Plans:** 4 plans in 2 waves
+
+Plans:
+- [ ] 01-01-PLAN.md — Install Supabase packages and create client utilities
+- [ ] 01-02-PLAN.md — Create middleware for session refresh
+- [ ] 01-03-PLAN.md — Create database schema with RLS policies
+- [ ] 01-04-PLAN.md — Generate TypeScript types and verify security
+
 **Requirements:**
 - DATA-01: All tables have RLS enabled with policies
 - DATA-03: Enrollment records track user-course access
@@ -244,7 +252,7 @@ The critical path addresses the top three risks identified in research: RLS misc
 
 | Phase | Name | Requirements | Status |
 |-------|------|--------------|--------|
-| 1 | Foundation + Database Security | DATA-01, DATA-03, DATA-04, DATA-05 | Not Started |
+| 1 | Foundation + Database Security | DATA-01, DATA-03, DATA-04, DATA-05 | Planned |
 | 2 | Authentication | AUTH-01 to AUTH-06, DATA-02 | Not Started |
 | 3 | Course Display + User Dashboard | DASH-01 to DASH-05, COUR-01 to COUR-05 | Not Started |
 | 4 | Video Delivery + Progress Tracking | VIDE-01 to VIDE-06 | Not Started |
