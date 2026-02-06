@@ -196,9 +196,139 @@
       }
     }
   },
+  "signup": {
+    "title": "Start Your Journey",
+    "subtitle": "Fill in your details and our team will contact you shortly.",
+    "name": "Full Name",
+    "namePlaceholder": "Your full name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+1 (555) 000-0000",
+    "submit": "REGISTER NOW",
+    "successTitle": "Registration Complete!",
+    "successMessage": "Our team will contact you shortly."
+  },
   "metadata": {
     "title": "Mentor do Rendimento | Trading Education Platform",
     "description": "Study. Practice. Trade. Take the road towards an excellent trading career with professional education, innovative tools, and a supportive community."
+  },
+  "refundPage": {
+    "title": "Refund Policy",
+    "lastUpdated": "Last updated: February 2026",
+    "sections": {
+      "guarantee": {
+        "title": "7-Day Money-Back Guarantee",
+        "content": "We stand behind the quality of our courses. If you are not completely satisfied with your purchase, you may request a full refund within 7 days of your initial purchase date. No questions asked, no hidden conditions."
+      },
+      "eligibility": {
+        "title": "Eligibility Requirements",
+        "content": "To be eligible for a refund, you must submit your request within 7 calendar days from the date of purchase. The refund applies to your first purchase only. Refund requests for renewed subscriptions or upgraded plans are evaluated on a case-by-case basis by our support team."
+      },
+      "process": {
+        "title": "Refund Process",
+        "content": "To request a refund, please contact our support team at support@mentordorendimento.com with your account email and purchase details. Refunds are processed within 5-10 business days and will be returned to your original payment method. You will receive a confirmation email once your refund has been processed."
+      },
+      "exceptions": {
+        "title": "Exceptions",
+        "content": "Refunds are not available for purchases made more than 7 days ago, promotional or discounted plans where explicitly stated, or accounts that have been flagged for abuse of the refund policy. Downloaded materials and certificates of completion are non-refundable once issued."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions about our refund policy or need assistance with a refund request, please reach out to our support team at support@mentordorendimento.com. We are available 24/7 to help you."
+      }
+    }
+  },
+  "termsPage": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last updated: February 2026",
+    "sections": {
+      "acceptance": {
+        "title": "1. Acceptance of Terms",
+        "content": "By accessing and using the Mentor do Rendimento platform, you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, you must not use our services. These terms apply to all users, including visitors, registered members, and subscribers."
+      },
+      "services": {
+        "title": "2. Description of Services",
+        "content": "Mentor do Rendimento provides online trading education, including video courses, live sessions, community access, and mentorship programs. Our services are educational in nature and do not constitute financial advice. We do not guarantee any specific trading results or returns on investment."
+      },
+      "accounts": {
+        "title": "3. User Accounts",
+        "content": "You are responsible for maintaining the confidentiality of your account credentials. Each account is for individual use only and may not be shared with others. You must provide accurate and complete information during registration. We reserve the right to suspend or terminate accounts that violate these terms."
+      },
+      "intellectual": {
+        "title": "4. Intellectual Property",
+        "content": "All content on this platform, including courses, videos, text, graphics, and software, is the property of Mentor do Rendimento and is protected by copyright laws. You may not reproduce, distribute, modify, or create derivative works from our content without express written permission."
+      },
+      "payment": {
+        "title": "5. Payment Terms",
+        "content": "All prices are displayed in the applicable currency and include relevant taxes. Payment is due at the time of purchase. We accept major credit cards, debit cards, and PayPal. Subscription plans auto-renew unless cancelled before the renewal date. See our Refund Policy for information about cancellations."
+      },
+      "disclaimer": {
+        "title": "6. Trading Disclaimer",
+        "content": "Trading in financial markets involves substantial risk and is not suitable for every investor. Past performance is not indicative of future results. The educational content provided is for informational purposes only. You should consult with a qualified financial advisor before making any investment decisions. Mentor do Rendimento is not responsible for any trading losses."
+      },
+      "liability": {
+        "title": "7. Limitation of Liability",
+        "content": "Mentor do Rendimento shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability shall not exceed the amount you paid for the service in question. We do not guarantee uninterrupted or error-free access to our platform."
+      },
+      "changes": {
+        "title": "8. Changes to Terms",
+        "content": "We reserve the right to modify these terms at any time. Changes will be posted on this page with an updated revision date. Your continued use of our services after changes are posted constitutes acceptance of the modified terms. We encourage you to review this page periodically."
+      }
+    }
+  },
+  "privacyPage": {
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: February 2026",
+    "sections": {
+      "collection": {
+        "title": "Information We Collect",
+        "content": "We collect personal information that you provide directly to us, including your name, email address, phone number, and payment information when you register for an account or purchase a plan. We also automatically collect certain information about your device and how you interact with our platform, including IP address, browser type, and usage patterns."
+      },
+      "usage": {
+        "title": "How We Use Your Information",
+        "content": "We use the information we collect to provide and improve our services, process transactions, send you course updates and communications, personalize your learning experience, and ensure the security of your account. We may also use your information to send promotional materials, which you can opt out of at any time."
+      },
+      "protection": {
+        "title": "Data Protection",
+        "content": "We implement industry-standard security measures to protect your personal information, including SSL encryption for data transmission, secure storage of payment information through PCI-compliant processors, and regular security audits. We restrict access to personal information to authorized personnel only."
+      },
+      "cookies": {
+        "title": "Cookies and Tracking",
+        "content": "We use cookies and similar tracking technologies to enhance your browsing experience, analyze platform usage, and deliver personalized content. You can control cookie settings through your browser preferences. Essential cookies are required for the platform to function properly, while analytics and marketing cookies are optional."
+      },
+      "thirdParty": {
+        "title": "Third-Party Services",
+        "content": "We may share your information with trusted third-party service providers who assist us in operating our platform, processing payments, and analyzing usage. These providers are contractually obligated to protect your information. We do not sell your personal data to third parties for marketing purposes."
+      },
+      "rights": {
+        "title": "Your Rights",
+        "content": "You have the right to access, correct, or delete your personal information at any time. You may also request a copy of the data we hold about you or ask us to restrict processing. To exercise any of these rights, please contact our support team. We will respond to your request within 30 days."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions or concerns about our privacy practices, please contact us at support@mentordorendimento.com. Our data protection team is available to address any inquiries regarding the handling of your personal information."
+      }
+    }
+  },
+  "accountPage": {
+    "title": "My Account",
+    "subtitle": "Access your courses and manage your subscription.",
+    "login": {
+      "title": "Sign In",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "password": "Password",
+      "submit": "SIGN IN",
+      "forgot": "Forgot your password? Contact support@mentordorendimento.com"
+    },
+    "benefits": {
+      "title": "Member Benefits",
+      "courses": "Access to all purchased courses and materials, available 24/7 on any device.",
+      "community": "Exclusive community access with fellow traders and mentors.",
+      "support": "Priority customer support and personalized guidance.",
+      "updates": "Lifetime updates to course content and new materials as they are released."
+    }
   },
   "footer": {
     "contactUs": "Contact Us",

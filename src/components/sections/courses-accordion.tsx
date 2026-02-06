@@ -19,7 +19,7 @@ export function CoursesAccordion() {
           <div
             className="h-64 lg:h-full min-h-[400px] lg:min-h-[500px]"
             style={{
-              backgroundImage: 'url(/images/courses-image.png)',
+              backgroundImage: 'url(/images/courses-image.webp)',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
             }}

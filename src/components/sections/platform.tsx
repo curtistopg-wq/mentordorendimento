@@ -32,7 +32,7 @@ export function Platform() {
           className="relative max-w-6xl mx-auto"
         >
           <Image
-            src="/images/platform-screenshot.png"
+            src="/images/platform-screenshot.webp"
             alt="Trading Platform"
             width={1920}
             height={1080}

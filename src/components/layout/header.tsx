@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, Moon, User, ChevronDown } from 'lucide-react'
+import { Menu, X, ChevronDown } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
 
@@ -57,21 +57,21 @@ export function Header() {
       {/* Navigation Bar */}
       <nav className="bg-gray-100 border-b border-gray-200" aria-label="Global">
         <div className="container-custom">
-          <div className="flex items-center justify-between h-14">
-            {/* Desktop Navigation - Centered */}
-            <div className="hidden lg:flex items-center gap-10 flex-1 justify-center">
+          <div className="relative flex items-center h-14">
+            {/* Desktop Navigation - Absolute center */}
+            <div className="hidden lg:flex items-center gap-10 absolute left-1/2 -translate-x-1/2">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-sm font-medium text-primary-600 hover:text-accent transition-colors tracking-wide"
+                  className="text-sm font-medium text-primary-600 hover:text-accent transition-colors tracking-wide whitespace-nowrap"
                 >
                   {item.name}
                 </Link>
               ))}
             </div>
 
-            {/* Right side actions */}
+            {/* Right side - Language only */}
             <div className="flex items-center gap-2 ml-auto">
               {/* Language Selector - Desktop */}
               <div className="relative hidden md:block">
@@ -109,22 +109,6 @@ export function Header() {
                   )}
                 </AnimatePresence>
               </div>
-
-              {/* Theme Toggle */}
-              <button
-                className="p-2 rounded-full text-primary-600 hover:bg-gray-200 transition-colors"
-                aria-label="Toggle theme"
-              >
-                <Moon className="w-5 h-5" />
-              </button>
-
-              {/* User Account */}
-              <button
-                className="p-2 rounded-full text-primary-600 hover:bg-gray-200 transition-colors"
-                aria-label="User account"
-              >
-                <User className="w-5 h-5" />
-              </button>
 
               {/* Mobile menu button */}
               <button

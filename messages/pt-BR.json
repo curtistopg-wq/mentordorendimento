@@ -196,9 +196,139 @@
       }
     }
   },
+  "signup": {
+    "title": "Comece Sua Jornada",
+    "subtitle": "Preencha seus dados e nossa equipe entrará em contato em breve.",
+    "name": "Nome Completo",
+    "namePlaceholder": "Seu nome completo",
+    "email": "E-mail",
+    "emailPlaceholder": "seu@email.com",
+    "phone": "Telefone",
+    "phonePlaceholder": "+55 (11) 99999-9999",
+    "submit": "CADASTRAR AGORA",
+    "successTitle": "Cadastro Realizado!",
+    "successMessage": "Em breve nossa equipe entrará em contato com você."
+  },
   "metadata": {
     "title": "Mentor do Rendimento | Plataforma de Educação em Trading",
     "description": "Estude. Pratique. Opere. Trilhe o caminho rumo a uma carreira de excelência no trading com educação profissional, ferramentas inovadoras e uma comunidade de apoio."
+  },
+  "refundPage": {
+    "title": "Política de Reembolso",
+    "lastUpdated": "Última atualização: Fevereiro de 2026",
+    "sections": {
+      "guarantee": {
+        "title": "Garantia de 7 Dias",
+        "content": "Acreditamos na qualidade dos nossos cursos. Se você não estiver completamente satisfeito com sua compra, pode solicitar reembolso integral dentro de 7 dias a partir da data da compra. Sem perguntas, sem condições ocultas."
+      },
+      "eligibility": {
+        "title": "Requisitos de Elegibilidade",
+        "content": "Para ser elegível ao reembolso, a solicitação deve ser feita dentro de 7 dias corridos a partir da data da compra. O reembolso se aplica apenas à primeira compra. Solicitações de reembolso para renovações ou upgrades são avaliadas caso a caso pela nossa equipe de suporte."
+      },
+      "process": {
+        "title": "Processo de Reembolso",
+        "content": "Para solicitar um reembolso, entre em contato com nossa equipe de suporte em support@mentordorendimento.com com seu e-mail de cadastro e detalhes da compra. Os reembolsos são processados em 5 a 10 dias úteis e devolvidos ao método de pagamento original. Você receberá um e-mail de confirmação quando o reembolso for processado."
+      },
+      "exceptions": {
+        "title": "Exceções",
+        "content": "Reembolsos não estão disponíveis para compras feitas há mais de 7 dias, planos promocionais ou com desconto quando explicitamente indicado, ou contas sinalizadas por abuso da política de reembolso. Materiais baixados e certificados de conclusão não são reembolsáveis após emissão."
+      },
+      "contact": {
+        "title": "Fale Conosco",
+        "content": "Se tiver alguma dúvida sobre nossa política de reembolso ou precisar de ajuda com uma solicitação, entre em contato com nossa equipe de suporte em support@mentordorendimento.com. Estamos disponíveis 24/7 para ajudá-lo."
+      }
+    }
+  },
+  "termsPage": {
+    "title": "Termos e Condições",
+    "lastUpdated": "Última atualização: Fevereiro de 2026",
+    "sections": {
+      "acceptance": {
+        "title": "1. Aceitação dos Termos",
+        "content": "Ao acessar e usar a plataforma Mentor do Rendimento, você concorda em estar vinculado a estes Termos e Condições. Se não concordar com qualquer parte destes termos, não deve usar nossos serviços. Estes termos se aplicam a todos os usuários, incluindo visitantes, membros registrados e assinantes."
+      },
+      "services": {
+        "title": "2. Descrição dos Serviços",
+        "content": "O Mentor do Rendimento oferece educação online em trading, incluindo cursos em vídeo, sessões ao vivo, acesso à comunidade e programas de mentoria. Nossos serviços são de natureza educacional e não constituem aconselhamento financeiro. Não garantimos resultados específicos de trading ou retornos sobre investimentos."
+      },
+      "accounts": {
+        "title": "3. Contas de Usuário",
+        "content": "Você é responsável por manter a confidencialidade das suas credenciais. Cada conta é de uso individual e não pode ser compartilhada. Você deve fornecer informações precisas e completas durante o cadastro. Reservamos o direito de suspender ou encerrar contas que violem estes termos."
+      },
+      "intellectual": {
+        "title": "4. Propriedade Intelectual",
+        "content": "Todo o conteúdo desta plataforma, incluindo cursos, vídeos, textos, gráficos e software, é propriedade do Mentor do Rendimento e protegido por leis de direitos autorais. Você não pode reproduzir, distribuir, modificar ou criar obras derivadas do nosso conteúdo sem permissão expressa por escrito."
+      },
+      "payment": {
+        "title": "5. Termos de Pagamento",
+        "content": "Todos os preços são exibidos na moeda aplicável e incluem impostos relevantes. O pagamento é devido no momento da compra. Aceitamos cartões de crédito, débito e PayPal. Planos de assinatura renovam automaticamente, a menos que sejam cancelados antes da data de renovação. Consulte nossa Política de Reembolso para informações sobre cancelamentos."
+      },
+      "disclaimer": {
+        "title": "6. Aviso sobre Trading",
+        "content": "Operar em mercados financeiros envolve risco substancial e não é adequado para todo investidor. Resultados passados não são indicativos de resultados futuros. O conteúdo educacional fornecido é apenas para fins informativos. Consulte um consultor financeiro qualificado antes de tomar decisões de investimento. O Mentor do Rendimento não é responsável por perdas em operações."
+      },
+      "liability": {
+        "title": "7. Limitação de Responsabilidade",
+        "content": "O Mentor do Rendimento não será responsável por danos indiretos, incidentais, especiais ou consequentes decorrentes do uso dos nossos serviços. Nossa responsabilidade total não excederá o valor que você pagou pelo serviço em questão. Não garantimos acesso ininterrupto ou livre de erros à nossa plataforma."
+      },
+      "changes": {
+        "title": "8. Alterações nos Termos",
+        "content": "Reservamos o direito de modificar estes termos a qualquer momento. As alterações serão publicadas nesta página com uma data de revisão atualizada. O uso continuado dos nossos serviços após a publicação das alterações constitui aceitação dos termos modificados. Recomendamos que revise esta página periodicamente."
+      }
+    }
+  },
+  "privacyPage": {
+    "title": "Política de Privacidade",
+    "lastUpdated": "Última atualização: Fevereiro de 2026",
+    "sections": {
+      "collection": {
+        "title": "Informações que Coletamos",
+        "content": "Coletamos informações pessoais que você nos fornece diretamente, incluindo nome, endereço de e-mail, número de telefone e informações de pagamento ao se cadastrar ou adquirir um plano. Também coletamos automaticamente certas informações sobre seu dispositivo e como você interage com nossa plataforma, incluindo endereço IP, tipo de navegador e padrões de uso."
+      },
+      "usage": {
+        "title": "Como Usamos Suas Informações",
+        "content": "Usamos as informações coletadas para fornecer e melhorar nossos serviços, processar transações, enviar atualizações de cursos e comunicações, personalizar sua experiência de aprendizado e garantir a segurança da sua conta. Podemos também usar suas informações para enviar materiais promocionais, dos quais você pode optar por não receber a qualquer momento."
+      },
+      "protection": {
+        "title": "Proteção de Dados",
+        "content": "Implementamos medidas de segurança padrão da indústria para proteger suas informações pessoais, incluindo criptografia SSL para transmissão de dados, armazenamento seguro de informações de pagamento através de processadores compatíveis com PCI e auditorias regulares de segurança. O acesso às informações pessoais é restrito apenas ao pessoal autorizado."
+      },
+      "cookies": {
+        "title": "Cookies e Rastreamento",
+        "content": "Usamos cookies e tecnologias de rastreamento semelhantes para melhorar sua experiência de navegação, analisar o uso da plataforma e entregar conteúdo personalizado. Você pode controlar as configurações de cookies através das preferências do seu navegador. Cookies essenciais são necessários para o funcionamento da plataforma, enquanto cookies de análise e marketing são opcionais."
+      },
+      "thirdParty": {
+        "title": "Serviços de Terceiros",
+        "content": "Podemos compartilhar suas informações com provedores de serviços terceirizados de confiança que nos auxiliam na operação da plataforma, processamento de pagamentos e análise de uso. Esses provedores são contratualmente obrigados a proteger suas informações. Não vendemos seus dados pessoais a terceiros para fins de marketing."
+      },
+      "rights": {
+        "title": "Seus Direitos",
+        "content": "Você tem o direito de acessar, corrigir ou excluir suas informações pessoais a qualquer momento. Também pode solicitar uma cópia dos dados que mantemos sobre você ou pedir que restrinjamos o processamento. Para exercer qualquer um desses direitos, entre em contato com nossa equipe de suporte. Responderemos à sua solicitação dentro de 30 dias."
+      },
+      "contact": {
+        "title": "Fale Conosco",
+        "content": "Se tiver dúvidas ou preocupações sobre nossas práticas de privacidade, entre em contato conosco em support@mentordorendimento.com. Nossa equipe de proteção de dados está disponível para atender quaisquer consultas sobre o tratamento de suas informações pessoais."
+      }
+    }
+  },
+  "accountPage": {
+    "title": "Minha Conta",
+    "subtitle": "Acesse seus cursos e gerencie sua assinatura.",
+    "login": {
+      "title": "Entrar",
+      "email": "E-mail",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "submit": "ENTRAR",
+      "forgot": "Esqueceu a senha? Entre em contato: support@mentordorendimento.com"
+    },
+    "benefits": {
+      "title": "Benefícios do Membro",
+      "courses": "Acesso a todos os cursos e materiais adquiridos, disponíveis 24/7 em qualquer dispositivo.",
+      "community": "Acesso exclusivo à comunidade com outros traders e mentores.",
+      "support": "Suporte prioritário ao cliente e orientação personalizada.",
+      "updates": "Atualizações vitalícias do conteúdo dos cursos e novos materiais conforme são lançados."
+    }
   },
   "footer": {
     "contactUs": "Fale Conosco",
