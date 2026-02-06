@@ -1,0 +1,218 @@
+{
+  "nav": {
+    "home": "INÍCIO",
+    "premiumPackages": "PACOTES PREMIUM",
+    "refundPolicy": "POLÍTICA DE REEMBOLSO",
+    "contact": "CONTATO"
+  },
+  "hero": {
+    "badge": "Dê o Primeiro Passo Hoje",
+    "title": "Estude. Pratique. Opere.",
+    "subtitleStart": "Nossos mentores experientes estão aqui pra te ajudar a desenvolver o",
+    "subtitleKnowledge": "conhecimento",
+    "subtitleAnd": "e as",
+    "subtitleSkills": "habilidades",
+    "subtitleEnd": "necessárias enquanto você avança na sua jornada no trading."
+  },
+  "features": {
+    "titleLine1": "Siga o Caminho Rumo",
+    "titleLine2": "a uma Carreira de",
+    "titleLine3": "Excelência no Trading",
+    "subtitle": "Como nosso aluno, você vai fazer parte de uma comunidade de aprendizado comprometida com a excelência.",
+    "items": {
+      "education": {
+        "title": "Educação",
+        "description": "Aprendizado online passo a passo"
+      },
+      "innovation": {
+        "title": "Inovação",
+        "description": "Aprenda, treine e desenvolva suas habilidades com tecnologia de ponta"
+      },
+      "community": {
+        "title": "Comunidade",
+        "description": "Faça parte de uma comunidade focada em evolução constante"
+      }
+    }
+  },
+  "platform": {
+    "title": "Nossa Plataforma",
+    "preview": "Prévia da Plataforma",
+    "free": "GRÁTIS"
+  },
+  "pricing": {
+    "title": "Pacotes Premium",
+    "subtitle": "Escolha o plano que combina com seus objetivos",
+    "popular": "Mais Popular",
+    "readMore": "Saiba Mais",
+    "plans": {
+      "silver": {
+        "name": "Prata",
+        "features": {
+          "0": "Acesso aos cursos básicos",
+          "1": "Suporte da comunidade",
+          "2": "Webinars semanais"
+        }
+      },
+      "gold": {
+        "name": "Ouro",
+        "features": {
+          "0": "Tudo do plano Prata",
+          "1": "Cursos avançados",
+          "2": "Mentoria individual",
+          "3": "Suporte prioritário",
+          "4": "Relatórios de análise de mercado",
+          "5": "Sinais de trading",
+          "6": "Ferramentas de gestão de risco",
+          "7": "Acompanhamento de carteira",
+          "8": "Workshops mensais"
+        }
+      },
+      "platinum": {
+        "name": "Platina",
+        "features": {
+          "0": "Tudo do plano Ouro",
+          "1": "Acesso VIP à comunidade",
+          "2": "Sessões ao vivo diárias",
+          "3": "Atualizações vitalícias",
+          "4": "Canal privado no Discord",
+          "5": "Coach pessoal de trading",
+          "6": "Desenvolvimento de estratégia personalizada",
+          "7": "Insights exclusivos do mercado",
+          "8": "Suporte prioritário ao cliente",
+          "9": "Acesso antecipado a novos conteúdos",
+          "10": "Revisões de estratégia trimestrais",
+          "11": "Análise de performance",
+          "12": "Ferramentas de diário de trading",
+          "13": "Pacote avançado de gráficos",
+          "14": "Certificado de conclusão"
+        }
+      }
+    }
+  },
+  "guarantee": {
+    "titleLine1": "GARANTIA DE",
+    "titleLine2": "RESULTADOS",
+    "disclaimer": "O conteúdo deste site não deve ser entendido como análise de quaisquer valores mobiliários, material publicitário, proposta de compra ou venda, oferta ou recomendação de quaisquer ativos financeiros ou de investimento. Este conteúdo é apenas para fins informativos e não considera os objetivos de investimento, condições financeiras ou necessidades particulares e específicas de quaisquer investidores. As opiniões expressas no material do curso podem mudar a qualquer momento. As opiniões são baseadas na data de sua apresentação e não consideram qualquer fato que possa ter surgido após essa data. Leia o formulário de informações complementares, a lâmina de informações essenciais, se houver, e o regulamento antes de se cadastrar."
+  },
+  "stats": {
+    "items": {
+      "completed": {
+        "label": "Aulas",
+        "sublabel": "Concluídas"
+      },
+      "dedicated": {
+        "label": "Horas",
+        "sublabel": "Dedicadas"
+      },
+      "multi": {
+        "label": "Diversos",
+        "sublabel": "Serviços"
+      },
+      "satisfied": {
+        "label": "Alunos",
+        "sublabel": "Satisfeitos"
+      }
+    }
+  },
+  "courses": {
+    "imagePlaceholder": "Imagem do Curso",
+    "items": {
+      "everyLevel": {
+        "title": "Cursos pra Todos os Níveis",
+        "content": "Seja você iniciante ou querendo aprimorar suas habilidades, nossos cursos foram feitos pra te encontrar onde você está. Dos fundamentos básicos às estratégias avançadas, temos um caminho pra cada um."
+      },
+      "experts": {
+        "title": "Aprenda com Especialistas do Mercado",
+        "content": "Nossos instrutores são traders experientes com anos de vivência no mercado real. Eles não ensinam só teoria – compartilham insights práticos das suas próprias carreiras de sucesso no trading."
+      },
+      "moreThan": {
+        "title": "Mais do que Apenas Educação",
+        "content": "Faça parte de uma comunidade de traders que pensam igual. Tenha acesso a sessões ao vivo, análises exclusivas do mercado e uma rede de apoio que te ajuda a evoluir em cada etapa."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "O Que Nossos Alunos Dizem",
+    "subtitle": "Junte-se a milhares de traders de sucesso que transformaram suas carreiras com nossos cursos",
+    "items": {
+      "lucas": {
+        "name": "Lucas Fernandes",
+        "location": "São Paulo, SP",
+        "text": "Esse curso mudou completamente minha forma de ver o trading. A mentoria e o suporte da comunidade são inestimáveis. Saí do prejuízo pra lucro consistente em 6 meses."
+      },
+      "mariana": {
+        "name": "Mariana Lima",
+        "location": "Manaus, AM",
+        "text": "O melhor investimento que já fiz na minha carreira de trader. As estratégias ensinadas aqui são práticas e realmente funcionam. Os instrutores tão sempre disponíveis pra ajudar."
+      },
+      "gabriel": {
+        "name": "Gabriel Pereira",
+        "location": "Rio de Janeiro, RJ",
+        "text": "No começo eu tava desconfiado, mas os resultados falam por si. Só o treinamento de gestão de risco já valeu o preço. Super recomendo pra quem leva trading a sério."
+      },
+      "larissa": {
+        "name": "Larissa Martins",
+        "location": "Scottsdale, AZ",
+        "text": "Material do curso excepcional e suporte excelente. As sessões ao vivo me ajudaram a entender como os profissionais pensam e tomam decisões em tempo real."
+      }
+    }
+  },
+  "cta": {
+    "badge": "INVISTA NA SUA EDUCAÇÃO FINANCEIRA HOJE",
+    "text": "Cadastre-se no nosso programa de treinamento e trilhe o caminho rumo a uma carreira profissional no trading.",
+    "button": "COMEÇAR AGORA"
+  },
+  "faq": {
+    "label": "FAQ",
+    "title": "Perguntas Frequentes",
+    "subtitle": "Encontre respostas para as dúvidas mais comuns sobre nossos cursos e serviços",
+    "illustration": "Ilustração FAQ",
+    "supportHours": "24/7",
+    "supportText": "Suporte Disponível",
+    "items": {
+      "0": {
+        "question": "O que está incluído no curso?",
+        "answer": "Nossos cursos completos incluem aulas em vídeo, sessões ao vivo de trading, acesso à comunidade, ferramentas de trading e mentoria pessoal, dependendo do plano escolhido. Todo o material fica acessível 24/7 em qualquer dispositivo."
+      },
+      "1": {
+        "question": "Preciso ter experiência prévia em trading?",
+        "answer": "Nenhuma experiência prévia é necessária. Nossos cursos foram desenvolvidos pra te levar de iniciante completo a trader confiante. Começamos pelos fundamentos e construímos seu conhecimento e habilidades progressivamente."
+      },
+      "2": {
+        "question": "Por quanto tempo tenho acesso ao curso?",
+        "answer": "Após a compra de um plano, você tem acesso vitalício a todo o material do curso incluído no seu nível. Isso inclui quaisquer atualizações e adições futuras ao currículo."
+      },
+      "3": {
+        "question": "Posso fazer upgrade do meu plano depois?",
+        "answer": "Sim! Você pode fazer upgrade pra um nível superior a qualquer momento. Você paga apenas a diferença entre o plano atual e o novo plano. Entre em contato com nossa equipe de suporte para assistência."
+      },
+      "4": {
+        "question": "Quais formas de pagamento vocês aceitam?",
+        "answer": "Aceitamos todos os principais cartões de crédito, débito e PayPal. Todos os pagamentos são processados com segurança através dos nossos parceiros de pagamento com criptografia de nível bancário."
+      },
+      "5": {
+        "question": "Como funciona a garantia de devolução?",
+        "answer": "Se você não estiver satisfeito com sua compra nos primeiros 7 dias, basta entrar em contato com nossa equipe de suporte para reembolso integral. Sem perguntas, sem condições ocultas."
+      }
+    }
+  },
+  "metadata": {
+    "title": "Mentor do Rendimento | Plataforma de Educação em Trading",
+    "description": "Estude. Pratique. Opere. Trilhe o caminho rumo a uma carreira de excelência no trading com educação profissional, ferramentas inovadoras e uma comunidade de apoio."
+  },
+  "footer": {
+    "contactUs": "Fale Conosco",
+    "getStarted": "Começar",
+    "importantLinks": "Links Importantes",
+    "links": {
+      "home": "Início",
+      "contact": "Fale Conosco",
+      "pricing": "Pacotes Premium",
+      "refund": "Política de Reembolso",
+      "terms": "Termos e Condições",
+      "privacy": "Política de Privacidade",
+      "account": "Minha Conta"
+    },
+    "copyright": "Direitos reservados mentordorendimento.com © 2026"
+  }
+}

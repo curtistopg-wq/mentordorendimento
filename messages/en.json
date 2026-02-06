@@ -1,0 +1,218 @@
+{
+  "nav": {
+    "home": "HOME",
+    "premiumPackages": "PREMIUM PACKAGES",
+    "refundPolicy": "REFUND POLICY",
+    "contact": "CONTACT"
+  },
+  "hero": {
+    "badge": "Make Your First Move Today",
+    "title": "Study. Practice. Trade.",
+    "subtitleStart": "Our experienced mentors are here to help you develop the necessary",
+    "subtitleKnowledge": "knowledge",
+    "subtitleAnd": "and",
+    "subtitleSkills": "skills",
+    "subtitleEnd": "as you move forward in your trading education."
+  },
+  "features": {
+    "titleLine1": "Take the Road Towards",
+    "titleLine2": "an Excellent Trading",
+    "titleLine3": "Career",
+    "subtitle": "As one of our students, you'll be a part of a learning community committed to excellence.",
+    "items": {
+      "education": {
+        "title": "Education",
+        "description": "Step-by-step online learning"
+      },
+      "innovation": {
+        "title": "Innovation",
+        "description": "Learn, train, and build skills with platform technology"
+      },
+      "community": {
+        "title": "Community",
+        "description": "Become a part of a community committed to constant improvement"
+      }
+    }
+  },
+  "platform": {
+    "title": "Our Platform",
+    "preview": "Platform Preview",
+    "free": "FREE"
+  },
+  "pricing": {
+    "title": "Premium Packages",
+    "subtitle": "Choose the plan that fits your goals",
+    "popular": "Most Popular",
+    "readMore": "Read More",
+    "plans": {
+      "silver": {
+        "name": "Silver",
+        "features": {
+          "0": "Access to basic courses",
+          "1": "Community support",
+          "2": "Weekly webinars"
+        }
+      },
+      "gold": {
+        "name": "Gold",
+        "features": {
+          "0": "All Silver features",
+          "1": "Advanced courses",
+          "2": "1-on-1 mentoring",
+          "3": "Priority support",
+          "4": "Market analysis reports",
+          "5": "Trading signals",
+          "6": "Risk management tools",
+          "7": "Portfolio tracking",
+          "8": "Monthly workshops"
+        }
+      },
+      "platinum": {
+        "name": "Platinum",
+        "features": {
+          "0": "All Gold features",
+          "1": "VIP community access",
+          "2": "Daily live sessions",
+          "3": "Lifetime updates",
+          "4": "Private Discord channel",
+          "5": "Personal trading coach",
+          "6": "Custom strategy development",
+          "7": "Exclusive market insights",
+          "8": "Priority customer support",
+          "9": "Early access to new content",
+          "10": "Quarterly strategy reviews",
+          "11": "Performance analytics",
+          "12": "Trading journal tools",
+          "13": "Advanced charting package",
+          "14": "Certificate of completion"
+        }
+      }
+    }
+  },
+  "guarantee": {
+    "titleLine1": "RESULTS",
+    "titleLine2": "GUARANTEE",
+    "disclaimer": "The content of this website shall not be understood as an analysis of any securities, advertising material, proposed purchase or sale, offer or recommendation of any financial or investment assets. This content is for informational purposes only and does not consider the investment objectives, financial conditions or particular and specific needs of any investors. The opinions expressed in the course material may change at any time. The opinions are based on the date of their presentation and do not consider any fact that may have arisen after this date. Read the supplementary information form, the essential information sheet, if any, and the regulation before you register."
+  },
+  "stats": {
+    "items": {
+      "completed": {
+        "label": "Completed",
+        "sublabel": "Lectures"
+      },
+      "dedicated": {
+        "label": "Dedicated",
+        "sublabel": "Hours"
+      },
+      "multi": {
+        "label": "Multi",
+        "sublabel": "Services"
+      },
+      "satisfied": {
+        "label": "Satisfied",
+        "sublabel": "Attendees"
+      }
+    }
+  },
+  "courses": {
+    "imagePlaceholder": "Course Image",
+    "items": {
+      "everyLevel": {
+        "title": "Courses for Every Experience Level",
+        "content": "Whether you're just starting out or looking to refine your skills, our courses are designed to meet you where you are. From beginner fundamentals to advanced strategies, we have a path for everyone."
+      },
+      "experts": {
+        "title": "Learn from Market Experts",
+        "content": "Our instructors are seasoned traders with years of real-world experience. They don't just teach theory – they share practical insights from their own successful trading careers."
+      },
+      "moreThan": {
+        "title": "More Than Just Education",
+        "content": "Join a community of like-minded traders. Get access to live trading sessions, exclusive market analysis, and a supportive network that helps you grow every step of the way."
+      }
+    }
+  },
+  "testimonials": {
+    "title": "What Our Students Say",
+    "subtitle": "Join thousands of successful traders who transformed their careers with our courses",
+    "items": {
+      "lucas": {
+        "name": "Lucas Fernandes",
+        "location": "São Paulo, SP",
+        "text": "This course completely changed my approach to trading. The mentorship and community support are invaluable. I went from losing money to consistently profitable within 6 months."
+      },
+      "mariana": {
+        "name": "Mariana Lima",
+        "location": "Manaus, AM",
+        "text": "The best investment I ever made in my trading career. The strategies taught here are practical and actually work. The instructors are always available to help."
+      },
+      "gabriel": {
+        "name": "Gabriel Pereira",
+        "location": "Rio de Janeiro, RJ",
+        "text": "I was skeptical at first, but the results speak for themselves. The risk management training alone was worth the price. Highly recommend to anyone serious about trading."
+      },
+      "larissa": {
+        "name": "Larissa Martins",
+        "location": "Scottsdale, AZ",
+        "text": "Outstanding course material and excellent support. The live trading sessions helped me understand how professionals think and make decisions in real-time."
+      }
+    }
+  },
+  "cta": {
+    "badge": "INVEST IN YOUR FINANCIAL EDUCATION TODAY",
+    "text": "Register for our training program and journey towards a professional trading career.",
+    "button": "GET STARTED"
+  },
+  "faq": {
+    "label": "FAQ",
+    "title": "Frequently Asked Questions",
+    "subtitle": "Find answers to common questions about our courses and services",
+    "illustration": "FAQ Illustration",
+    "supportHours": "24/7",
+    "supportText": "Support Available",
+    "items": {
+      "0": {
+        "question": "What is included in the course?",
+        "answer": "Our comprehensive courses include video lessons, live trading sessions, community access, trading tools, and personal mentorship depending on your chosen plan. All materials are accessible 24/7 on any device."
+      },
+      "1": {
+        "question": "Do I need prior trading experience?",
+        "answer": "No prior experience is required. Our courses are designed to take you from complete beginner to confident trader. We start with the fundamentals and progressively build your knowledge and skills."
+      },
+      "2": {
+        "question": "How long do I have access to the course?",
+        "answer": "Once you purchase a plan, you have lifetime access to all the course materials included in your tier. This includes any future updates and additions to the curriculum."
+      },
+      "3": {
+        "question": "Can I upgrade my plan later?",
+        "answer": "Yes! You can upgrade to a higher tier at any time. You will only pay the difference between your current plan and the new plan. Contact our support team for assistance."
+      },
+      "4": {
+        "question": "What payment methods do you accept?",
+        "answer": "We accept all major credit cards, debit cards, and PayPal. All payments are processed securely through our payment partners with bank-level encryption."
+      },
+      "5": {
+        "question": "How does the money-back guarantee work?",
+        "answer": "If you are not satisfied with your purchase within the first 7 days, simply contact our support team for a full refund. No questions asked, no hidden conditions."
+      }
+    }
+  },
+  "metadata": {
+    "title": "Mentor do Rendimento | Trading Education Platform",
+    "description": "Study. Practice. Trade. Take the road towards an excellent trading career with professional education, innovative tools, and a supportive community."
+  },
+  "footer": {
+    "contactUs": "Contact Us",
+    "getStarted": "Get Started",
+    "importantLinks": "Important Links",
+    "links": {
+      "home": "Home",
+      "contact": "Contact Us",
+      "pricing": "Premium Packages",
+      "refund": "Refund Policy",
+      "terms": "Terms and Conditions",
+      "privacy": "Privacy Policy",
+      "account": "My Account"
+    },
+    "copyright": "Copyrights reserved mentordorendimento.com © 2026"
+  }
+}
