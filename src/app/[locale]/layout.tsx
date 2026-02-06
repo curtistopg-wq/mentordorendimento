@@ -40,7 +40,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} suppressHydrationWarning>
-      <head>
+      <body className="font-sans antialiased">
         <Script id="clarity" strategy="afterInteractive">
           {`(function(c,l,a,r,i,t,y){
             c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -48,8 +48,6 @@ export default async function LocaleLayout({
             y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
           })(window, document, "clarity", "script", "vd7maw8h2e");`}
         </Script>
-      </head>
-      <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <ThemeProvider
             attribute="class"
