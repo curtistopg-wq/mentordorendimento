@@ -8,18 +8,8 @@ export function Guarantee() {
 
   return (
     <section className="relative py-24 overflow-hidden">
-      {/* Background Image */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/images/guarantee-bg.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-primary-800/70" />
-      </div>
+      {/* Background */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-800 to-primary-900" />
 
       <div className="container-custom relative z-10">
         <div className="max-w-5xl mx-auto text-center">

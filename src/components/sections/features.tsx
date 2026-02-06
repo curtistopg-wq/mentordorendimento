@@ -28,17 +28,8 @@ export function Features() {
   return (
     <section id="features" className="relative py-20">
       {/* Background with blur effect */}
-      <div
-        className="absolute inset-0 z-0"
-        style={{
-          backgroundImage: 'url(/images/hero-bg.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          filter: 'blur(8px)',
-        }}
-      />
-      {/* Dark overlay */}
-      <div className="absolute inset-0 z-0 bg-primary-900/85" />
+      {/* Dark background */}
+      <div className="absolute inset-0 z-0 bg-primary-900" />
 
       <div className="container-custom relative z-10">
         {/* Section Header */}

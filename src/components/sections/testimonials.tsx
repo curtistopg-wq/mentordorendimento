@@ -5,11 +5,11 @@ import { Quote } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
 const testimonialKeys = ['lucas', 'mariana', 'gabriel', 'larissa'] as const
-const testimonialImages = [
-  '/images/testimonial-1.jpg',
-  '/images/testimonial-2.jpg',
-  '/images/testimonial-3.jpg',
-  '/images/testimonial-4.jpg',
+const testimonialColors = [
+  'from-primary-300 to-primary-400',
+  'from-accent to-accent-dark',
+  'from-primary-400 to-primary-500',
+  'from-primary-200 to-primary-300',
 ]
 
 const container = {
@@ -77,15 +77,9 @@ export function Testimonials() {
                 {/* Author */}
                 <div className="flex items-center gap-4">
                   <div
-                    className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-200 to-primary-300 flex items-center justify-center overflow-hidden"
-                    style={{
-                      backgroundImage: `url(${testimonialImages[index]})`,
-                      backgroundSize: 'cover',
-                      backgroundPosition: 'center',
-                    }}
+                    className={`w-14 h-14 rounded-full bg-gradient-to-br ${testimonialColors[index]} flex items-center justify-center`}
                   >
-                    {/* Fallback initial */}
-                    <span className="text-primary-600 font-bold text-lg">
+                    <span className="text-white font-bold text-lg">
                       {name.charAt(0)}
                     </span>
                   </div>
