@@ -18,6 +18,13 @@ export async function generateMetadata({
     title: t('title'),
     description: t('description'),
     keywords: ['trading', 'education', 'forex', 'investment', 'financial education'],
+    icons: {
+      icon: [
+        { url: '/favicon.ico', sizes: '48x48' },
+        { url: '/favicon.svg', type: 'image/svg+xml' },
+      ],
+      apple: '/apple-touch-icon.png',
+    },
   }
 }
 
