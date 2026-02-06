@@ -12,7 +12,7 @@ export function Stats() {
   const t = useTranslations('stats')
 
   return (
-    <section className="py-20 bg-gray-100">
+    <section id="stats" data-clarity-region="stats" className="py-20 bg-gray-100">
       <div className="container-custom">
         <div className="grid grid-cols-2 md:flex md:flex-row items-center justify-center gap-6 md:gap-0">
           {statKeys.map((key, index) => {

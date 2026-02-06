@@ -6,7 +6,7 @@ import { useTranslations } from 'next-intl'
 export function Hero() {
   const t = useTranslations('hero')
   return (
-    <section className="relative min-h-[85vh] flex items-end pt-32">
+    <section id="hero" data-clarity-region="hero" className="relative min-h-[85vh] flex items-end pt-32">
       {/* Background Video */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         <video

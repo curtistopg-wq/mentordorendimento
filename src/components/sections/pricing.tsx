@@ -114,6 +114,7 @@ export function Pricing() {
                     {/* CTA Button */}
                     <button
                       onClick={() => setModalOpen(true)}
+                      data-clarity-label={`pricing-${planKey}-cta`}
                       className={cn(
                         'block w-full text-center py-3 px-6 font-semibold transition-all cursor-pointer',
                         config.variant === 'dark'

@@ -47,6 +47,7 @@ export function CTA() {
             >
               <button
                 onClick={() => setModalOpen(true)}
+                data-clarity-label="cta-get-started"
                 className="inline-block px-10 py-4 border-2 border-primary-800 text-primary-800 font-semibold hover:bg-primary-800 hover:text-white transition-all"
               >
                 {t('button')}

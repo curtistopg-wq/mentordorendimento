@@ -7,7 +7,7 @@ export function Guarantee() {
   const t = useTranslations('guarantee')
 
   return (
-    <section className="relative py-24 overflow-hidden">
+    <section id="guarantee" data-clarity-region="guarantee" className="relative py-24 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 z-0 bg-gradient-to-br from-primary-800 to-primary-900" />
 

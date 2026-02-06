@@ -8,7 +8,7 @@ export function Platform() {
   const t = useTranslations('platform')
 
   return (
-    <section className="py-16 bg-white">
+    <section id="platform" data-clarity-region="platform" className="py-16 bg-white">
       <div className="container-custom">
         {/* Section Header */}
         <motion.div

@@ -12,7 +12,7 @@ export function CoursesAccordion() {
   const [openIndex, setOpenIndex] = useState<number | null>(null)
 
   return (
-    <section className="py-0 bg-white">
+    <section id="courses" data-clarity-region="courses" className="py-0 bg-white">
       <div className="flex flex-col lg:flex-row">
         {/* Left - Image */}
         <div className="lg:w-1/2">

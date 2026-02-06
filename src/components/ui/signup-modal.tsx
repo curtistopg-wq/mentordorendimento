@@ -51,6 +51,9 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ duration: 0.3, ease: [0.65, 0, 0.35, 1] }}
+            role="dialog"
+            aria-labelledby="signup-modal-title"
+            data-clarity-region="signup-modal"
             className="relative w-full max-w-md bg-white p-8 shadow-2xl z-10"
           >
             {/* Close button */}
@@ -64,14 +67,14 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
 
             {!submitted ? (
               <>
-                <h2 className="text-2xl font-display font-bold text-primary-800 mb-2">
+                <h2 id="signup-modal-title" className="text-2xl font-display font-bold text-primary-800 mb-2">
                   {t('title')}
                 </h2>
                 <p className="text-sm text-primary-500 mb-8">
                   {t('subtitle')}
                 </p>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                <form onSubmit={handleSubmit} data-clarity-region="signup-form" className="space-y-5">
                   {/* Name */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-primary-700 mb-1.5">
@@ -123,6 +126,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                   {/* Submit */}
                   <button
                     type="submit"
+                    data-clarity-label="signup-submit"
                     className="w-full py-3.5 bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors"
                   >
                     {t('submit')}
