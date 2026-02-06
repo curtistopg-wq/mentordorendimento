@@ -1,7 +1,15 @@
 'use client'
 
+import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
+
+const institutionLogos = [
+  { src: '/logos/b3.svg', alt: 'B3 - Brasil Bolsa Balcão', width: 120, height: 40 },
+  { src: '/logos/cvm.svg', alt: 'CVM - Comissão de Valores Mobiliários', width: 120, height: 40 },
+  { src: '/logos/anbima.svg', alt: 'ANBIMA', width: 140, height: 40 },
+  { src: '/logos/bacen.svg', alt: 'Banco Central do Brasil', width: 160, height: 40 },
+]
 
 const getStartedLinks = [
   { key: 'home', href: '/' },
@@ -88,8 +96,24 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Copyright */}
+        {/* Institution Logos */}
         <div className="mt-12 pt-8 border-t border-primary-700">
+          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-12 opacity-60">
+            {institutionLogos.map((logo) => (
+              <Image
+                key={logo.src}
+                src={logo.src}
+                alt={logo.alt}
+                width={logo.width}
+                height={logo.height}
+                className="h-8 md:h-10 w-auto"
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Copyright */}
+        <div className="mt-8 pt-6 border-t border-primary-700">
           <p className="text-sm text-primary-400 text-center">
             {t('copyright')}
           </p>

@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 40" width="160" height="40">
+  <circle cx="20" cy="20" r="12" fill="none" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="20" y="24" font-family="Arial, Helvetica, sans-serif" font-size="8" fill="#94a3b8" text-anchor="middle" font-weight="bold">BC</text>
+  <text x="40" y="18" font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#94a3b8">BANCO CENTRAL</text>
+  <text x="40" y="29" font-family="Arial, Helvetica, sans-serif" font-size="9" fill="#94a3b8">DO BRASIL</text>
+</svg>
