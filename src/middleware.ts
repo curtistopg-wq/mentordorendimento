@@ -5,7 +5,8 @@ import { updateSession } from '@/lib/supabase/middleware'
 const intlMiddleware = createIntlMiddleware({
   locales: ['pt-BR', 'en'],
   defaultLocale: 'pt-BR',
-  localePrefix: 'always'
+  localePrefix: 'always',
+  localeDetection: false
 })
 
 export async function middleware(request: NextRequest) {
