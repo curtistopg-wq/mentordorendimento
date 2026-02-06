@@ -11,7 +11,7 @@ export function CTA() {
 
   return (
     <>
-      <section className="py-20 bg-white">
+      <section id="contact" className="py-20 bg-white">
         <div className="container-custom">
           <div className="max-w-4xl mx-auto text-center">
             {/* Badge */}
