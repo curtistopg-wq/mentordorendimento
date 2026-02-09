@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
+import { createClient } from '@/lib/supabase/client'
 
 interface SignupModalProps {
   isOpen: boolean
@@ -18,9 +19,24 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     phone: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setLoading(true)
+    try {
+      const supabase = createClient()
+      await supabase.from('leads').insert({
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        source: 'signup-modal',
+        page: window.location.pathname,
+      })
+    } catch (_) {
+      // Still show success to user
+    }
+    setLoading(false)
     setSubmitted(true)
   }
 
@@ -126,10 +142,11 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                   {/* Submit */}
                   <button
                     type="submit"
+                    disabled={loading}
                     data-clarity-label="signup-submit"
-                    className="w-full py-3.5 bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors"
+                    className="w-full py-3.5 bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors disabled:opacity-50"
                   >
-                    {t('submit')}
+                    {loading ? '...' : t('submit')}
                   </button>
                 </form>
               </>
