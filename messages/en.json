@@ -12,7 +12,8 @@
     "subtitleKnowledge": "knowledge",
     "subtitleAnd": "and",
     "subtitleSkills": "skills",
-    "subtitleEnd": "as you move forward in your trading education."
+    "subtitleEnd": "as you move forward in your trading education.",
+    "cta": "GET STARTED"
   },
   "features": {
     "titleLine1": "Take the Road Towards",
@@ -43,7 +44,7 @@
     "title": "Premium Packages",
     "subtitle": "Choose the plan that fits your goals",
     "popular": "Most Popular",
-    "readMore": "Read More",
+    "readMore": "SIGN UP",
     "plans": {
       "silver": {
         "name": "Silver",

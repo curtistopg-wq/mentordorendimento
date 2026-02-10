@@ -12,7 +12,8 @@
     "subtitleKnowledge": "conhecimento",
     "subtitleAnd": "e as",
     "subtitleSkills": "habilidades",
-    "subtitleEnd": "necessárias enquanto você avança na sua jornada no trading."
+    "subtitleEnd": "necessárias enquanto você avança na sua jornada no trading.",
+    "cta": "COMECE AGORA"
   },
   "features": {
     "titleLine1": "Siga o Caminho Rumo",
@@ -43,7 +44,7 @@
     "title": "Pacotes Premium",
     "subtitle": "Escolha o plano que combina com seus objetivos",
     "popular": "Mais Popular",
-    "readMore": "Saiba Mais",
+    "readMore": "INSCREVER-SE",
     "plans": {
       "silver": {
         "name": "Prata",

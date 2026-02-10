@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap');
 
 @layer base {
   :root {
@@ -64,6 +63,70 @@
 
 ::-webkit-scrollbar-thumb:hover {
   @apply bg-primary-500 dark:bg-primary-500;
+}
+
+/* Safe area for sticky CTA on mobile */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Add bottom padding to body on mobile so sticky CTA doesn't cover content */
+@media (max-width: 1023px) {
+  body {
+    padding-bottom: 64px;
+  }
+}
+
+/* CSS scroll-driven animations for Server Components */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-timeline: view();
+  animation-range: entry 0% entry 30%;
+}
+
+.animate-on-scroll-delay-1 {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-timeline: view();
+  animation-range: entry 5% entry 35%;
+}
+
+.animate-on-scroll-delay-2 {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+  animation-timeline: view();
+  animation-range: entry 10% entry 40%;
+}
+
+/* Fallback for browsers that don't support animation-timeline */
+@supports not (animation-timeline: view()) {
+  .animate-on-scroll,
+  .animate-on-scroll-delay-1,
+  .animate-on-scroll-delay-2 {
+    opacity: 1;
+  }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .animate-on-scroll,
+  .animate-on-scroll-delay-1,
+  .animate-on-scroll-delay-2 {
+    opacity: 1;
+    animation: none;
+  }
 }
 
 /* Smooth scroll */

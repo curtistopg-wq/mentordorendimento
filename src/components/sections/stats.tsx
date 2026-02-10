@@ -1,6 +1,3 @@
-'use client'
-
-import { motion } from 'framer-motion'
 import { Clock, Eye, ArrowRightToLine, CalendarDays } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
@@ -19,13 +16,9 @@ export function Stats() {
             const Icon = statIcons[index]
 
             return (
-              <motion.div
+              <div
                 key={key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="flex items-center"
+                className="flex items-center animate-on-scroll"
               >
                 {index > 0 && (
                   <div className="hidden md:block w-px h-36 bg-gray-300 mx-10 lg:mx-14" />
@@ -43,7 +36,7 @@ export function Stats() {
                   <p className="text-xs md:text-sm text-primary-600">{t(`items.${key}.label`)}</p>
                   <p className="text-xs md:text-sm text-primary-600">{t(`items.${key}.sublabel`)}</p>
                 </div>
-              </motion.div>
+              </div>
             )
           })}
         </div>

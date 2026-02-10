@@ -6,6 +6,8 @@ import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { ScrollToTop } from '@/components/ui/scroll-to-top'
+import { StickyCTA } from '@/components/ui/sticky-cta'
+import { inter, poppins } from '@/lib/fonts'
 import '../globals.css'
 
 export async function generateMetadata({
@@ -26,6 +28,13 @@ export async function generateMetadata({
       ],
       apple: '/apple-touch-icon.png',
     },
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+      locale: locale === 'pt-BR' ? 'pt_BR' : 'en_US',
+      type: 'website',
+      siteName: 'Mentor do Rendimento',
+    },
   }
 }
 
@@ -39,13 +48,9 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${poppins.variable}`}>
       <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vd7maw8h2e");`,
-          }}
-        />
+        <link rel="preconnect" href="https://www.clarity.ms" />
       </head>
       <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
@@ -59,9 +64,15 @@ export default async function LocaleLayout({
             <main>{children}</main>
             <Footer />
             <ScrollToTop />
+            <StickyCTA />
           </ThemeProvider>
         </NextIntlClientProvider>
         <Analytics />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vd7maw8h2e");`,
+          }}
+        />
       </body>
     </html>
   )

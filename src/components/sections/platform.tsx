@@ -37,7 +37,7 @@ export function Platform() {
             width={1920}
             height={1080}
             className="w-full h-auto"
-            priority
+            loading="lazy"
           />
         </motion.div>
       </div>
