@@ -60,9 +60,12 @@ export function Header() {
       {/* Navigation Bar */}
       <nav className="bg-gray-100 border-b border-gray-200" aria-label="Global">
         <div className="container-custom">
-          <div className="flex items-center justify-between h-14">
-            {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-6 xl:gap-10">
+          <div className="flex items-center h-14">
+            {/* Left spacer - matches right side width for true centering */}
+            <div className="hidden lg:block flex-1" />
+
+            {/* Desktop Navigation - Centered */}
+            <div className="hidden lg:flex items-center gap-6 xl:gap-10 flex-shrink-0">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
@@ -75,7 +78,7 @@ export function Header() {
             </div>
 
             {/* Right side - CTA + Language */}
-            <div className="flex items-center gap-3 ml-auto">
+            <div className="flex items-center gap-3 flex-1 justify-end">
               {/* CTA Button - Desktop only */}
               <button
                 onClick={open}
