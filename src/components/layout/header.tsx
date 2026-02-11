@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
-import { SignupModal } from '@/components/ui/signup-modal'
+import { useSignupModal } from '@/components/providers/signup-modal-provider'
 
 const languages = [
   { code: 'pt-BR', name: 'Português', flag: '🇧🇷' },
@@ -20,10 +20,10 @@ export function Header() {
   const locale = useLocale()
   const router = useRouter()
   const pathname = usePathname()
+  const { open } = useSignupModal()
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [langMenuOpen, setLangMenuOpen] = useState(false)
-  const [modalOpen, setModalOpen] = useState(false)
 
   const currentLang = languages.find(l => l.code === locale) || languages[0]
 
@@ -41,7 +41,6 @@ export function Header() {
   }
 
   return (
-    <>
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Top Bar - Logo centered */}
       <div className="bg-primary-800 py-4">
@@ -79,7 +78,7 @@ export function Header() {
             <div className="flex items-center gap-3 ml-auto">
               {/* CTA Button - Desktop only */}
               <button
-                onClick={() => setModalOpen(true)}
+                onClick={open}
                 data-clarity-label="header-cta"
                 className="hidden lg:block px-5 py-2 bg-accent text-white text-sm font-semibold hover:bg-accent-dark transition-colors rounded-full"
               >
@@ -182,7 +181,5 @@ export function Header() {
         </div>
       </nav>
     </header>
-    <SignupModal isOpen={modalOpen} onClose={() => setModalOpen(false)} />
-    </>
   )
 }

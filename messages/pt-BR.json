@@ -6,14 +6,16 @@
     "contact": "CONTATO"
   },
   "hero": {
-    "badge": "Dê o Primeiro Passo Hoje",
-    "title": "Estude. Pratique. Opere.",
-    "subtitleStart": "Nossos mentores experientes estão aqui pra te ajudar a desenvolver o",
-    "subtitleKnowledge": "conhecimento",
-    "subtitleAnd": "e as",
-    "subtitleSkills": "habilidades",
-    "subtitleEnd": "necessárias enquanto você avança na sua jornada no trading.",
-    "cta": "COMECE AGORA"
+    "badge": "Vagas Limitadas — Turma de Fevereiro",
+    "title": "Aprenda a Operar no Mercado com Mentores que Lucram de Verdade",
+    "subtitleStart": "",
+    "subtitleKnowledge": "+9.800 alunos",
+    "subtitleAnd": "já estão",
+    "subtitleSkills": "lucrando",
+    "subtitleEnd": "com nossas estratégias testadas no mercado real.",
+    "cta": "QUERO MINHA AULA GRÁTIS",
+    "socialProofCount": "+9.800",
+    "socialProofText": "alunos já se inscreveram"
   },
   "features": {
     "titleLine1": "Siga o Caminho Rumo",
@@ -43,6 +45,7 @@
   "pricing": {
     "title": "Pacotes Premium",
     "subtitle": "Escolha o plano que combina com seus objetivos",
+    "urgency": "Preço promocional por tempo limitado",
     "popular": "Mais Popular",
     "readMore": "INSCREVER-SE",
     "plans": {
@@ -198,17 +201,17 @@
     }
   },
   "signup": {
-    "title": "Comece Sua Jornada",
-    "subtitle": "Preencha seus dados e nossa equipe entrará em contato em breve.",
+    "title": "Garanta sua Aula Grátis",
+    "subtitle": "Preencha seus dados para acesso imediato.",
     "name": "Nome Completo",
     "namePlaceholder": "Seu nome completo",
     "email": "E-mail",
     "emailPlaceholder": "seu@email.com",
     "phone": "Telefone",
     "phonePlaceholder": "+55 (11) 99999-9999",
-    "submit": "CADASTRAR AGORA",
-    "successTitle": "Cadastro Realizado!",
-    "successMessage": "Em breve nossa equipe entrará em contato com você."
+    "submit": "QUERO ACESSO GRÁTIS",
+    "successTitle": "Pronto! Verifique seu E-mail",
+    "successMessage": "Enviamos o acesso à sua aula gratuita. Confira sua caixa de entrada."
   },
   "metadata": {
     "title": "Mentor do Rendimento | Plataforma de Educação em Trading",

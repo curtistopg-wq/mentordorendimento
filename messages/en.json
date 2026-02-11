@@ -6,14 +6,16 @@
     "contact": "CONTACT"
   },
   "hero": {
-    "badge": "Make Your First Move Today",
-    "title": "Study. Practice. Trade.",
-    "subtitleStart": "Our experienced mentors are here to help you develop the necessary",
-    "subtitleKnowledge": "knowledge",
-    "subtitleAnd": "and",
-    "subtitleSkills": "skills",
-    "subtitleEnd": "as you move forward in your trading education.",
-    "cta": "GET STARTED"
+    "badge": "Limited Spots — February Class",
+    "title": "Learn to Trade with Mentors Who Actually Profit",
+    "subtitleStart": "",
+    "subtitleKnowledge": "+9,800 students",
+    "subtitleAnd": "are already",
+    "subtitleSkills": "profiting",
+    "subtitleEnd": "with our market-tested strategies.",
+    "cta": "GET MY FREE LESSON",
+    "socialProofCount": "+9,800",
+    "socialProofText": "students already enrolled"
   },
   "features": {
     "titleLine1": "Take the Road Towards",
@@ -43,6 +45,7 @@
   "pricing": {
     "title": "Premium Packages",
     "subtitle": "Choose the plan that fits your goals",
+    "urgency": "Promotional pricing for a limited time",
     "popular": "Most Popular",
     "readMore": "SIGN UP",
     "plans": {
@@ -198,17 +201,17 @@
     }
   },
   "signup": {
-    "title": "Start Your Journey",
-    "subtitle": "Fill in your details and our team will contact you shortly.",
+    "title": "Get Your Free Lesson",
+    "subtitle": "Fill in your details for immediate access.",
     "name": "Full Name",
     "namePlaceholder": "Your full name",
     "email": "Email",
     "emailPlaceholder": "your@email.com",
     "phone": "Phone Number",
     "phonePlaceholder": "+1 (555) 000-0000",
-    "submit": "REGISTER NOW",
-    "successTitle": "Registration Complete!",
-    "successMessage": "Our team will contact you shortly."
+    "submit": "GET FREE ACCESS",
+    "successTitle": "Done! Check Your Email",
+    "successMessage": "We've sent access to your free lesson. Check your inbox."
   },
   "metadata": {
     "title": "Mentor do Rendimento | Trading Education Platform",

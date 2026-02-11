@@ -2,11 +2,10 @@ import type { Metadata } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
-import { ThemeProvider } from '@/components/theme-provider'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
-import { ScrollToTop } from '@/components/ui/scroll-to-top'
 import { StickyCTA } from '@/components/ui/sticky-cta'
+import { SignupModalProvider } from '@/components/providers/signup-modal-provider'
 import { inter, poppins } from '@/lib/fonts'
 import '../globals.css'
 
@@ -48,24 +47,18 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} suppressHydrationWarning className={`${inter.variable} ${poppins.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${poppins.variable}`}>
       <head>
         <link rel="preconnect" href="https://www.clarity.ms" />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased bg-white text-primary-800">
         <NextIntlClientProvider messages={messages}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="light"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <SignupModalProvider>
             <Header />
             <main>{children}</main>
             <Footer />
-            <ScrollToTop />
             <StickyCTA />
-          </ThemeProvider>
+          </SignupModalProvider>
         </NextIntlClientProvider>
         <Analytics />
         <script
