@@ -15,7 +15,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section id="hero" data-clarity-region="hero" className="relative lg:min-h-[85vh] flex items-end pt-20 lg:pt-32">
+    <section id="hero" data-clarity-region="hero" className="relative min-h-svh lg:min-h-[85vh] flex items-end">
       {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {isMobile ? (
@@ -41,10 +41,10 @@ export function Hero() {
           </video>
         )}
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </div>
 
-      <div className="container-custom relative z-10 py-4 lg:pb-16">
+      <div className="container-custom relative z-10 pb-24 lg:pb-16">
         {/* Content Card */}
         <div className="max-w-xl bg-white/95 backdrop-blur-sm p-4 md:p-10 animate-hero-slide-in">
           {/* Badge */}
