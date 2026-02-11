@@ -15,7 +15,7 @@ export function Hero() {
   }, [])
 
   return (
-    <section id="hero" data-clarity-region="hero" className="relative min-h-[50vh] lg:min-h-[85vh] flex items-end pt-20 lg:pt-32">
+    <section id="hero" data-clarity-region="hero" className="relative lg:min-h-[85vh] flex items-end pt-20 lg:pt-32">
       {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {isMobile ? (
@@ -44,23 +44,23 @@ export function Hero() {
         <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      <div className="container-custom relative z-10 pb-8 lg:pb-16">
+      <div className="container-custom relative z-10 py-4 lg:pb-16">
         {/* Content Card */}
-        <div className="max-w-xl bg-white/95 backdrop-blur-sm p-6 md:p-10 animate-hero-slide-in">
+        <div className="max-w-xl bg-white/95 backdrop-blur-sm p-4 md:p-10 animate-hero-slide-in">
           {/* Badge */}
           <div className="animate-hero-fade-up hero-delay-200">
-            <span className="inline-flex items-center px-3 py-1.5 md:px-4 md:py-2 bg-accent text-white text-xs md:text-sm font-semibold mb-4 md:mb-6">
+            <span className="inline-flex items-center px-3 py-1 md:px-4 md:py-2 bg-accent text-white text-xs md:text-sm font-semibold mb-3 md:mb-6">
               {t('badge')}
             </span>
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-2xl md:text-4xl lg:text-5xl font-display font-normal text-primary-800 mb-4 md:mb-6 leading-tight animate-hero-fade-up hero-delay-300">
+          <h1 className="text-xl md:text-4xl lg:text-5xl font-display font-normal text-primary-800 mb-2 md:mb-6 leading-tight animate-hero-fade-up hero-delay-300">
             {t('title')}
           </h1>
 
           {/* Subtitle */}
-          <p className="text-sm md:text-base text-primary-600 leading-relaxed animate-hero-fade-up hero-delay-400">
+          <p className="text-xs md:text-base text-primary-600 leading-relaxed animate-hero-fade-up hero-delay-400">
             {t('subtitleStart')}{' '}
             <strong className="font-semibold">{t('subtitleKnowledge')}</strong> {t('subtitleAnd')}{' '}
             <strong className="font-semibold">{t('subtitleSkills')}</strong> {t('subtitleEnd')}
@@ -78,18 +78,18 @@ export function Hero() {
           </div>
 
           {/* Social Proof */}
-          <div className="mt-4 lg:mt-6 flex items-center gap-3 animate-hero-fade-up hero-delay-600">
+          <div className="mt-3 lg:mt-6 flex items-center gap-2 animate-hero-fade-up hero-delay-600">
             <div className="flex -space-x-2">
               {['L', 'M', 'G', 'R'].map((initial, i) => (
                 <div
                   key={i}
-                  className="w-8 h-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-xs font-bold text-accent"
+                  className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-[10px] lg:text-xs font-bold text-accent"
                 >
                   {initial}
                 </div>
               ))}
             </div>
-            <p className="text-sm text-primary-500">
+            <p className="text-xs lg:text-sm text-primary-500">
               <strong className="text-primary-800">{t('socialProofCount')}</strong>{' '}
               {t('socialProofText')}
             </p>
