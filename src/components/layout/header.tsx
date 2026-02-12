@@ -83,7 +83,7 @@ export function Header() {
               <button
                 onClick={open}
                 data-clarity-label="header-cta"
-                className="hidden lg:block px-5 py-2 bg-accent text-white text-sm font-semibold hover:bg-accent-dark transition-colors rounded-full"
+                className="hidden lg:block px-4 py-2 bg-accent text-white text-xs font-semibold hover:bg-accent-dark transition-colors rounded-full whitespace-nowrap"
               >
                 {tHero('cta')}
               </button>
