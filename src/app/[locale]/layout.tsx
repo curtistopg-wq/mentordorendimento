@@ -5,6 +5,7 @@ import { getMessages, getTranslations } from 'next-intl/server'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { StickyCTA } from '@/components/ui/sticky-cta'
+import { WhatsAppButton } from '@/components/ui/whatsapp-button'
 import { SignupModalProvider } from '@/components/providers/signup-modal-provider'
 import { inter, poppins } from '@/lib/fonts'
 import '../globals.css'
@@ -58,6 +59,7 @@ export default async function LocaleLayout({
             <main>{children}</main>
             <Footer />
             <StickyCTA />
+            <WhatsAppButton />
           </SignupModalProvider>
         </NextIntlClientProvider>
         <Analytics />

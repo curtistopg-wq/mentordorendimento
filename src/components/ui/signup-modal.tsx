@@ -20,23 +20,30 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
   })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
-    try {
-      const supabase = createClient()
-      await supabase.from('leads').insert({
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        source: 'signup-modal',
-        page: window.location.pathname,
-      })
-    } catch (_) {
-      // Still show success to user
-    }
+    setError(false)
+
+    const supabase = createClient()
+    const { error: insertError } = await supabase.from('leads').insert({
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      source: 'signup-modal',
+      page: window.location.pathname,
+    })
+
     setLoading(false)
+
+    if (insertError) {
+      console.error('Lead insert failed:', insertError.message)
+      setError(true)
+      return
+    }
+
     setSubmitted(true)
   }
 
@@ -89,6 +96,12 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                 <p className="text-sm text-primary-500 mb-8">
                   {t('subtitle')}
                 </p>
+
+                {error && (
+                  <p className="text-sm text-red-600 bg-red-50 px-4 py-3 mb-4">
+                    {t('errorMessage')}
+                  </p>
+                )}
 
                 <form onSubmit={handleSubmit} data-clarity-region="signup-form" className="space-y-5">
                   {/* Name */}

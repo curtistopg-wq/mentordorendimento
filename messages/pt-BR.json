@@ -211,7 +211,12 @@
     "phonePlaceholder": "+55 (11) 99999-9999",
     "submit": "QUERO ACESSO GRÁTIS",
     "successTitle": "Pronto! Verifique seu E-mail",
-    "successMessage": "Enviamos o acesso à sua aula gratuita. Confira sua caixa de entrada."
+    "successMessage": "Enviamos o acesso à sua aula gratuita. Confira sua caixa de entrada.",
+    "errorMessage": "Algo deu errado. Por favor, tente novamente."
+  },
+  "whatsapp": {
+    "message": "Olá! Tenho interesse nos cursos do Mentor do Rendimento. Pode me ajudar?",
+    "ariaLabel": "Fale conosco pelo WhatsApp"
   },
   "metadata": {
     "title": "Mentor do Rendimento | Plataforma de Educação em Trading",

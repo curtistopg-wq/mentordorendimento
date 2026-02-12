@@ -211,7 +211,12 @@
     "phonePlaceholder": "+1 (555) 000-0000",
     "submit": "GET FREE ACCESS",
     "successTitle": "Done! Check Your Email",
-    "successMessage": "We've sent access to your free lesson. Check your inbox."
+    "successMessage": "We've sent access to your free lesson. Check your inbox.",
+    "errorMessage": "Something went wrong. Please try again."
+  },
+  "whatsapp": {
+    "message": "Hi! I'm interested in Mentor do Rendimento courses. Can you help me?",
+    "ariaLabel": "Contact us on WhatsApp"
   },
   "metadata": {
     "title": "Mentor do Rendimento | Trading Education Platform",
