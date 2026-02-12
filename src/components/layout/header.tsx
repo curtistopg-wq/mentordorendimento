@@ -78,7 +78,7 @@ export function Header() {
             </div>
 
             {/* Right side - CTA + Language */}
-            <div className="flex items-center gap-3 flex-1 justify-end lg:pr-6">
+            <div className="flex items-center gap-3 flex-1 justify-end lg:ml-10">
               {/* CTA Button - Desktop only */}
               <button
                 onClick={open}
