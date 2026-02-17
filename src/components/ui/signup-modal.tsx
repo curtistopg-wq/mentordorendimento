@@ -1,5 +1,11 @@
 'use client'
 
+declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[]
+  }
+}
+
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
@@ -43,6 +49,15 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       setError(true)
       return
     }
+
+    // DataLayer push for GTM → sGTM → Meta CAPI
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      'event': 'generate_lead',
+      'user_email': formData.email.toLowerCase().trim(),
+      'user_phone': formData.phone,
+      'user_first_name': formData.name
+    })
 
     setSubmitted(true)
   }
