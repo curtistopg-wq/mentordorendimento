@@ -18,6 +18,8 @@ export { trackFbq }
 
 export function MetaPixelEvents() {
   useEffect(() => {
+    console.log('Meta Pixel Complete Events v2.0 loaded')
+
     // 1. Scroll Depth Tracking (25%, 50%, 75%, 100%)
     const scrollMarks: Record<number, boolean> = { 25: false, 50: false, 75: false, 100: false }
 
