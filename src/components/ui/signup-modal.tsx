@@ -11,6 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
+import { trackFbq } from '@/components/analytics/meta-pixel-events'
 
 interface SignupModalProps {
   isOpen: boolean
@@ -57,6 +58,12 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       'user_email': formData.email.toLowerCase().trim(),
       'user_phone': formData.phone,
       'user_first_name': formData.name
+    })
+
+    // Meta Pixel Lead event
+    trackFbq('track', 'Lead', {
+      content_name: 'Signup Form',
+      content_category: 'Free Lesson',
     })
 
     setSubmitted(true)

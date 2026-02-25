@@ -5,6 +5,7 @@ import { Check } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
+import { trackFbq } from '@/components/analytics/meta-pixel-events'
 
 const planKeys = ['silver', 'gold', 'platinum'] as const
 const planConfig = {
@@ -115,7 +116,16 @@ export function Pricing() {
 
                   {/* CTA Button */}
                   <button
-                    onClick={open}
+                    onClick={() => {
+                      trackFbq('track', 'InitiateCheckout', {
+                        content_name: planKey.charAt(0).toUpperCase() + planKey.slice(1),
+                        value: config.price,
+                        currency: 'USD',
+                        content_type: 'product',
+                        content_category: 'Trading Course',
+                      })
+                      open()
+                    }}
                     data-clarity-label={`pricing-${planKey}-cta`}
                     className={cn(
                       'block w-full text-center py-3 px-6 font-semibold transition-all cursor-pointer',

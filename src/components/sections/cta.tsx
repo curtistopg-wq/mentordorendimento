@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
+import { trackFbq } from '@/components/analytics/meta-pixel-events'
 
 export function CTA() {
   const t = useTranslations('cta')
@@ -44,7 +45,13 @@ export function CTA() {
             transition={{ delay: 0.3 }}
           >
             <button
-              onClick={open}
+              onClick={() => {
+                trackFbq('track', 'ViewContent', {
+                  content_name: 'CTA Comecar Agora',
+                  content_category: 'CTA Click',
+                })
+                open()
+              }}
               data-clarity-label="cta-get-started"
               className="inline-block px-10 py-4 border-2 border-primary-800 text-primary-800 font-semibold hover:bg-primary-800 hover:text-white transition-all"
             >

@@ -8,6 +8,7 @@ import { Footer } from '@/components/layout/footer'
 import { StickyCTA } from '@/components/ui/sticky-cta'
 import { WhatsAppButton } from '@/components/ui/whatsapp-button'
 import { SignupModalProvider } from '@/components/providers/signup-modal-provider'
+import { MetaPixelEvents } from '@/components/analytics/meta-pixel-events'
 import { inter, poppins } from '@/lib/fonts'
 import '../globals.css'
 
@@ -100,6 +101,7 @@ export default async function LocaleLayout({
             <WhatsAppButton />
           </SignupModalProvider>
         </NextIntlClientProvider>
+        <MetaPixelEvents />
         <Analytics />
         <Script
           src="https://lailah-continuous-tarra.ngrok-free.dev/api/tracking/pixel?site=mentordorendimento.com"
