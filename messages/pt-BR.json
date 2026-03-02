@@ -15,7 +15,16 @@
     "subtitleEnd": "com nossas estratégias testadas no mercado real.",
     "cta": "QUERO MINHA AULA GRÁTIS",
     "socialProofCount": "+9.800",
-    "socialProofText": "alunos já se inscreveram"
+    "socialProofText": "alunos já se inscreveram",
+    "urgencySlots": "🔴 47 vagas restantes — inscreva-se agora",
+    "inlineForm": {
+      "name": "Seu nome",
+      "email": "Seu melhor e-mail",
+      "submit": "QUERO COMEÇAR GRÁTIS",
+      "success": "Inscrição confirmada! Verifique seu e-mail.",
+      "error": "Erro ao enviar. Tente novamente.",
+      "rating": "4.9/5 — 2.341 avaliações"
+    }
   },
   "features": {
     "titleLine1": "Siga o Caminho Rumo",
@@ -338,6 +347,10 @@
       "support": "Suporte prioritário ao cliente e orientação personalizada.",
       "updates": "Atualizações vitalícias do conteúdo dos cursos e novos materiais conforme são lançados."
     }
+  },
+  "trustStrip": {
+    "rating": "4.9/5 — 2.341 avaliações",
+    "regulated": "Regulado por"
   },
   "footer": {
     "contactUs": "Fale Conosco",

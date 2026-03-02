@@ -15,7 +15,16 @@
     "subtitleEnd": "with our market-tested strategies.",
     "cta": "GET MY FREE LESSON",
     "socialProofCount": "+9,800",
-    "socialProofText": "students already enrolled"
+    "socialProofText": "students already enrolled",
+    "urgencySlots": "🔴 47 spots remaining — sign up now",
+    "inlineForm": {
+      "name": "Your name",
+      "email": "Your best email",
+      "submit": "START FOR FREE",
+      "success": "You're in! Check your email.",
+      "error": "Something went wrong. Please try again.",
+      "rating": "4.9/5 — 2,341 reviews"
+    }
   },
   "features": {
     "titleLine1": "Take the Road Towards",
@@ -338,6 +347,10 @@
       "support": "Priority customer support and personalized guidance.",
       "updates": "Lifetime updates to course content and new materials as they are released."
     }
+  },
+  "trustStrip": {
+    "rating": "4.9/5 — 2,341 reviews",
+    "regulated": "Regulated by"
   },
   "footer": {
     "contactUs": "Contact Us",

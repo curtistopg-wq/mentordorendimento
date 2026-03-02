@@ -1,18 +1,73 @@
 'use client'
 
+declare global {
+  interface Window {
+    dataLayer: Record<string, unknown>[]
+  }
+}
+
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
+import { createClient } from '@/lib/supabase/client'
+import { trackFbq } from '@/components/analytics/meta-pixel-events'
 
 export function Hero() {
   const t = useTranslations('hero')
   const { open } = useSignupModal()
   const [isMobile, setIsMobile] = useState(true)
 
+  // Inline form state (mobile only)
+  const [formData, setFormData] = useState({ name: '', email: '' })
+  const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     setIsMobile(window.innerWidth < 1024)
   }, [])
+
+  const handleInlineSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(false)
+
+    const supabase = createClient()
+    const { error: insertError } = await supabase.from('leads').insert({
+      name: formData.name,
+      email: formData.email,
+      phone: '',
+      source: 'hero-inline-mobile',
+      page: window.location.pathname,
+    })
+
+    setLoading(false)
+
+    if (insertError) {
+      console.error('Lead insert failed:', insertError.message)
+      setError(true)
+      return
+    }
+
+    // DataLayer push for GTM
+    window.dataLayer = window.dataLayer || []
+    window.dataLayer.push({
+      'event': 'generate_lead',
+      'user_email': formData.email.toLowerCase().trim(),
+      'user_phone': '',
+      'user_first_name': formData.name,
+      'lead_source': 'hero-inline-mobile',
+    })
+
+    // Meta Pixel Lead event
+    trackFbq('track', 'Lead', {
+      content_name: 'Hero Inline Form',
+      content_category: 'Free Lesson',
+    })
+
+    setSubmitted(true)
+  }
 
   return (
     <section id="hero" data-clarity-region="hero" className="relative min-h-svh lg:min-h-[85vh] flex items-end">
@@ -66,7 +121,68 @@ export function Hero() {
             <strong className="font-semibold">{t('subtitleSkills')}</strong> {t('subtitleEnd')}
           </p>
 
-          {/* CTA Button - desktop only, sticky CTA handles mobile */}
+          {/* Inline Lead Form - Mobile only (below lg) */}
+          <div className="block lg:hidden mt-4 animate-hero-fade-up hero-delay-500" data-clarity-region="hero-inline-form">
+            {!submitted ? (
+              <form onSubmit={handleInlineSubmit} className="space-y-3">
+                {error && (
+                  <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
+                    {t('inlineForm.error')}
+                  </p>
+                )}
+
+                <input
+                  type="text"
+                  required
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  placeholder={t('inlineForm.name')}
+                  aria-label={t('inlineForm.name')}
+                  data-clarity-label="hero-inline-name"
+                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                />
+
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder={t('inlineForm.email')}
+                  aria-label={t('inlineForm.email')}
+                  data-clarity-label="hero-inline-email"
+                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                />
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  data-clarity-label="hero-inline-submit"
+                  className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                >
+                  {loading ? '...' : t('inlineForm.submit')}
+                </button>
+              </form>
+            ) : (
+              <div className="flex items-center gap-3 bg-green-50 border border-green-200 p-4">
+                <svg className="w-6 h-6 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                </svg>
+                <p className="text-sm font-semibold text-green-800">
+                  {t('inlineForm.success')}
+                </p>
+              </div>
+            )}
+
+            {/* Star Rating - below form on mobile */}
+            {!submitted && (
+              <div className="mt-3 flex items-center gap-2">
+                <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
+              </div>
+            )}
+          </div>
+
+          {/* CTA Button - desktop only (lg and above) */}
           <div className="hidden lg:block mt-6 animate-hero-fade-up hero-delay-500">
             <button
               onClick={open}

@@ -52,25 +52,16 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${inter.variable} ${poppins.variable}`}>
       <head>
-        {/* 1. fbclid capture - FIRST, before everything */}
+        {/* 1. fbclid capture - tiny and critical for attribution */}
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(){function getCookie(name){var match=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));return match?match[2]:null;}var urlParams=new URLSearchParams(window.location.search);var fbclid=urlParams.get('fbclid');if(fbclid&&!getCookie('_fbc')){var fbc='fb.1.'+Date.now()+'.'+fbclid;var d=new Date();d.setTime(d.getTime()+(90*24*60*60*1000));var domain=window.location.hostname.replace(/^www\\./,'');document.cookie='_fbc='+fbc+'; expires='+d.toUTCString()+'; path=/; domain=.'+domain+'; SameSite=Lax';}})();`,
           }}
         />
-        {/* 2. GTM Web Container - in head, after fbclid */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WQ7DNJRL');`,
-          }}
-        />
-        {/* 3. Meta Pixel */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1610736693381201');fbq('track','PageView');`,
-          }}
-        />
+        {/* Preconnect hints */}
         <link rel="preconnect" href="https://www.clarity.ms" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className="font-sans antialiased bg-white text-primary-800">
         {/* GTM noscript fallback */}
@@ -103,14 +94,34 @@ export default async function LocaleLayout({
         </NextIntlClientProvider>
         <MetaPixelEvents />
         <Analytics />
+        {/* 2. GTM - deferred to after page interactive */}
         <Script
-          src="https://lailah-continuous-tarra.ngrok-free.dev/api/tracking/pixel?site=mentordorendimento.com"
+          id="gtm-script"
           strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WQ7DNJRL');`,
+          }}
         />
-        <script
+        {/* 3. Meta Pixel - deferred to after page interactive */}
+        <Script
+          id="meta-pixel-script"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1610736693381201');fbq('track','PageView');`,
+          }}
+        />
+        {/* 4. Clarity - lazy loaded, non-critical analytics */}
+        <Script
+          id="clarity-script"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vd7maw8h2e");`,
           }}
+        />
+        {/* 5. Ngrok tracking - lazy loaded */}
+        <Script
+          src="https://lailah-continuous-tarra.ngrok-free.dev/api/tracking/pixel?site=mentordorendimento.com"
+          strategy="lazyOnload"
         />
       </body>
     </html>

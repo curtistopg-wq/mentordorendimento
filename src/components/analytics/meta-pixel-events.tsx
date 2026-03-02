@@ -16,14 +16,31 @@ function trackFbq(...args: unknown[]) {
 
 export { trackFbq }
 
+function requestIdleCallbackPolyfill(cb: () => void): number {
+  if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
+    return window.requestIdleCallback(() => cb())
+  }
+  return window.setTimeout(cb, 1) as unknown as number
+}
+
+function cancelIdleCallbackPolyfill(id: number): void {
+  if (typeof window !== 'undefined' && typeof window.cancelIdleCallback === 'function') {
+    window.cancelIdleCallback(id)
+  } else {
+    window.clearTimeout(id)
+  }
+}
+
 export function MetaPixelEvents() {
   useEffect(() => {
-    console.log('Meta Pixel Complete Events v2.0 loaded')
+    console.log('Meta Pixel Complete Events v2.1 loaded')
 
-    // 1. Scroll Depth Tracking (25%, 50%, 75%, 100%)
+    // 1. Scroll Depth Tracking (25%, 50%, 75%, 100%) - debounced with rAF
     const scrollMarks: Record<number, boolean> = { 25: false, 50: false, 75: false, 100: false }
+    let scrollDebounceTimer: ReturnType<typeof setTimeout> | null = null
+    let scrollRafId: number | null = null
 
-    function handleScroll() {
+    function processScroll() {
       const scrollTop = window.pageYOffset || document.documentElement.scrollTop
       const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight
       if (docHeight <= 0) return
@@ -47,6 +64,20 @@ export function MetaPixelEvents() {
       }
     }
 
+    function handleScroll() {
+      if (scrollDebounceTimer !== null) return
+      scrollDebounceTimer = setTimeout(() => {
+        scrollDebounceTimer = null
+        if (scrollRafId !== null) {
+          cancelAnimationFrame(scrollRafId)
+        }
+        scrollRafId = requestAnimationFrame(() => {
+          scrollRafId = null
+          processScroll()
+        })
+      }, 100)
+    }
+
     window.addEventListener('scroll', handleScroll, { passive: true })
 
     // 2. Time on Page Tracking (30s, 60s, 120s, 300s)
@@ -57,29 +88,33 @@ export function MetaPixelEvents() {
       setTimeout(() => trackFbq('trackCustom', 'TimeOnPage', { duration: '300s' }), 300000),
     ]
 
-    // 3. Pricing Section Visibility (ViewContent)
+    // 3. Pricing Section Visibility (ViewContent) - deferred via requestIdleCallback
     let pricingTracked = false
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && !pricingTracked) {
-            pricingTracked = true
-            trackFbq('track', 'ViewContent', {
-              content_name: 'Pricing Section',
-              content_category: 'Pacotes Premium',
-            })
-          }
-        })
-      },
-      { threshold: 0.5 }
-    )
+    let observer: IntersectionObserver | null = null
 
-    const pricingSection = document.getElementById('pricing')
-    if (pricingSection) {
-      observer.observe(pricingSection)
-    }
+    const idleId = requestIdleCallbackPolyfill(() => {
+      observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !pricingTracked) {
+              pricingTracked = true
+              trackFbq('track', 'ViewContent', {
+                content_name: 'Pricing Section',
+                content_category: 'Pacotes Premium',
+              })
+            }
+          })
+        },
+        { threshold: 0.5 }
+      )
 
-    // 4. Contact/Email Link Clicks
+      const pricingSection = document.getElementById('pricing')
+      if (pricingSection) {
+        observer.observe(pricingSection)
+      }
+    })
+
+    // 4. Contact/Email Link Clicks - passive listener
     function handleClick(e: MouseEvent) {
       const anchor = (e.target as HTMLElement).closest('a')
       if (!anchor || !anchor.href) return
@@ -95,7 +130,7 @@ export function MetaPixelEvents() {
       }
     }
 
-    document.addEventListener('click', handleClick)
+    document.addEventListener('click', handleClick, { passive: true })
 
     // 5. Exit Intent (mouse leaves viewport top)
     let exitTracked = false
@@ -123,8 +158,11 @@ export function MetaPixelEvents() {
     // Cleanup
     return () => {
       window.removeEventListener('scroll', handleScroll)
+      if (scrollDebounceTimer !== null) clearTimeout(scrollDebounceTimer)
+      if (scrollRafId !== null) cancelAnimationFrame(scrollRafId)
       timers.forEach(clearTimeout)
-      observer.disconnect()
+      cancelIdleCallbackPolyfill(idleId)
+      if (observer) observer.disconnect()
       document.removeEventListener('click', handleClick)
       document.removeEventListener('mouseout', handleMouseOut)
       document.removeEventListener('play', handleVideoPlay, true)
