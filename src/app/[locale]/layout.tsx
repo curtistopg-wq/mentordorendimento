@@ -3,6 +3,7 @@ import Script from 'next/script'
 import { Analytics } from '@vercel/analytics/next'
 import { NextIntlClientProvider } from 'next-intl'
 import { getMessages, getTranslations } from 'next-intl/server'
+import { StructuredData } from '@/components/seo/structured-data'
 import { Header } from '@/components/layout/header'
 import { Footer } from '@/components/layout/footer'
 import { StickyCTA } from '@/components/ui/sticky-cta'
@@ -36,6 +37,32 @@ export async function generateMetadata({
       locale: locale === 'pt-BR' ? 'pt_BR' : 'en_US',
       type: 'website',
       siteName: 'Mentor do Rendimento',
+      url: `https://mentordorendimento.com/${locale}`,
+      images: [
+        {
+          url: 'https://mentordorendimento.com/images/hero-poster.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Mentor do Rendimento - Trading Education Platform',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'),
+      description: t('description'),
+      images: ['https://mentordorendimento.com/images/hero-poster.jpg'],
+    },
+    alternates: {
+      canonical: `https://mentordorendimento.com/${locale}`,
+      languages: {
+        'pt-BR': 'https://mentordorendimento.com/pt-BR',
+        'en': 'https://mentordorendimento.com/en',
+      },
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   }
 }
@@ -52,6 +79,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${inter.variable} ${poppins.variable}`}>
       <head>
+        <StructuredData locale={locale} />
         {/* 1. fbclid capture - tiny and critical for attribution */}
         <script
           dangerouslySetInnerHTML={{

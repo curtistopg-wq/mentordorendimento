@@ -136,6 +136,20 @@ export function Pricing() {
                   >
                     {t('readMore')}
                   </button>
+
+                  {/* WhatsApp alternative */}
+                  <a
+                    href={`https://wa.me/5511914134580?text=${encodeURIComponent(`Olá! Tenho interesse no plano ${t(`plans.${planKey}.name`)}. Pode me ajudar?`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-clarity-label={`pricing-${planKey}-whatsapp`}
+                    className={cn(
+                      'block w-full text-center py-2 mt-2 text-sm font-medium transition-colors',
+                      config.variant === 'dark' ? 'text-primary-400 hover:text-white' : 'text-primary-500 hover:text-primary-800'
+                    )}
+                  >
+                    {t('whatsappCta')}
+                  </a>
                 </div>
               </motion.div>
             )

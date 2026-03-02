@@ -42,12 +42,12 @@ export function WhatsAppButton() {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}
           transition={{ duration: 0.3, ease: [0.65, 0, 0.35, 1] }}
-          className="fixed bottom-6 right-6 z-50 p-3.5 bg-accent hover:bg-accent-dark text-white rounded-full shadow-lg transition-colors max-lg:bottom-20"
+          className="fixed bottom-6 right-6 z-50 p-3.5 bg-[#25D366] hover:bg-[#1DA851] text-white rounded-full shadow-lg transition-colors max-lg:bottom-20"
           aria-label={t('ariaLabel')}
           data-clarity-label="whatsapp-button"
         >
           <WhatsAppIcon className="w-6 h-6" />
-          <span className="absolute inset-0 rounded-full animate-ping bg-accent/20 pointer-events-none" />
+          <span className="absolute inset-0 rounded-full animate-ping bg-[#25D366]/20 pointer-events-none" />
         </motion.a>
       )}
     </AnimatePresence>

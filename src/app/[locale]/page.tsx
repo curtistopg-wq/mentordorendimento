@@ -3,10 +3,11 @@ import { TrustStrip } from '@/components/sections/trust-strip'
 import { Features } from '@/components/sections/features'
 import dynamic from 'next/dynamic'
 
-const Stats = dynamic(() => import('@/components/sections/stats').then(m => ({ default: m.Stats })))
 const Testimonials = dynamic(() => import('@/components/sections/testimonials').then(m => ({ default: m.Testimonials })))
+const Stats = dynamic(() => import('@/components/sections/stats').then(m => ({ default: m.Stats })))
+const MidCTA = dynamic(() => import('@/components/sections/mid-cta').then(m => ({ default: m.MidCTA })))
 const Pricing = dynamic(() => import('@/components/sections/pricing').then(m => ({ default: m.Pricing })))
-const CoursesAccordion = dynamic(() => import('@/components/sections/courses-accordion').then(m => ({ default: m.CoursesAccordion })))
+const FAQ = dynamic(() => import('@/components/sections/faq').then(m => ({ default: m.FAQ })))
 const CTA = dynamic(() => import('@/components/sections/cta').then(m => ({ default: m.CTA })))
 
 export default function Home() {
@@ -14,11 +15,12 @@ export default function Home() {
     <main>
       <Hero />
       <TrustStrip />
-      <Stats />
-      <Features />
       <Testimonials />
+      <Features />
+      <Stats />
+      <MidCTA />
       <Pricing />
-      <CoursesAccordion />
+      <FAQ />
       <CTA />
     </main>
   )

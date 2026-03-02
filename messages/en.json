@@ -20,10 +20,11 @@
     "inlineForm": {
       "name": "Your name",
       "email": "Your best email",
-      "submit": "START FOR FREE",
+      "submit": "ACCESS FREE LESSON →",
       "success": "You're in! Check your email.",
       "error": "Something went wrong. Please try again.",
-      "rating": "4.9/5 — 2,341 reviews"
+      "rating": "4.7/5 — 2,341 reviews",
+      "privacy": "Your data is secure. No spam."
     }
   },
   "features": {
@@ -56,7 +57,8 @@
     "subtitle": "Choose the plan that fits your goals",
     "urgency": "Promotional pricing for a limited time",
     "popular": "Most Popular",
-    "readMore": "SIGN UP",
+    "readMore": "SECURE MY SPOT",
+    "whatsappCta": "or talk to a mentor on WhatsApp",
     "plans": {
       "silver": {
         "name": "Silver",
@@ -349,7 +351,7 @@
     }
   },
   "trustStrip": {
-    "rating": "4.9/5 — 2,341 reviews",
+    "rating": "4.7/5 — 2,341 reviews",
     "regulated": "Regulated by"
   },
   "footer": {

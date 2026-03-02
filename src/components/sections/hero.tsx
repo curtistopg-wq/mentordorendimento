@@ -138,8 +138,10 @@ export function Hero() {
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder={t('inlineForm.name')}
                   aria-label={t('inlineForm.name')}
+                  autoComplete="given-name"
+                  inputMode="text"
                   data-clarity-label="hero-inline-name"
-                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
                 />
 
                 <input
@@ -149,8 +151,10 @@ export function Hero() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   placeholder={t('inlineForm.email')}
                   aria-label={t('inlineForm.email')}
+                  autoComplete="email"
+                  inputMode="email"
                   data-clarity-label="hero-inline-email"
-                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
                 />
 
                 <button
@@ -173,11 +177,17 @@ export function Hero() {
               </div>
             )}
 
-            {/* Star Rating - below form on mobile */}
+            {/* Micro-copy + Star Rating - below form on mobile */}
             {!submitted && (
-              <div className="mt-3 flex items-center gap-2">
-                <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
+              <div className="mt-3 space-y-2">
+                <p className="text-xs text-primary-500 flex items-center gap-1">
+                  <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                  {t('inlineForm.privacy')}
+                </p>
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                  <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
+                </div>
               </div>
             )}
           </div>
