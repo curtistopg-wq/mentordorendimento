@@ -19,12 +19,18 @@
     "urgencySlots": "🔴 47 vagas restantes — inscreva-se agora",
     "inlineForm": {
       "name": "Seu nome",
+      "surname": "Seu sobrenome",
+      "phone": "+55 (11) 99999-9999",
       "email": "Seu melhor e-mail",
       "submit": "ACESSAR AULA GRÁTIS →",
+      "step2Title": "Quase lá! Complete seu cadastro:",
+      "step2Submit": "FINALIZAR INSCRIÇÃO →",
+      "emailSaved": "✓ E-mail registrado!",
       "success": "Inscrição confirmada! Verifique seu e-mail.",
       "error": "Erro ao enviar. Tente novamente.",
       "rating": "4.7/5 — 2.341 avaliações",
-      "privacy": "Seus dados estão seguros. Sem spam."
+      "privacy": "Seus dados estão seguros. Sem spam.",
+      "whatsappAlt": "ou fale no WhatsApp"
     }
   },
   "features": {

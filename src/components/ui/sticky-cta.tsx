@@ -1,11 +1,21 @@
 'use client'
 
 import { useTranslations } from 'next-intl'
-import { useSignupModal } from '@/components/providers/signup-modal-provider'
 
 export function StickyCTA() {
   const t = useTranslations('hero')
-  const { open } = useSignupModal()
+
+  const scrollToHero = () => {
+    const hero = document.getElementById('hero')
+    if (hero) {
+      hero.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      // Focus the email input after scroll
+      setTimeout(() => {
+        const emailInput = hero.querySelector<HTMLInputElement>('input[type="email"]')
+        emailInput?.focus()
+      }, 600)
+    }
+  }
 
   return (
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 p-3 bg-white/[0.98] backdrop-blur-sm border-t border-primary-200 safe-area-pb">
@@ -15,7 +25,7 @@ export function StickyCTA() {
       </p>
 
       <button
-        onClick={open}
+        onClick={scrollToHero}
         data-clarity-label="sticky-cta"
         className="relative w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm rounded-lg transition-colors"
       >

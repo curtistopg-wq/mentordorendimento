@@ -172,6 +172,23 @@
   }
 }
 
+/* Disable hero animations on mobile — content must be instantly visible */
+@media (max-width: 1023px) {
+  .animate-hero-slide-in,
+  .animate-hero-fade-up {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+
+  .hero-delay-200,
+  .hero-delay-300,
+  .hero-delay-400,
+  .hero-delay-500,
+  .hero-delay-600 {
+    animation-delay: 0s !important;
+  }
+}
+
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;

@@ -6,41 +6,55 @@ declare global {
   }
 }
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 
+const WHATSAPP_NUMBER = '5511914134580'
+
+const trustLogos = [
+  { src: '/logos/b3.svg', alt: 'B3' },
+  { src: '/logos/cvm.svg', alt: 'CVM' },
+  { src: '/logos/anbima.svg', alt: 'ANBIMA' },
+  { src: '/logos/bacen.svg', alt: 'Banco Central' },
+]
+
 export function Hero() {
   const t = useTranslations('hero')
   const { open } = useSignupModal()
   const [isMobile, setIsMobile] = useState(true)
+  const formRef = useRef<HTMLDivElement>(null)
 
-  // Inline form state (mobile only)
-  const [formData, setFormData] = useState({ name: '', email: '' })
+  // Multi-step form state
+  const [step, setStep] = useState<1 | 2>(1)
+  const [email, setEmail] = useState('')
+  const [formData, setFormData] = useState({ name: '', surname: '', phone: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [leadId, setLeadId] = useState<string | null>(null)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 1024)
   }, [])
 
-  const handleInlineSubmit = async (e: React.FormEvent) => {
+  // Step 1: Capture email immediately
+  const handleStep1 = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(false)
 
     const supabase = createClient()
-    const { error: insertError } = await supabase.from('leads').insert({
-      name: formData.name,
-      email: formData.email,
+    const { data, error: insertError } = await supabase.from('leads').insert({
+      name: '',
+      email: email.toLowerCase().trim(),
       phone: '',
       source: 'hero-inline-mobile',
       page: window.location.pathname,
-    })
+    }).select('id').single()
 
     setLoading(false)
 
@@ -50,12 +64,43 @@ export function Hero() {
       return
     }
 
+    if (data?.id) {
+      setLeadId(data.id)
+    }
+
+    setStep(2)
+  }
+
+  // Step 2: Complete profile + fire tracking events
+  const handleStep2 = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(false)
+
+    const fullName = `${formData.name} ${formData.surname}`.trim()
+
+    // Update the existing lead record
+    if (leadId) {
+      const supabase = createClient()
+      const { error: updateError } = await supabase.from('leads').update({
+        name: fullName,
+        phone: formData.phone,
+      }).eq('id', leadId)
+
+      if (updateError) {
+        console.error('Lead update failed:', updateError.message)
+        setError(true)
+        setLoading(false)
+        return
+      }
+    }
+
     // DataLayer push for GTM
     window.dataLayer = window.dataLayer || []
     window.dataLayer.push({
       'event': 'generate_lead',
-      'user_email': formData.email.toLowerCase().trim(),
-      'user_phone': '',
+      'user_email': email.toLowerCase().trim(),
+      'user_phone': formData.phone,
       'user_first_name': formData.name,
       'lead_source': 'hero-inline-mobile',
     })
@@ -66,11 +111,15 @@ export function Hero() {
       content_category: 'Free Lesson',
     })
 
+    setLoading(false)
     setSubmitted(true)
   }
 
+  const whatsappMessage = encodeURIComponent('Olá! Tenho interesse nos cursos do Mentor do Rendimento. Pode me ajudar?')
+  const whatsappHref = `https://wa.me/${WHATSAPP_NUMBER}?text=${whatsappMessage}`
+
   return (
-    <section id="hero" data-clarity-region="hero" className="relative min-h-svh lg:min-h-[85vh] flex items-end">
+    <section id="hero" data-clarity-region="hero" className="relative min-h-svh lg:min-h-[85vh] flex items-center lg:items-end">
       {/* Background */}
       <div className="absolute inset-0 z-0 overflow-hidden">
         {isMobile ? (
@@ -99,7 +148,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </div>
 
-      <div className="container-custom relative z-10 pb-24 lg:pb-16">
+      <div className="container-custom relative z-10 py-4 lg:pb-16 lg:pt-0">
         {/* Content Card */}
         <div className="max-w-xl bg-white/95 backdrop-blur-sm p-4 md:p-10 animate-hero-slide-in">
           {/* Badge */}
@@ -121,51 +170,139 @@ export function Hero() {
             <strong className="font-semibold">{t('subtitleSkills')}</strong> {t('subtitleEnd')}
           </p>
 
-          {/* Inline Lead Form - Mobile only (below lg) */}
-          <div className="block lg:hidden mt-4 animate-hero-fade-up hero-delay-500" data-clarity-region="hero-inline-form">
+          {/* Multi-step Inline Lead Form - Mobile only (below lg) */}
+          <div ref={formRef} className="block lg:hidden mt-4 animate-hero-fade-up hero-delay-500" data-clarity-region="hero-inline-form">
             {!submitted ? (
-              <form onSubmit={handleInlineSubmit} className="space-y-3">
-                {error && (
-                  <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
-                    {t('inlineForm.error')}
-                  </p>
+              <>
+                {/* Step 1: Email only */}
+                {step === 1 && (
+                  <form onSubmit={handleStep1} className="space-y-3">
+                    {error && (
+                      <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
+                        {t('inlineForm.error')}
+                      </p>
+                    )}
+
+                    <input
+                      type="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder={t('inlineForm.email')}
+                      aria-label={t('inlineForm.email')}
+                      autoComplete="email"
+                      inputMode="email"
+                      data-clarity-label="hero-inline-email"
+                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                    />
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      data-clarity-label="hero-inline-step1"
+                      className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                    >
+                      {loading ? '...' : t('inlineForm.submit')}
+                    </button>
+                  </form>
                 )}
 
-                <input
-                  type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  placeholder={t('inlineForm.name')}
-                  aria-label={t('inlineForm.name')}
-                  autoComplete="given-name"
-                  inputMode="text"
-                  data-clarity-label="hero-inline-name"
-                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
-                />
+                {/* Step 2: Name, surname, phone */}
+                {step === 2 && (
+                  <form onSubmit={handleStep2} className="space-y-3">
+                    <p className="text-xs text-emerald-600 font-semibold">
+                      {t('inlineForm.emailSaved')}
+                    </p>
+                    <p className="text-sm font-semibold text-primary-800">
+                      {t('inlineForm.step2Title')}
+                    </p>
 
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder={t('inlineForm.email')}
-                  aria-label={t('inlineForm.email')}
-                  autoComplete="email"
-                  inputMode="email"
-                  data-clarity-label="hero-inline-email"
-                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
-                />
+                    {error && (
+                      <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
+                        {t('inlineForm.error')}
+                      </p>
+                    )}
 
-                <button
-                  type="submit"
-                  disabled={loading}
-                  data-clarity-label="hero-inline-submit"
-                  className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
-                >
-                  {loading ? '...' : t('inlineForm.submit')}
-                </button>
-              </form>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder={t('inlineForm.name')}
+                      aria-label={t('inlineForm.name')}
+                      autoComplete="given-name"
+                      inputMode="text"
+                      data-clarity-label="hero-inline-name"
+                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                    />
+
+                    <input
+                      type="text"
+                      required
+                      value={formData.surname}
+                      onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
+                      placeholder={t('inlineForm.surname')}
+                      aria-label={t('inlineForm.surname')}
+                      autoComplete="family-name"
+                      inputMode="text"
+                      data-clarity-label="hero-inline-surname"
+                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                    />
+
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder={t('inlineForm.phone')}
+                      aria-label={t('inlineForm.phone')}
+                      autoComplete="tel"
+                      inputMode="tel"
+                      data-clarity-label="hero-inline-phone"
+                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                    />
+
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      data-clarity-label="hero-inline-step2"
+                      className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                    >
+                      {loading ? '...' : t('inlineForm.step2Submit')}
+                    </button>
+                  </form>
+                )}
+
+                {/* WhatsApp alternative */}
+                <div className="mt-3 flex items-center justify-center gap-2">
+                  <span className="text-xs text-primary-400">—</span>
+                  <a
+                    href={whatsappHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-clarity-label="hero-whatsapp-alt"
+                    className="text-xs font-medium text-[#25D366] hover:underline flex items-center gap-1"
+                  >
+                    <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                    {t('inlineForm.whatsappAlt')}
+                  </a>
+                  <span className="text-xs text-primary-400">—</span>
+                </div>
+
+                {/* Micro-copy + Star Rating */}
+                {step === 1 && (
+                  <div className="mt-3 space-y-2">
+                    <p className="text-xs text-primary-500 flex items-center gap-1">
+                      <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                      {t('inlineForm.privacy')}
+                    </p>
+                    <div className="flex items-center gap-2">
+                      <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                      <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
+                    </div>
+                  </div>
+                )}
+              </>
             ) : (
               <div className="flex items-center gap-3 bg-green-50 border border-green-200 p-4">
                 <svg className="w-6 h-6 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -174,20 +311,6 @@ export function Hero() {
                 <p className="text-sm font-semibold text-green-800">
                   {t('inlineForm.success')}
                 </p>
-              </div>
-            )}
-
-            {/* Micro-copy + Star Rating - below form on mobile */}
-            {!submitted && (
-              <div className="mt-3 space-y-2">
-                <p className="text-xs text-primary-500 flex items-center gap-1">
-                  <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                  {t('inlineForm.privacy')}
-                </p>
-                <div className="flex items-center gap-2">
-                  <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                  <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
-                </div>
               </div>
             )}
           </div>
@@ -203,22 +326,39 @@ export function Hero() {
             </button>
           </div>
 
-          {/* Social Proof */}
-          <div className="mt-3 lg:mt-6 flex items-center gap-2 animate-hero-fade-up hero-delay-600">
-            <div className="flex -space-x-2">
-              {['L', 'M', 'G', 'R'].map((initial, i) => (
-                <div
-                  key={i}
-                  className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-[10px] lg:text-xs font-bold text-accent"
-                >
-                  {initial}
-                </div>
-              ))}
+          {/* Social Proof + Inline Trust Logos */}
+          <div className="mt-3 lg:mt-6 space-y-2 animate-hero-fade-up hero-delay-600">
+            <div className="flex items-center gap-2">
+              <div className="flex -space-x-2">
+                {['L', 'M', 'G', 'R'].map((initial, i) => (
+                  <div
+                    key={i}
+                    className="w-6 h-6 lg:w-8 lg:h-8 rounded-full bg-accent/20 border-2 border-white flex items-center justify-center text-[10px] lg:text-xs font-bold text-accent"
+                  >
+                    {initial}
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs lg:text-sm text-primary-500">
+                <strong className="text-primary-800">{t('socialProofCount')}</strong>{' '}
+                {t('socialProofText')}
+              </p>
             </div>
-            <p className="text-xs lg:text-sm text-primary-500">
-              <strong className="text-primary-800">{t('socialProofCount')}</strong>{' '}
-              {t('socialProofText')}
-            </p>
+
+            {/* Trust logos inline - visible in hero card */}
+            <div className="flex items-center gap-2 lg:hidden">
+              {trustLogos.map((logo) => (
+                <Image
+                  key={logo.alt}
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={24}
+                  height={24}
+                  className="h-4 w-auto opacity-40 grayscale"
+                />
+              ))}
+              <span className="text-[9px] uppercase tracking-wider text-primary-400 font-medium ml-1">Regulado</span>
+            </div>
           </div>
         </div>
       </div>

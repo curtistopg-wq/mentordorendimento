@@ -18,13 +18,19 @@
     "socialProofText": "students already enrolled",
     "urgencySlots": "🔴 47 spots remaining — sign up now",
     "inlineForm": {
-      "name": "Your name",
+      "name": "Your first name",
+      "surname": "Your last name",
+      "phone": "+1 (555) 000-0000",
       "email": "Your best email",
       "submit": "ACCESS FREE LESSON →",
+      "step2Title": "Almost there! Complete your signup:",
+      "step2Submit": "COMPLETE SIGNUP →",
+      "emailSaved": "✓ Email registered!",
       "success": "You're in! Check your email.",
       "error": "Something went wrong. Please try again.",
       "rating": "4.7/5 — 2,341 reviews",
-      "privacy": "Your data is secure. No spam."
+      "privacy": "Your data is secure. No spam.",
+      "whatsappAlt": "or chat on WhatsApp"
     }
   },
   "features": {
