@@ -7,11 +7,17 @@ declare global {
 }
 
 import { useState, useEffect, useRef } from 'react'
+import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
+
+const FollowupModal = dynamic(
+  () => import('@/components/ui/followup-modal').then(m => ({ default: m.FollowupModal })),
+  { ssr: false }
+)
 
 const WHATSAPP_NUMBER = '5511914134580'
 
@@ -36,6 +42,7 @@ export function Hero() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [leadId, setLeadId] = useState<string | null>(null)
+  const [followupOpen, setFollowupOpen] = useState(false)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 1024)
@@ -68,7 +75,15 @@ export function Hero() {
       setLeadId(data.id)
     }
 
+    // Send welcome email (fire-and-forget)
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email.toLowerCase().trim() }),
+    }).catch(err => console.error('Email send failed:', err))
+
     setStep(2)
+    setFollowupOpen(true)
   }
 
   // Step 2: Complete profile + fire tracking events
@@ -362,6 +377,17 @@ export function Hero() {
           </div>
         </div>
       </div>
+
+      <FollowupModal
+        isOpen={followupOpen}
+        onClose={() => setFollowupOpen(false)}
+        onSuccess={() => {
+          setFollowupOpen(false)
+          setSubmitted(true)
+        }}
+        email={email}
+        leadId={leadId}
+      />
     </section>
   )
 }
