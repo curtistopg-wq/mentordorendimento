@@ -367,9 +367,9 @@ export function Hero() {
                   key={logo.alt}
                   src={logo.src}
                   alt={logo.alt}
-                  width={24}
-                  height={24}
-                  className="h-4 w-auto opacity-40 grayscale"
+                  width={48}
+                  height={16}
+                  className="h-4 w-12 object-contain opacity-40 grayscale"
                 />
               ))}
               <span className="text-[9px] uppercase tracking-wider text-primary-400 font-medium ml-1">Regulado</span>

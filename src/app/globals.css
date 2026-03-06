@@ -69,7 +69,7 @@
 /* Add bottom padding to body on mobile so sticky CTA doesn't cover content */
 @media (max-width: 1023px) {
   body {
-    padding-bottom: 64px;
+    padding-bottom: 88px;
   }
 }
 
