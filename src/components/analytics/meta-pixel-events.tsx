@@ -2,12 +2,6 @@
 
 import { useEffect } from 'react'
 
-declare global {
-  interface Window {
-    fbq: (...args: unknown[]) => void
-  }
-}
-
 function trackFbq(...args: unknown[]) {
   if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
     window.fbq(...args)

@@ -1,11 +1,5 @@
 'use client'
 
-declare global {
-  interface Window {
-    dataLayer: Record<string, unknown>[]
-  }
-}
-
 import { useState, useEffect, useRef } from 'react'
 import dynamic from 'next/dynamic'
 import Image from 'next/image'
@@ -13,6 +7,7 @@ import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
+import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
 
 const FollowupModal = dynamic(
   () => import('@/components/ui/followup-modal').then(m => ({ default: m.FollowupModal })),
@@ -54,6 +49,8 @@ export function Hero() {
     setLoading(true)
     setError(false)
 
+    const tracking = getTrackingData()
+
     const supabase = createClient()
     const { data, error: insertError } = await supabase.from('leads').insert({
       name: '',
@@ -61,6 +58,18 @@ export function Hero() {
       phone: '',
       source: 'hero-inline-mobile',
       page: window.location.pathname,
+      ga_client_id: tracking.ga_client_id,
+      ga_session_id: tracking.ga_session_id,
+      fbc: tracking.fbc,
+      fbp: tracking.fbp,
+      fbclid: tracking.fbclid,
+      utm_source: tracking.utm_source,
+      utm_medium: tracking.utm_medium,
+      utm_campaign: tracking.utm_campaign,
+      utm_content: tracking.utm_content,
+      utm_term: tracking.utm_term,
+      landing_page: tracking.landing_page,
+      referrer: tracking.referrer,
     }).select('id').single()
 
     setLoading(false)
@@ -70,6 +79,10 @@ export function Hero() {
       setError(true)
       return
     }
+
+    // Clarity custom tags
+    tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
+    window.clarity?.('set', 'form_step', 'email_captured')
 
     if (data?.id) {
       setLeadId(data.id)
@@ -110,21 +123,31 @@ export function Hero() {
       }
     }
 
-    // DataLayer push for GTM
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({
-      'event': 'generate_lead',
-      'user_email': email.toLowerCase().trim(),
-      'user_phone': formData.phone,
-      'user_first_name': formData.name,
-      'lead_source': 'hero-inline-mobile',
+    // Event dedup ID - same ID for Pixel + CAPI via sGTM
+    const eventId = generateEventId()
+    const tracking = getTrackingData()
+
+    // DataLayer push for GTM → sGTM → Meta CAPI
+    pushLeadEvent({
+      formType: 'hero-inline-mobile',
+      leadSource: 'hero-inline-mobile',
+      email: email.toLowerCase().trim(),
+      phone: formData.phone,
+      firstName: formData.name,
+      eventId,
+      trackingData: tracking,
     })
 
-    // Meta Pixel Lead event
+    // Meta Pixel Lead event (client-side, same event_id for dedup)
     trackFbq('track', 'Lead', {
       content_name: 'Hero Inline Form',
       content_category: 'Free Lesson',
+      eventID: eventId,
     })
+
+    // Clarity custom tags
+    window.clarity?.('set', 'form_step', 'profile_completed')
+    tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
 
     setLoading(false)
     setSubmitted(true)

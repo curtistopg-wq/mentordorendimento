@@ -1,16 +1,11 @@
 'use client'
 
-declare global {
-  interface Window {
-    dataLayer: Record<string, unknown>[]
-  }
-}
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
+import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
 
 interface FollowupModalProps {
   isOpen: boolean
@@ -22,6 +17,14 @@ interface FollowupModalProps {
 
 export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: FollowupModalProps) {
   const [formData, setFormData] = useState({ name: '', surname: '', phone: '' })
+
+  // Clarity: tag modal open
+  useEffect(() => {
+    if (isOpen) {
+      window.clarity?.('set', 'form_type', 'followup-modal')
+      window.clarity?.('set', 'form_opened', 'followup-modal')
+    }
+  }, [isOpen])
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -48,19 +51,31 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
       }
     }
 
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({
-      'event': 'generate_lead',
-      'user_email': email,
-      'user_phone': formData.phone,
-      'user_first_name': formData.name,
-      'lead_source': 'hero-inline-mobile',
+    // Event dedup ID - same ID for Pixel + CAPI via sGTM
+    const eventId = generateEventId()
+    const tracking = getTrackingData()
+
+    // DataLayer push for GTM → sGTM → Meta CAPI
+    pushLeadEvent({
+      formType: 'followup-modal',
+      leadSource: 'hero-inline-mobile',
+      email,
+      phone: formData.phone,
+      firstName: formData.name,
+      eventId,
+      trackingData: tracking,
     })
 
+    // Meta Pixel Lead event (client-side, same event_id for dedup)
     trackFbq('track', 'Lead', {
       content_name: 'Followup Modal',
       content_category: 'Free Lesson',
+      eventID: eventId,
     })
+
+    // Clarity custom tags
+    tagClarityLead({ email, formType: 'followup-modal', leadSource: 'hero-inline-mobile' })
+    window.clarity?.('set', 'form_step', 'followup_completed')
 
     setLoading(false)
     setSubmitted(true)

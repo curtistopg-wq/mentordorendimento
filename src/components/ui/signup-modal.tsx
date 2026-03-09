@@ -1,17 +1,12 @@
 'use client'
 
-declare global {
-  interface Window {
-    dataLayer: Record<string, unknown>[]
-  }
-}
-
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
+import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
 
 interface SignupModalProps {
   isOpen: boolean
@@ -25,6 +20,14 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     email: '',
     phone: '',
   })
+
+  // Clarity: tag modal open
+  useEffect(() => {
+    if (isOpen) {
+      window.clarity?.('set', 'form_type', 'signup-modal')
+      window.clarity?.('set', 'form_opened', 'signup-modal')
+    }
+  }, [isOpen])
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
@@ -34,13 +37,27 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     setLoading(true)
     setError(false)
 
+    const tracking = getTrackingData()
+
     const supabase = createClient()
     const { error: insertError } = await supabase.from('leads').insert({
       name: formData.name,
-      email: formData.email,
+      email: formData.email.toLowerCase().trim(),
       phone: formData.phone,
       source: 'signup-modal',
       page: window.location.pathname,
+      ga_client_id: tracking.ga_client_id,
+      ga_session_id: tracking.ga_session_id,
+      fbc: tracking.fbc,
+      fbp: tracking.fbp,
+      fbclid: tracking.fbclid,
+      utm_source: tracking.utm_source,
+      utm_medium: tracking.utm_medium,
+      utm_campaign: tracking.utm_campaign,
+      utm_content: tracking.utm_content,
+      utm_term: tracking.utm_term,
+      landing_page: tracking.landing_page,
+      referrer: tracking.referrer,
     })
 
     setLoading(false)
@@ -51,20 +68,29 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       return
     }
 
+    // Event dedup ID - same ID for Pixel + CAPI via sGTM
+    const eventId = generateEventId()
+
     // DataLayer push for GTM → sGTM → Meta CAPI
-    window.dataLayer = window.dataLayer || []
-    window.dataLayer.push({
-      'event': 'generate_lead',
-      'user_email': formData.email.toLowerCase().trim(),
-      'user_phone': formData.phone,
-      'user_first_name': formData.name
+    pushLeadEvent({
+      formType: 'signup-modal',
+      leadSource: 'signup-modal',
+      email: formData.email.toLowerCase().trim(),
+      phone: formData.phone,
+      firstName: formData.name,
+      eventId,
+      trackingData: tracking,
     })
 
-    // Meta Pixel Lead event
+    // Meta Pixel Lead event (client-side, same event_id for dedup)
     trackFbq('track', 'Lead', {
       content_name: 'Signup Form',
       content_category: 'Free Lesson',
+      eventID: eventId,
     })
+
+    // Clarity custom tags
+    tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
 
     setSubmitted(true)
   }
