@@ -105,6 +105,7 @@ export function Footer() {
                 width={logo.width}
                 height={logo.height}
                 className="h-8 md:h-10 w-auto"
+                style={{ aspectRatio: `${logo.width}/${logo.height}` }}
               />
             ))}
           </div>

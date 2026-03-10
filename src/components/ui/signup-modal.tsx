@@ -68,31 +68,32 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       return
     }
 
-    // Event dedup ID - same ID for Pixel + CAPI via sGTM
-    const eventId = generateEventId()
-
-    // DataLayer push for GTM → sGTM → Meta CAPI
-    pushLeadEvent({
-      formType: 'signup-modal',
-      leadSource: 'signup-modal',
-      email: formData.email.toLowerCase().trim(),
-      phone: formData.phone,
-      firstName: formData.name,
-      eventId,
-      trackingData: tracking,
-    })
-
-    // Meta Pixel Lead event (client-side, same event_id for dedup)
-    trackFbq('track', 'Lead', {
-      content_name: 'Signup Form',
-      content_category: 'Free Lesson',
-      eventID: eventId,
-    })
-
-    // Clarity custom tags
-    tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
-
     setSubmitted(true)
+
+    // Defer all tracking to next frame so UI updates instantly (INP optimization)
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const eventId = generateEventId()
+
+        pushLeadEvent({
+          formType: 'signup-modal',
+          leadSource: 'signup-modal',
+          email: formData.email.toLowerCase().trim(),
+          phone: formData.phone,
+          firstName: formData.name,
+          eventId,
+          trackingData: tracking,
+        })
+
+        trackFbq('track', 'Lead', {
+          content_name: 'Signup Form',
+          content_category: 'Free Lesson',
+          eventID: eventId,
+        })
+
+        tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
+      }, 0)
+    })
   }
 
   const handleClose = () => {
@@ -125,7 +126,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
             role="dialog"
             aria-labelledby="signup-modal-title"
             data-clarity-region="signup-modal"
-            className="relative w-full max-w-md bg-white p-8 shadow-2xl z-10"
+            className="relative w-full max-w-md bg-white p-8 shadow-2xl z-10 min-h-[420px]"
           >
             {/* Close button */}
             <button

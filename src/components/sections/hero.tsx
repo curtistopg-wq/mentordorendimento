@@ -80,9 +80,13 @@ export function Hero() {
       return
     }
 
-    // Clarity custom tags
-    tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
-    window.clarity?.('set', 'form_step', 'email_captured')
+    // Defer tracking to next frame (INP optimization)
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
+        window.clarity?.('set', 'form_step', 'email_captured')
+      }, 0)
+    })
 
     if (data?.id) {
       setLeadId(data.id)
@@ -123,34 +127,35 @@ export function Hero() {
       }
     }
 
-    // Event dedup ID - same ID for Pixel + CAPI via sGTM
-    const eventId = generateEventId()
-    const tracking = getTrackingData()
-
-    // DataLayer push for GTM → sGTM → Meta CAPI
-    pushLeadEvent({
-      formType: 'hero-inline-mobile',
-      leadSource: 'hero-inline-mobile',
-      email: email.toLowerCase().trim(),
-      phone: formData.phone,
-      firstName: formData.name,
-      eventId,
-      trackingData: tracking,
-    })
-
-    // Meta Pixel Lead event (client-side, same event_id for dedup)
-    trackFbq('track', 'Lead', {
-      content_name: 'Hero Inline Form',
-      content_category: 'Free Lesson',
-      eventID: eventId,
-    })
-
-    // Clarity custom tags
-    window.clarity?.('set', 'form_step', 'profile_completed')
-    tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
-
     setLoading(false)
     setSubmitted(true)
+
+    // Defer all tracking to next frame so UI updates instantly (INP optimization)
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const eventId = generateEventId()
+        const tracking = getTrackingData()
+
+        pushLeadEvent({
+          formType: 'hero-inline-mobile',
+          leadSource: 'hero-inline-mobile',
+          email: email.toLowerCase().trim(),
+          phone: formData.phone,
+          firstName: formData.name,
+          eventId,
+          trackingData: tracking,
+        })
+
+        trackFbq('track', 'Lead', {
+          content_name: 'Hero Inline Form',
+          content_category: 'Free Lesson',
+          eventID: eventId,
+        })
+
+        window.clarity?.('set', 'form_step', 'profile_completed')
+        tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
+      }, 0)
+    })
   }
 
   const whatsappMessage = encodeURIComponent('Olá! Tenho interesse nos cursos do Mentor do Rendimento. Pode me ajudar?')

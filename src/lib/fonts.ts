@@ -2,13 +2,13 @@ import { Inter, Poppins } from 'next/font/google'
 
 export const inter = Inter({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
   variable: '--font-inter',
 })
 
 export const poppins = Poppins({
   subsets: ['latin'],
-  display: 'swap',
+  display: 'optional',
   weight: ['600', '700'],
   variable: '--font-poppins',
 })

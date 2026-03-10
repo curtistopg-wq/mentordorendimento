@@ -51,34 +51,35 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
       }
     }
 
-    // Event dedup ID - same ID for Pixel + CAPI via sGTM
-    const eventId = generateEventId()
-    const tracking = getTrackingData()
-
-    // DataLayer push for GTM → sGTM → Meta CAPI
-    pushLeadEvent({
-      formType: 'followup-modal',
-      leadSource: 'hero-inline-mobile',
-      email,
-      phone: formData.phone,
-      firstName: formData.name,
-      eventId,
-      trackingData: tracking,
-    })
-
-    // Meta Pixel Lead event (client-side, same event_id for dedup)
-    trackFbq('track', 'Lead', {
-      content_name: 'Followup Modal',
-      content_category: 'Free Lesson',
-      eventID: eventId,
-    })
-
-    // Clarity custom tags
-    tagClarityLead({ email, formType: 'followup-modal', leadSource: 'hero-inline-mobile' })
-    window.clarity?.('set', 'form_step', 'followup_completed')
-
     setLoading(false)
     setSubmitted(true)
+
+    // Defer all tracking to next frame so UI updates instantly (INP optimization)
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        const eventId = generateEventId()
+        const tracking = getTrackingData()
+
+        pushLeadEvent({
+          formType: 'followup-modal',
+          leadSource: 'hero-inline-mobile',
+          email,
+          phone: formData.phone,
+          firstName: formData.name,
+          eventId,
+          trackingData: tracking,
+        })
+
+        trackFbq('track', 'Lead', {
+          content_name: 'Followup Modal',
+          content_category: 'Free Lesson',
+          eventID: eventId,
+        })
+
+        tagClarityLead({ email, formType: 'followup-modal', leadSource: 'hero-inline-mobile' })
+        window.clarity?.('set', 'form_step', 'followup_completed')
+      }, 0)
+    })
 
     setTimeout(() => {
       onSuccess()
@@ -116,7 +117,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
             role="dialog"
             aria-labelledby="followup-modal-title"
             data-clarity-region="followup-modal"
-            className="relative w-full max-w-md bg-white p-8 shadow-2xl z-10"
+            className="relative w-full max-w-md bg-white p-8 shadow-2xl z-10 min-h-[480px]"
           >
             {/* Close button */}
             <button
@@ -141,12 +142,17 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
                   <label className="block text-sm font-medium text-primary-700 mb-1.5">
                     Seu e-mail
                   </label>
-                  <input
-                    type="email"
-                    value={email}
-                    disabled
-                    className="w-full px-4 py-3 border border-gray-200 text-primary-400 text-sm bg-gray-50 cursor-not-allowed"
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      value={email}
+                      disabled
+                      className="w-full px-4 py-3 pr-10 border border-gray-200 text-primary-500 text-sm bg-gray-100 cursor-not-allowed opacity-70"
+                    />
+                    <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-primary-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
                 </div>
 
                 {error && (
