@@ -70,6 +70,13 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
 
     setSubmitted(true)
 
+    // Send welcome email (fire-and-forget)
+    fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: formData.email.toLowerCase().trim() }),
+    }).catch(err => console.error('Email send failed:', err))
+
     // Defer all tracking to next frame so UI updates instantly (INP optimization)
     requestAnimationFrame(() => {
       setTimeout(() => {
