@@ -7,7 +7,7 @@ import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
-import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
+import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, trackWhatsAppClick } from '@/lib/tracking'
 
 const FollowupModal = dynamic(
   () => import('@/components/ui/followup-modal').then(m => ({ default: m.FollowupModal })),
@@ -323,6 +323,7 @@ export function Hero() {
                     href={whatsappHref}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsAppClick('hero-inline')}
                     data-clarity-label="hero-whatsapp-alt"
                     className="text-xs font-medium text-[#25D366] hover:underline flex items-center gap-1"
                   >

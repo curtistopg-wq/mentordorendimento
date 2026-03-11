@@ -1,8 +1,9 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslations } from 'next-intl'
+import { trackWhatsAppClick } from '@/lib/tracking'
 
 const WHATSAPP_NUMBER = '5511914134580'
 
@@ -31,6 +32,10 @@ export function WhatsAppButton() {
   const message = encodeURIComponent(t('message'))
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${message}`
 
+  const handleClick = useCallback(() => {
+    trackWhatsAppClick('floating-button')
+  }, [])
+
   return (
     <AnimatePresence>
       {isVisible && (
@@ -38,6 +43,7 @@ export function WhatsAppButton() {
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={handleClick}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.8 }}

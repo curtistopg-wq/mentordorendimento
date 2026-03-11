@@ -6,6 +6,7 @@ import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
+import { trackWhatsAppClick } from '@/lib/tracking'
 
 const planKeys = ['silver', 'gold', 'platinum'] as const
 const planConfig = {
@@ -142,6 +143,7 @@ export function Pricing() {
                     href={`https://wa.me/5511914134580?text=${encodeURIComponent(`Olá! Tenho interesse no plano ${t(`plans.${planKey}.name`)}. Pode me ajudar?`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsAppClick(`pricing-${planKey}`)}
                     data-clarity-label={`pricing-${planKey}-whatsapp`}
                     className={cn(
                       'block w-full text-center py-2 mt-2 text-sm font-medium transition-colors',

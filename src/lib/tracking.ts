@@ -128,6 +128,44 @@ export function pushLeadEvent(params: {
   })
 }
 
+// Track WhatsApp click - inserts into Supabase + Clarity + GA4 dataLayer
+export function trackWhatsAppClick(pageSection: string) {
+  const tracking = getTrackingData()
+
+  // Lazy import to avoid circular deps
+  import('@/lib/supabase/client').then(({ createClient }) => {
+    const supabase = createClient()
+    supabase.from('whatsapp_clicks').insert({
+      ga_client_id: tracking.ga_client_id,
+      ga_session_id: tracking.ga_session_id,
+      fbc: tracking.fbc,
+      fbp: tracking.fbp,
+      fbclid: tracking.fbclid,
+      utm_source: tracking.utm_source,
+      utm_medium: tracking.utm_medium,
+      utm_campaign: tracking.utm_campaign,
+      landing_page: tracking.landing_page,
+      referrer: tracking.referrer,
+      whatsapp_number: '5511914134580',
+      page_section: pageSection,
+    }).then(({ error }) => {
+      if (error) console.error('WhatsApp click tracking failed:', error.message)
+    })
+  })
+
+  window.clarity?.('event', 'whatsapp_click')
+  window.clarity?.('set', 'whatsapp_clicked', 'true')
+  window.clarity?.('set', 'whatsapp_section', pageSection)
+
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({
+    event: 'whatsapp_click',
+    page_section: pageSection,
+    utm_source: tracking.utm_source,
+    utm_medium: tracking.utm_medium,
+  })
+}
+
 // Tag Clarity session with lead info
 export async function tagClarityLead(params: {
   email: string
