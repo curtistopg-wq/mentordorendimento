@@ -77,6 +77,13 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       body: JSON.stringify({ email: formData.email.toLowerCase().trim() }),
     }).catch(err => console.error('Email send failed:', err))
 
+    // PeopleDown: track lead with session attribution
+    window.PeopleDown?.trackLead({
+      name: formData.name,
+      email: formData.email.toLowerCase().trim(),
+      phone: formData.phone,
+    }).catch(() => {})
+
     // Defer all tracking to next frame so UI updates instantly (INP optimization)
     requestAnimationFrame(() => {
       setTimeout(() => {

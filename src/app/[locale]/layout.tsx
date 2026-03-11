@@ -146,9 +146,9 @@ export default async function LocaleLayout({
             __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "vd7maw8h2e");`,
           }}
         />
-        {/* 5. Ngrok tracking - lazy loaded */}
+        {/* 5. PeopleDown tracker - pageview + session + UTM capture */}
         <Script
-          src="https://lailah-continuous-tarra.ngrok-free.dev/api/tracking/pixel?site=mentordorendimento.com"
+          src="/api/tracking/script?site=mentordorendimento.com"
           strategy="lazyOnload"
         />
       </body>
