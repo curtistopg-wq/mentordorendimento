@@ -95,19 +95,14 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     setLoading(false)
 
     if (!sent) {
-      // otpError is set by the hook
+      // Fallback: save lead without phone verification if OTP fails (quota, etc.)
+      await saveLead(false)
       return
     }
   }
 
-  // Step 2: Verify OTP code and save lead
-  const handleVerifyOtp = async () => {
-    if (otpCode.length !== 6) return
-
-    const verified = await verifyOtp(otpCode)
-    if (!verified) return
-
-    // OTP verified - now save the lead
+  // Save lead to Supabase (shared between OTP-verified and fallback paths)
+  const saveLead = async (phoneVerified: boolean) => {
     const phoneResult = validateBrazilianPhone(formData.phone)
     const phoneToInsert = phoneResult.formatted!
     const tracking = getTrackingData()
@@ -118,7 +113,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
         name: formData.name,
         email: formData.email.toLowerCase().trim(),
         phone: phoneToInsert,
-        phone_verified: true,
+        phone_verified: phoneVerified,
         source: 'signup-modal',
         page: window.location.pathname,
         ga_client_id: tracking.ga_client_id,
@@ -184,6 +179,16 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     } catch {
       setError(true)
     }
+  }
+
+  // Step 2: Verify OTP code and save lead
+  const handleVerifyOtp = async () => {
+    if (otpCode.length !== 6) return
+
+    const verified = await verifyOtp(otpCode)
+    if (!verified) return
+
+    await saveLead(true)
   }
 
   const handleClose = () => {

@@ -94,15 +94,15 @@ export function Hero() {
     const e164Phone = phoneResult.formatted!
     const sent = await sendOtp(e164Phone)
     setLoading(false)
+
+    if (!sent) {
+      // Fallback: save lead without phone verification if OTP fails
+      await saveLeadInline(false)
+    }
   }
 
-  // Step 2: Verify OTP and save lead
-  const handleVerifyOtp = async () => {
-    if (otpCode.length !== 6) return
-
-    const verified = await verifyOtp(otpCode)
-    if (!verified) return
-
+  // Save lead (shared between OTP-verified and fallback paths)
+  const saveLeadInline = async (phoneVerified: boolean) => {
     const phoneResult = validateBrazilianPhone(phone)
     const phoneToInsert = phoneResult.formatted!
     const tracking = getTrackingData()
@@ -113,7 +113,7 @@ export function Hero() {
         name: name.trim(),
         email: email.toLowerCase().trim(),
         phone: phoneToInsert,
-        phone_verified: true,
+        phone_verified: phoneVerified,
         source: 'hero-inline-mobile',
         page: window.location.pathname,
         ga_client_id: tracking.ga_client_id,
@@ -177,6 +177,16 @@ export function Hero() {
     } catch {
       setError(true)
     }
+  }
+
+  // Step 2: Verify OTP and save lead
+  const handleVerifyOtp = async () => {
+    if (otpCode.length !== 6) return
+
+    const verified = await verifyOtp(otpCode)
+    if (!verified) return
+
+    await saveLeadInline(true)
   }
 
   const whatsappMessage = encodeURIComponent('Olá! Tenho interesse nos cursos do Mentor do Rendimento. Pode me ajudar?')
