@@ -30,7 +30,10 @@
       "error": "Something went wrong. Please try again.",
       "rating": "4.7/5 — 2,341 reviews",
       "privacy": "Your data is secure. No spam.",
-      "whatsappAlt": "or chat on WhatsApp"
+      "whatsappAlt": "or chat on WhatsApp",
+      "phoneError": "Invalid phone number",
+      "phoneLandlineError": "Please use a mobile number",
+      "phoneRequired": "Phone number is required"
     }
   },
   "features": {
@@ -227,6 +230,9 @@
     "phone": "Phone Number",
     "phonePlaceholder": "+1 (555) 000-0000",
     "submit": "GET FREE ACCESS",
+    "phoneError": "Invalid phone number",
+    "phoneLandlineError": "Please use a mobile number",
+    "phoneRequired": "Phone number is required",
     "successTitle": "Done! Check Your Email",
     "successMessage": "We've sent access to your free lesson. Check your inbox.",
     "errorMessage": "Something went wrong. Please try again."

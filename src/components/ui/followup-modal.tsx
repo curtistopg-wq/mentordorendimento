@@ -6,6 +6,7 @@ import { X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
+import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
 
 interface FollowupModalProps {
   isOpen: boolean
@@ -17,6 +18,7 @@ interface FollowupModalProps {
 
 export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: FollowupModalProps) {
   const [formData, setFormData] = useState({ name: '', surname: '', phone: '' })
+  const [phoneError, setPhoneError] = useState<string | null>(null)
 
   // Clarity: tag modal open
   useEffect(() => {
@@ -29,10 +31,61 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
 
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatBrazilianPhone(e.target.value)
+    setFormData({ ...formData, phone: formatted })
+    if (phoneError) setPhoneError(null)
+  }
+
+  const handlePhoneBlur = () => {
+    if (!formData.phone) return
+    const result = validateBrazilianPhone(formData.phone)
+    if (!result.valid) {
+      setPhoneError('Número de telefone inválido')
+    } else {
+      setPhoneError(null)
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(false)
+    setPhoneError(null)
+
+    // Client-side phone validation
+    const phoneResult = validateBrazilianPhone(formData.phone)
+    if (!phoneResult.valid) {
+      setPhoneError('Número de telefone inválido')
+      setLoading(false)
+      return
+    }
+
+    // Backend phone verification
+    let phoneToUpdate = phoneResult.formatted!
+    try {
+      const verifyRes = await fetch('/api/verify-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: formData.phone }),
+      })
+      const verifyData = await verifyRes.json()
+
+      if (!verifyData.valid) {
+        const errorMsg = verifyData.error === 'Please use a mobile number'
+          ? 'Por favor, use um número de celular'
+          : 'Número de telefone inválido'
+        setPhoneError(errorMsg)
+        setLoading(false)
+        return
+      }
+
+      if (verifyData.formatted) {
+        phoneToUpdate = verifyData.formatted
+      }
+    } catch {
+      // If API fails, proceed with client-side validated number
+    }
 
     const fullName = `${formData.name} ${formData.surname}`.trim()
 
@@ -40,7 +93,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
       const supabase = createClient()
       const { error: updateError } = await supabase.from('leads').update({
         name: fullName,
-        phone: formData.phone,
+        phone: phoneToUpdate,
       }).eq('id', leadId)
 
       if (updateError) {
@@ -64,7 +117,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
           formType: 'followup-modal',
           leadSource: 'hero-inline-mobile',
           email,
-          phone: formData.phone,
+          phone: phoneToUpdate,
           firstName: formData.name,
           eventId,
           trackingData: tracking,
@@ -91,6 +144,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
     setTimeout(() => {
       setFormData({ name: '', surname: '', phone: '' })
       setError(false)
+      setPhoneError(null)
       setSubmitted(false)
     }, 300)
   }
@@ -206,13 +260,19 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors"
+                      onChange={handlePhoneChange}
+                      onBlur={handlePhoneBlur}
+                      className={`w-full px-4 py-3 border text-primary-800 text-sm focus:outline-none transition-colors ${
+                        phoneError ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary-700'
+                      }`}
                       placeholder="+55 (11) 99999-9999"
                       autoComplete="tel"
                       inputMode="tel"
                       data-clarity-label="followup-phone"
                     />
+                    {phoneError && (
+                      <p className="text-xs text-red-600 mt-1">{phoneError}</p>
+                    )}
                   </div>
 
                   <button

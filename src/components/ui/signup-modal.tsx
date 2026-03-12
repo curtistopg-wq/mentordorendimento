@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
+import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
 
 interface SignupModalProps {
   isOpen: boolean
@@ -31,83 +32,133 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const [phoneError, setPhoneError] = useState<string | null>(null)
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formatted = formatBrazilianPhone(e.target.value)
+    setFormData({ ...formData, phone: formatted })
+    if (phoneError) setPhoneError(null)
+  }
+
+  const handlePhoneBlur = () => {
+    if (!formData.phone) return
+    const result = validateBrazilianPhone(formData.phone)
+    if (!result.valid) {
+      setPhoneError(t('phoneError'))
+    } else {
+      setPhoneError(null)
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(false)
+    setPhoneError(null)
 
-    const tracking = getTrackingData()
-
-    const supabase = createClient()
-    const { error: insertError } = await supabase.from('leads').insert({
-      name: formData.name,
-      email: formData.email.toLowerCase().trim(),
-      phone: formData.phone,
-      source: 'signup-modal',
-      page: window.location.pathname,
-      ga_client_id: tracking.ga_client_id,
-      ga_session_id: tracking.ga_session_id,
-      fbc: tracking.fbc,
-      fbp: tracking.fbp,
-      fbclid: tracking.fbclid,
-      utm_source: tracking.utm_source,
-      utm_medium: tracking.utm_medium,
-      utm_campaign: tracking.utm_campaign,
-      utm_content: tracking.utm_content,
-      utm_term: tracking.utm_term,
-      landing_page: tracking.landing_page,
-      referrer: tracking.referrer,
-    })
-
-    setLoading(false)
-
-    if (insertError) {
-      console.error('Lead insert failed:', insertError.message)
-      setError(true)
+    // Client-side phone validation
+    const phoneResult = validateBrazilianPhone(formData.phone)
+    if (!phoneResult.valid) {
+      setPhoneError(t('phoneError'))
+      setLoading(false)
       return
     }
 
-    setSubmitted(true)
+    // Backend phone verification
+    try {
+      const verifyRes = await fetch('/api/verify-phone', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone: formData.phone }),
+      })
+      const verifyData = await verifyRes.json()
 
-    // Send welcome email (fire-and-forget)
-    fetch('/api/send-email', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: formData.email.toLowerCase().trim() }),
-    }).catch(err => console.error('Email send failed:', err))
+      if (!verifyData.valid) {
+        const errorMsg = verifyData.error === 'Please use a mobile number'
+          ? t('phoneLandlineError')
+          : t('phoneError')
+        setPhoneError(errorMsg)
+        setLoading(false)
+        return
+      }
 
-    // PeopleDown: track lead with session attribution
-    window.PeopleDown?.trackLead({
-      name: formData.name,
-      email: formData.email.toLowerCase().trim(),
-      phone: formData.phone,
-    }).catch(() => {})
+      // Use the formatted number from backend if available
+      const phoneToInsert = verifyData.formatted || phoneResult.formatted!
+      const tracking = getTrackingData()
 
-    // Defer all tracking to next frame so UI updates instantly (INP optimization)
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        const eventId = generateEventId()
+      const supabase = createClient()
+      const { error: insertError } = await supabase.from('leads').insert({
+        name: formData.name,
+        email: formData.email.toLowerCase().trim(),
+        phone: phoneToInsert,
+        source: 'signup-modal',
+        page: window.location.pathname,
+        ga_client_id: tracking.ga_client_id,
+        ga_session_id: tracking.ga_session_id,
+        fbc: tracking.fbc,
+        fbp: tracking.fbp,
+        fbclid: tracking.fbclid,
+        utm_source: tracking.utm_source,
+        utm_medium: tracking.utm_medium,
+        utm_campaign: tracking.utm_campaign,
+        utm_content: tracking.utm_content,
+        utm_term: tracking.utm_term,
+        landing_page: tracking.landing_page,
+        referrer: tracking.referrer,
+      })
 
-        pushLeadEvent({
-          formType: 'signup-modal',
-          leadSource: 'signup-modal',
-          email: formData.email.toLowerCase().trim(),
-          phone: formData.phone,
-          firstName: formData.name,
-          eventId,
-          trackingData: tracking,
-        })
+      setLoading(false)
 
-        trackFbq('track', 'Lead', {
-          content_name: 'Signup Form',
-          content_category: 'Free Lesson',
-          eventID: eventId,
-        })
+      if (insertError) {
+        console.error('Lead insert failed:', insertError.message)
+        setError(true)
+        return
+      }
 
-        tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
-      }, 0)
-    })
+      setSubmitted(true)
+
+      // Send welcome email (fire-and-forget)
+      fetch('/api/send-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: formData.email.toLowerCase().trim() }),
+      }).catch(err => console.error('Email send failed:', err))
+
+      // PeopleDown: track lead with session attribution
+      window.PeopleDown?.trackLead({
+        name: formData.name,
+        email: formData.email.toLowerCase().trim(),
+        phone: phoneToInsert,
+      }).catch(() => {})
+
+      // Defer all tracking to next frame so UI updates instantly (INP optimization)
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          const eventId = generateEventId()
+
+          pushLeadEvent({
+            formType: 'signup-modal',
+            leadSource: 'signup-modal',
+            email: formData.email.toLowerCase().trim(),
+            phone: phoneToInsert,
+            firstName: formData.name,
+            eventId,
+            trackingData: tracking,
+          })
+
+          trackFbq('track', 'Lead', {
+            content_name: 'Signup Form',
+            content_category: 'Free Lesson',
+            eventID: eventId,
+          })
+
+          tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
+        }, 0)
+      })
+    } catch {
+      setLoading(false)
+      setError(true)
+    }
   }
 
   const handleClose = () => {
@@ -115,6 +166,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     setTimeout(() => {
       setSubmitted(false)
       setFormData({ name: '', email: '', phone: '' })
+      setPhoneError(null)
     }, 300)
   }
 
@@ -209,10 +261,18 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                       type="tel"
                       required
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors"
+                      onChange={handlePhoneChange}
+                      onBlur={handlePhoneBlur}
+                      className={`w-full px-4 py-3 border text-primary-800 text-sm focus:outline-none transition-colors ${
+                        phoneError ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary-700'
+                      }`}
                       placeholder={t('phonePlaceholder')}
+                      inputMode="tel"
+                      autoComplete="tel"
                     />
+                    {phoneError && (
+                      <p className="text-xs text-red-600 mt-1">{phoneError}</p>
+                    )}
                   </div>
 
                   {/* Submit */}

@@ -30,7 +30,10 @@
       "error": "Erro ao enviar. Tente novamente.",
       "rating": "4.7/5 — 2.341 avaliações",
       "privacy": "Seus dados estão seguros. Sem spam.",
-      "whatsappAlt": "ou fale no WhatsApp"
+      "whatsappAlt": "ou fale no WhatsApp",
+      "phoneError": "Número de telefone inválido",
+      "phoneLandlineError": "Por favor, use um número de celular",
+      "phoneRequired": "Telefone é obrigatório"
     }
   },
   "features": {
@@ -227,6 +230,9 @@
     "phone": "Telefone",
     "phonePlaceholder": "+55 (11) 99999-9999",
     "submit": "QUERO ACESSO GRÁTIS",
+    "phoneError": "Número de telefone inválido",
+    "phoneLandlineError": "Por favor, use um número de celular",
+    "phoneRequired": "Telefone é obrigatório",
     "successTitle": "Pronto! Verifique seu E-mail",
     "successMessage": "Enviamos o acesso à sua aula gratuita. Confira sua caixa de entrada.",
     "errorMessage": "Algo deu errado. Por favor, tente novamente."
