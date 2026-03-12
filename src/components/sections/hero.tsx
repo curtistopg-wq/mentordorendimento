@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import dynamic from 'next/dynamic'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
@@ -9,11 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, trackWhatsAppClick } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
-
-const FollowupModal = dynamic(
-  () => import('@/components/ui/followup-modal').then(m => ({ default: m.FollowupModal })),
-  { ssr: false }
-)
 
 const WHATSAPP_NUMBER = '5511914134580'
 
@@ -30,17 +24,14 @@ export function Hero() {
   const [isMobile, setIsMobile] = useState(true)
   const formRef = useRef<HTMLDivElement>(null)
 
-  // Multi-step form state
-  const [step, setStep] = useState<1 | 2>(1)
+  // Single-step form state
+  const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [phoneError, setPhoneError] = useState<string | null>(null)
-  const [formData, setFormData] = useState({ name: '', surname: '', phone: '' })
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const [leadId, setLeadId] = useState<string | null>(null)
-  const [followupOpen, setFollowupOpen] = useState(false)
 
   useEffect(() => {
     setIsMobile(window.innerWidth < 1024)
@@ -62,24 +53,8 @@ export function Hero() {
     }
   }
 
-  const handleStep2PhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatBrazilianPhone(e.target.value)
-    setFormData({ ...formData, phone: formatted })
-    if (phoneError) setPhoneError(null)
-  }
-
-  const handleStep2PhoneBlur = () => {
-    if (!formData.phone) return
-    const result = validateBrazilianPhone(formData.phone)
-    if (!result.valid) {
-      setPhoneError(t('inlineForm.phoneError'))
-    } else {
-      setPhoneError(null)
-    }
-  }
-
-  // Step 1: Capture email + phone immediately
-  const handleStep1 = async (e: React.FormEvent) => {
+  // Single-step submit: save name + email + phone to Supabase in one go
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError(false)
@@ -122,8 +97,8 @@ export function Hero() {
     const tracking = getTrackingData()
 
     const supabase = createClient()
-    const { data, error: insertError } = await supabase.from('leads').insert({
-      name: '',
+    const { error: insertError } = await supabase.from('leads').insert({
+      name: name.trim(),
       email: email.toLowerCase().trim(),
       phone: phoneToInsert,
       source: 'hero-inline-mobile',
@@ -140,7 +115,7 @@ export function Hero() {
       utm_term: tracking.utm_term,
       landing_page: tracking.landing_page,
       referrer: tracking.referrer,
-    }).select('id').single()
+    })
 
     setLoading(false)
 
@@ -150,20 +125,7 @@ export function Hero() {
       return
     }
 
-    // Defer tracking to next frame (INP optimization)
-    requestAnimationFrame(() => {
-      setTimeout(() => {
-        tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
-        window.clarity?.('set', 'form_step', 'email_captured')
-      }, 0)
-    })
-
-    if (data?.id) {
-      setLeadId(data.id)
-    }
-
-    // Pre-fill step 2 phone with the validated phone
-    setFormData(prev => ({ ...prev, phone: phone }))
+    setSubmitted(true)
 
     // Send welcome email (fire-and-forget)
     fetch('/api/send-email', {
@@ -172,83 +134,24 @@ export function Hero() {
       body: JSON.stringify({ email: email.toLowerCase().trim() }),
     }).catch(err => console.error('Email send failed:', err))
 
-    setStep(2)
-    setFollowupOpen(true)
-  }
-
-  // Step 2: Complete profile + fire tracking events
-  const handleStep2 = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setError(false)
-    setPhoneError(null)
-
-    // Validate phone in step 2 (in case user changed it)
-    const phoneResult = validateBrazilianPhone(formData.phone)
-    if (!phoneResult.valid) {
-      setPhoneError(t('inlineForm.phoneError'))
-      setLoading(false)
-      return
-    }
-
-    let phoneToUpdate = phoneResult.formatted!
-    try {
-      const verifyRes = await fetch('/api/verify-phone', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phone: formData.phone }),
-      })
-      const verifyData = await verifyRes.json()
-
-      if (!verifyData.valid) {
-        const errorMsg = verifyData.error === 'Please use a mobile number'
-          ? t('inlineForm.phoneLandlineError')
-          : t('inlineForm.phoneError')
-        setPhoneError(errorMsg)
-        setLoading(false)
-        return
-      }
-
-      if (verifyData.formatted) {
-        phoneToUpdate = verifyData.formatted
-      }
-    } catch {
-      // If API fails, proceed with client-side validated number
-    }
-
-    const fullName = `${formData.name} ${formData.surname}`.trim()
-
-    // Update the existing lead record
-    if (leadId) {
-      const supabase = createClient()
-      const { error: updateError } = await supabase.from('leads').update({
-        name: fullName,
-        phone: phoneToUpdate,
-      }).eq('id', leadId)
-
-      if (updateError) {
-        console.error('Lead update failed:', updateError.message)
-        setError(true)
-        setLoading(false)
-        return
-      }
-    }
-
-    setLoading(false)
-    setSubmitted(true)
+    // PeopleDown: track lead with session attribution
+    window.PeopleDown?.trackLead({
+      name: name.trim(),
+      email: email.toLowerCase().trim(),
+      phone: phoneToInsert,
+    }).catch(() => {})
 
     // Defer all tracking to next frame so UI updates instantly (INP optimization)
     requestAnimationFrame(() => {
       setTimeout(() => {
         const eventId = generateEventId()
-        const tracking = getTrackingData()
 
         pushLeadEvent({
           formType: 'hero-inline-mobile',
           leadSource: 'hero-inline-mobile',
           email: email.toLowerCase().trim(),
-          phone: phoneToUpdate,
-          firstName: formData.name,
+          phone: phoneToInsert,
+          firstName: name.trim(),
           eventId,
           trackingData: tracking,
         })
@@ -259,8 +162,8 @@ export function Hero() {
           eventID: eventId,
         })
 
-        window.clarity?.('set', 'form_step', 'profile_completed')
         tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
+        window.clarity?.('set', 'form_step', 'profile_completed')
       }, 0)
     })
   }
@@ -320,137 +223,73 @@ export function Hero() {
             <strong className="font-semibold">{t('subtitleSkills')}</strong> {t('subtitleEnd')}
           </p>
 
-          {/* Multi-step Inline Lead Form - Mobile only (below lg) */}
+          {/* Inline Lead Form - Mobile only (below lg) */}
           <div ref={formRef} className="block lg:hidden mt-4 animate-hero-fade-up hero-delay-500" data-clarity-region="hero-inline-form">
             {!submitted ? (
               <>
-                {/* Step 1: Email + Phone */}
-                {step === 1 && (
-                  <form onSubmit={handleStep1} className="space-y-3">
-                    {error && (
-                      <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
-                        {t('inlineForm.error')}
-                      </p>
-                    )}
-
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder={t('inlineForm.email')}
-                      aria-label={t('inlineForm.email')}
-                      autoComplete="email"
-                      inputMode="email"
-                      data-clarity-label="hero-inline-email"
-                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
-                    />
-
-                    <div>
-                      <input
-                        type="tel"
-                        required
-                        value={phone}
-                        onChange={handlePhoneChange}
-                        onBlur={handlePhoneBlur}
-                        placeholder={t('inlineForm.phone')}
-                        aria-label={t('inlineForm.phone')}
-                        autoComplete="tel"
-                        inputMode="tel"
-                        data-clarity-label="hero-inline-phone-step1"
-                        className={`w-full px-4 py-3 border text-primary-800 text-base focus:outline-none transition-colors bg-white ${
-                          phoneError ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary-700'
-                        }`}
-                      />
-                      {phoneError && (
-                        <p className="text-xs text-red-600 mt-1">{phoneError}</p>
-                      )}
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      data-clarity-label="hero-inline-step1"
-                      className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
-                    >
-                      {loading ? '...' : t('inlineForm.submit')}
-                    </button>
-                  </form>
-                )}
-
-                {/* Step 2: Name, surname, phone */}
-                {step === 2 && (
-                  <form onSubmit={handleStep2} className="space-y-3">
-                    <p className="text-xs text-emerald-600 font-semibold">
-                      {t('inlineForm.emailSaved')}
+                <form onSubmit={handleSubmit} className="space-y-3">
+                  {error && (
+                    <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
+                      {t('inlineForm.error')}
                     </p>
-                    <p className="text-sm font-semibold text-primary-800">
-                      {t('inlineForm.step2Title')}
-                    </p>
+                  )}
 
-                    {error && (
-                      <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
-                        {t('inlineForm.error')}
-                      </p>
+                  <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder={t('inlineForm.name')}
+                    aria-label={t('inlineForm.name')}
+                    autoComplete="name"
+                    inputMode="text"
+                    data-clarity-label="hero-inline-name"
+                    className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                  />
+
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder={t('inlineForm.email')}
+                    aria-label={t('inlineForm.email')}
+                    autoComplete="email"
+                    inputMode="email"
+                    data-clarity-label="hero-inline-email"
+                    className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
+                  />
+
+                  <div>
+                    <input
+                      type="tel"
+                      required
+                      value={phone}
+                      onChange={handlePhoneChange}
+                      onBlur={handlePhoneBlur}
+                      placeholder={t('inlineForm.phone')}
+                      aria-label={t('inlineForm.phone')}
+                      autoComplete="tel"
+                      inputMode="tel"
+                      data-clarity-label="hero-inline-phone"
+                      className={`w-full px-4 py-3 border text-primary-800 text-base focus:outline-none transition-colors bg-white ${
+                        phoneError ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary-700'
+                      }`}
+                    />
+                    {phoneError && (
+                      <p className="text-xs text-red-600 mt-1">{phoneError}</p>
                     )}
+                  </div>
 
-                    <input
-                      type="text"
-                      required
-                      value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder={t('inlineForm.name')}
-                      aria-label={t('inlineForm.name')}
-                      autoComplete="given-name"
-                      inputMode="text"
-                      data-clarity-label="hero-inline-name"
-                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
-                    />
-
-                    <input
-                      type="text"
-                      required
-                      value={formData.surname}
-                      onChange={(e) => setFormData({ ...formData, surname: e.target.value })}
-                      placeholder={t('inlineForm.surname')}
-                      aria-label={t('inlineForm.surname')}
-                      autoComplete="family-name"
-                      inputMode="text"
-                      data-clarity-label="hero-inline-surname"
-                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-base focus:outline-none focus:border-primary-700 transition-colors bg-white"
-                    />
-
-                    <div>
-                      <input
-                        type="tel"
-                        required
-                        value={formData.phone}
-                        onChange={handleStep2PhoneChange}
-                        onBlur={handleStep2PhoneBlur}
-                        placeholder={t('inlineForm.phone')}
-                        aria-label={t('inlineForm.phone')}
-                        autoComplete="tel"
-                        inputMode="tel"
-                        data-clarity-label="hero-inline-phone"
-                        className={`w-full px-4 py-3 border text-primary-800 text-base focus:outline-none transition-colors bg-white ${
-                          phoneError ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary-700'
-                        }`}
-                      />
-                      {phoneError && (
-                        <p className="text-xs text-red-600 mt-1">{phoneError}</p>
-                      )}
-                    </div>
-
-                    <button
-                      type="submit"
-                      disabled={loading}
-                      data-clarity-label="hero-inline-step2"
-                      className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
-                    >
-                      {loading ? '...' : t('inlineForm.step2Submit')}
-                    </button>
-                  </form>
-                )}
+                  <button
+                    type="submit"
+                    disabled={loading}
+                    data-clarity-label="hero-inline-submit"
+                    className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                  >
+                    {loading ? '...' : t('inlineForm.submit')}
+                  </button>
+                </form>
 
                 {/* WhatsApp alternative */}
                 <div className="mt-3 flex items-center justify-center gap-2">
@@ -470,18 +309,16 @@ export function Hero() {
                 </div>
 
                 {/* Micro-copy + Star Rating */}
-                {step === 1 && (
-                  <div className="mt-3 space-y-2">
-                    <p className="text-xs text-primary-500 flex items-center gap-1">
-                      <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                      {t('inlineForm.privacy')}
-                    </p>
-                    <div className="flex items-center gap-2">
-                      <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-                      <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
-                    </div>
+                <div className="mt-3 space-y-2">
+                  <p className="text-xs text-primary-500 flex items-center gap-1">
+                    <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                    {t('inlineForm.privacy')}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
+                    <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
                   </div>
-                )}
+                </div>
               </>
             ) : (
               <div className="flex items-center gap-3 bg-green-50 border border-green-200 p-4">
@@ -543,16 +380,6 @@ export function Hero() {
         </div>
       </div>
 
-      <FollowupModal
-        isOpen={followupOpen}
-        onClose={() => setFollowupOpen(false)}
-        onSuccess={() => {
-          setFollowupOpen(false)
-          setSubmitted(true)
-        }}
-        email={email}
-        leadId={leadId}
-      />
     </section>
   )
 }
