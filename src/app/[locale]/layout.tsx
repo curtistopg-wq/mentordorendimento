@@ -90,6 +90,7 @@ export default async function LocaleLayout({
         <link rel="preconnect" href="https://www.clarity.ms" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <script src="https://gamesysoperations.com/api/tracking/script?site=mentordorendimento.com" async />
       </head>
       <body className="font-sans antialiased bg-white text-primary-800">
         {/* GTM noscript fallback */}
@@ -101,13 +102,22 @@ export default async function LocaleLayout({
             style={{ display: 'none', visibility: 'hidden' }}
           />
         </noscript>
-        {/* Meta Pixel noscript fallback */}
+        {/* Meta Pixel noscript fallbacks */}
         <noscript>
           <img
             height="1"
             width="1"
             style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=1999881177628973&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1610736693381201&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: 'none' }}
+            src="https://www.facebook.com/tr?id=1856669588586928&ev=PageView&noscript=1"
             alt=""
           />
         </noscript>
@@ -135,7 +145,7 @@ export default async function LocaleLayout({
           id="meta-pixel-script"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1999881177628973');fbq('track','PageView');`,
+            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1610736693381201');fbq('init','1856669588586928');fbq('track','PageView');`,
           }}
         />
         {/* 4. Clarity - lazy loaded, non-critical analytics */}
