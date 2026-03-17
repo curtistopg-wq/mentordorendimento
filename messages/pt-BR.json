@@ -68,6 +68,15 @@
     "popular": "Mais Popular",
     "readMore": "GARANTIR MINHA VAGA",
     "whatsappCta": "ou fale com um mentor no WhatsApp",
+    "bankTransferCta": "PAGAR VIA PIX / TRANSFERÊNCIA",
+    "bankDetailsTitle": "Dados para Pagamento",
+    "bankDetailsBank": "Banco",
+    "bankDetailsAccount": "Conta",
+    "bankDetailsHolder": "Titular",
+    "bankDetailsPixKey": "Chave Pix (CNPJ)",
+    "bankDetailsCurrency": "Moeda",
+    "bankDetailsClose": "Fechar",
+    "bankDetailsNote": "Após o pagamento, envie o comprovante pelo WhatsApp para ativar seu acesso.",
     "plans": {
       "silver": {
         "name": "Prata",

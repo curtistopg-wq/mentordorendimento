@@ -1,7 +1,9 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { Check } from 'lucide-react'
+import { useState } from 'react'
+import Image from 'next/image'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Check, X, Copy, CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
@@ -15,9 +17,25 @@ const planConfig = {
   platinum: { price: 1000, variant: 'dark' as const, popular: false, featureCount: 15 },
 }
 
+const BANK_DETAILS = {
+  bank: 'Banco do Brasil - 001',
+  account: '41625-8',
+  holder: 'D F DA SILVA ALLIANCE CAPITAL INTERNATIONAL DO BRASIL',
+  pixKey: '64984047000110',
+  currency: 'BRL',
+}
+
 export function Pricing() {
   const t = useTranslations('pricing')
   const { open } = useSignupModal()
+  const [showBankDetails, setShowBankDetails] = useState<string | null>(null)
+  const [copiedField, setCopiedField] = useState<string | null>(null)
+
+  const handleCopy = async (value: string, field: string) => {
+    await navigator.clipboard.writeText(value)
+    setCopiedField(field)
+    setTimeout(() => setCopiedField(null), 2000)
+  }
 
   return (
     <section id="pricing" className="py-20 bg-gradient-to-b from-primary-700 to-primary-800">
@@ -137,6 +155,129 @@ export function Pricing() {
                   >
                     {t('readMore')}
                   </button>
+
+                  {/* Bank Transfer Button */}
+                  <button
+                    onClick={() => setShowBankDetails(showBankDetails === planKey ? null : planKey)}
+                    data-clarity-label={`pricing-${planKey}-bank-transfer`}
+                    className={cn(
+                      'block w-full text-center py-2.5 mt-2 text-sm font-semibold transition-all cursor-pointer rounded-lg border',
+                      config.variant === 'dark'
+                        ? 'border-primary-600 text-primary-300 hover:text-white hover:border-primary-500'
+                        : 'border-primary-200 text-primary-600 hover:text-primary-800 hover:border-primary-400'
+                    )}
+                  >
+                    {t('bankTransferCta')}
+                  </button>
+
+                  {/* Bank Details Panel */}
+                  <AnimatePresence>
+                    {showBankDetails === planKey && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.65, 0, 0.35, 1] }}
+                        className="overflow-hidden"
+                      >
+                        <div className={cn(
+                          'mt-4 p-5 rounded-lg border',
+                          config.variant === 'dark'
+                            ? 'bg-primary-800 border-primary-600'
+                            : 'bg-white border-primary-200 shadow-sm'
+                        )}>
+                          <div className="flex items-center justify-between mb-4">
+                            <h4 className={cn(
+                              'text-sm font-bold uppercase tracking-wide',
+                              config.variant === 'dark' ? 'text-gold' : 'text-primary-800'
+                            )}>
+                              {t('bankDetailsTitle')}
+                            </h4>
+                            <button
+                              onClick={() => setShowBankDetails(null)}
+                              className={cn(
+                                'p-1 rounded transition-colors',
+                                config.variant === 'dark' ? 'text-primary-400 hover:text-white' : 'text-primary-400 hover:text-primary-800'
+                              )}
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+
+                          <div className="space-y-3">
+                            {[
+                              { label: t('bankDetailsBank'), value: BANK_DETAILS.bank, key: 'bank' },
+                              { label: t('bankDetailsAccount'), value: BANK_DETAILS.account, key: 'account' },
+                              { label: t('bankDetailsHolder'), value: BANK_DETAILS.holder, key: 'holder' },
+                              { label: t('bankDetailsPixKey'), value: BANK_DETAILS.pixKey, key: 'pix' },
+                              { label: t('bankDetailsCurrency'), value: BANK_DETAILS.currency, key: 'currency' },
+                            ].map(({ label, value, key }) => (
+                              <div key={key} className="flex items-start justify-between gap-2">
+                                <div className="min-w-0 flex-1">
+                                  <p className={cn(
+                                    'text-[10px] uppercase tracking-wider font-medium',
+                                    config.variant === 'dark' ? 'text-primary-500' : 'text-primary-400'
+                                  )}>
+                                    {label}
+                                  </p>
+                                  <p className={cn(
+                                    'text-xs font-medium break-all',
+                                    config.variant === 'dark' ? 'text-primary-200' : 'text-primary-700'
+                                  )}>
+                                    {value}
+                                  </p>
+                                </div>
+                                <button
+                                  onClick={() => handleCopy(value, key)}
+                                  className={cn(
+                                    'flex-shrink-0 p-1.5 rounded transition-colors mt-2',
+                                    config.variant === 'dark'
+                                      ? 'text-primary-400 hover:text-white hover:bg-primary-700'
+                                      : 'text-primary-400 hover:text-primary-700 hover:bg-primary-50'
+                                  )}
+                                  title="Copy"
+                                >
+                                  {copiedField === key
+                                    ? <CheckCheck className="w-3.5 h-3.5 text-green-500" />
+                                    : <Copy className="w-3.5 h-3.5" />
+                                  }
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+
+                          {/* QR Code */}
+                          <div className="mt-4 pt-4 border-t border-dashed flex flex-col items-center gap-2"
+                            style={{ borderColor: config.variant === 'dark' ? 'rgb(55 65 81)' : 'rgb(226 232 240)' }}
+                          >
+                            <p className={cn(
+                              'text-[10px] uppercase tracking-wider font-medium',
+                              config.variant === 'dark' ? 'text-primary-500' : 'text-primary-400'
+                            )}>
+                              Pix QR Code
+                            </p>
+                            <div className="bg-white p-2 rounded-lg">
+                              <Image
+                                src="/images/pix-qr-code.png"
+                                alt="Pix QR Code"
+                                width={160}
+                                height={160}
+                                className="w-40 h-40"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Note */}
+                          <p className={cn(
+                            'mt-4 text-[11px] leading-relaxed text-center',
+                            config.variant === 'dark' ? 'text-primary-400' : 'text-primary-500'
+                          )}>
+                            {t('bankDetailsNote')}
+                          </p>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
 
                   {/* WhatsApp alternative */}
                   <a

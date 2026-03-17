@@ -68,6 +68,15 @@
     "popular": "Most Popular",
     "readMore": "SECURE MY SPOT",
     "whatsappCta": "or talk to a mentor on WhatsApp",
+    "bankTransferCta": "PAY VIA PIX / BANK TRANSFER",
+    "bankDetailsTitle": "Payment Details",
+    "bankDetailsBank": "Bank",
+    "bankDetailsAccount": "Account",
+    "bankDetailsHolder": "Account Holder",
+    "bankDetailsPixKey": "Pix Key (CNPJ)",
+    "bankDetailsCurrency": "Currency",
+    "bankDetailsClose": "Close",
+    "bankDetailsNote": "After payment, send the receipt via WhatsApp to activate your access.",
     "plans": {
       "silver": {
         "name": "Silver",
