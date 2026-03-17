@@ -1,7 +1,6 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Check, X, Copy, CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
@@ -257,12 +256,14 @@ export function Pricing() {
                               Pix QR Code
                             </p>
                             <div className="bg-white p-2 rounded-lg">
-                              <Image
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
                                 src="/images/pix-qr-code.jpg"
                                 alt="Pix QR Code"
-                                width={160}
-                                height={160}
-                                className="w-40 h-40"
+                                width={200}
+                                height={200}
+                                className="w-[200px] h-[200px]"
+                                style={{ imageRendering: 'pixelated' }}
                               />
                             </div>
                           </div>
