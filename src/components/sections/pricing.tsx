@@ -20,7 +20,7 @@ const planConfig = {
 const BANK_DETAILS = {
   bank: 'Banco do Brasil - 001',
   account: '41625-8',
-  holder: 'D F DA SILVA ALLIANCE CAPITAL INTERNATIONAL DO BRASIL',
+  holder: 'ALLIANCE CAPITAL INTERNATIONAL',
   pixKey: '64984047000110',
   currency: 'BRL',
 }
