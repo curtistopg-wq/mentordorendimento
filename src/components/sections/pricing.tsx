@@ -258,7 +258,7 @@ export function Pricing() {
                             </p>
                             <div className="bg-white p-2 rounded-lg">
                               <Image
-                                src="/images/pix-qr-code.png"
+                                src="/images/pix-qr-code.jpg"
                                 alt="Pix QR Code"
                                 width={160}
                                 height={160}
