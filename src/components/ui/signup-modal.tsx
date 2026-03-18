@@ -146,11 +146,17 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       }).catch(err => console.error('Email send failed:', err))
 
       // PeopleDown: track lead with session attribution
-      window.PeopleDown?.trackLead({
-        name: formData.name,
-        email: formData.email.toLowerCase().trim(),
-        phone: phoneToInsert,
-      }).catch(() => {})
+      const leadData = { name: formData.name, email: formData.email.toLowerCase().trim(), phone: phoneToInsert }
+      if (window.PeopleDown) {
+        window.PeopleDown.trackLead(leadData).catch(() => {})
+      } else {
+        fetch('/api/t/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ site: 'mentordorendimento.com', ...leadData }),
+          keepalive: true,
+        }).catch(() => {})
+      }
 
       // Defer all tracking to next frame so UI updates instantly (INP optimization)
       requestAnimationFrame(() => {

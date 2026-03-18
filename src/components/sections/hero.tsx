@@ -144,11 +144,17 @@ export function Hero() {
         body: JSON.stringify({ email: email.toLowerCase().trim() }),
       }).catch(err => console.error('Email send failed:', err))
 
-      window.PeopleDown?.trackLead({
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        phone: phoneToInsert,
-      }).catch(() => {})
+      const leadData = { name: name.trim(), email: email.toLowerCase().trim(), phone: phoneToInsert }
+      if (window.PeopleDown) {
+        window.PeopleDown.trackLead(leadData).catch(() => {})
+      } else {
+        fetch('/api/t/lead', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ site: 'mentordorendimento.com', ...leadData }),
+          keepalive: true,
+        }).catch(() => {})
+      }
 
       requestAnimationFrame(() => {
         setTimeout(() => {

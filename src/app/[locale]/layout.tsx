@@ -90,7 +90,6 @@ export default async function LocaleLayout({
         <link rel="preconnect" href="https://www.clarity.ms" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <script src="https://gamesysoperations.com/api/tracking/script?site=mentordorendimento.com" async />
       </head>
       <body className="font-sans antialiased bg-white text-primary-800">
         {/* GTM noscript fallback */}
@@ -158,8 +157,8 @@ export default async function LocaleLayout({
         />
         {/* 5. PeopleDown tracker - pageview + session + UTM capture */}
         <Script
-          src="/api/tracking/script?site=mentordorendimento.com"
-          strategy="lazyOnload"
+          src="/api/t/script?site=mentordorendimento.com"
+          strategy="afterInteractive"
         />
       </body>
     </html>
