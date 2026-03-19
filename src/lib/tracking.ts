@@ -63,19 +63,24 @@ export function getTrackingData(): TrackingData {
   const clck = getCookie('_clck')
   const clarityUserId = clck ? clck.split('|')[0] : ''
 
+  // SSR-safe sessionStorage fallback for UTM params (in-app browsers strip URL params)
+  const ss = (key: string): string => {
+    try { return sessionStorage?.getItem(key) || '' } catch { return '' }
+  }
+
   return {
     ga_client_id: gaClientId,
     ga_session_id: gaSessionId,
     fbc,
     fbp,
-    fbclid,
-    utm_source: params.get('utm_source') || '',
-    utm_medium: params.get('utm_medium') || '',
-    utm_campaign: params.get('utm_campaign') || '',
-    utm_content: params.get('utm_content') || '',
-    utm_term: params.get('utm_term') || '',
-    landing_page: window.location.href,
-    referrer: document.referrer,
+    fbclid: fbclid || ss('mdr_fbclid'),
+    utm_source: params.get('utm_source') || ss('mdr_utm_source'),
+    utm_medium: params.get('utm_medium') || ss('mdr_utm_medium'),
+    utm_campaign: params.get('utm_campaign') || ss('mdr_utm_campaign'),
+    utm_content: params.get('utm_content') || ss('mdr_utm_content'),
+    utm_term: params.get('utm_term') || ss('mdr_utm_term'),
+    landing_page: window.location.href || ss('mdr_landing'),
+    referrer: document.referrer || ss('mdr_referrer'),
     clarity_user_id: clarityUserId,
   }
 }

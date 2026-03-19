@@ -32,7 +32,8 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
   const [error, setError] = useState(false)
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatBrazilianPhone(e.target.value)
+    const value = e?.target?.value ?? ''
+    const formatted = formatBrazilianPhone(value)
     setFormData({ ...formData, phone: formatted })
     if (phoneError) setPhoneError(null)
   }

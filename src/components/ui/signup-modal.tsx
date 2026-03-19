@@ -38,7 +38,8 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
   const { sendOtp, verifyOtp, otpSent, otpVerified, otpLoading, otpError, resetOtp } = usePhoneOtp()
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatBrazilianPhone(e.target.value)
+    const value = e?.target?.value ?? ''
+    const formatted = formatBrazilianPhone(value)
     setFormData({ ...formData, phone: formatted })
     if (phoneError) setPhoneError(null)
   }

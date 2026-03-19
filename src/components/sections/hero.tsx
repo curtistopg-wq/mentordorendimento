@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
@@ -22,7 +22,6 @@ const trustLogos = [
 export function Hero() {
   const t = useTranslations('hero')
   const { open } = useSignupModal()
-  const [isMobile, setIsMobile] = useState(true)
   const formRef = useRef<HTMLDivElement>(null)
 
   // Single-step form state
@@ -36,12 +35,9 @@ export function Hero() {
   const [otpCode, setOtpCode] = useState('')
   const { sendOtp, verifyOtp, otpSent, otpLoading, otpError, resetOtp } = usePhoneOtp()
 
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 1024)
-  }, [])
-
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const formatted = formatBrazilianPhone(e.target.value)
+    const value = e?.target?.value ?? ''
+    const formatted = formatBrazilianPhone(value)
     setPhone(formatted)
     if (phoneError) setPhoneError(null)
   }
@@ -199,9 +195,9 @@ export function Hero() {
 
   return (
     <section id="hero" data-clarity-region="hero" className="relative min-h-svh lg:min-h-[85vh] flex items-center lg:items-end">
-      {/* Background */}
+      {/* Background - CSS-only mobile/desktop switch to prevent CLS */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {isMobile ? (
+        <div className="block lg:hidden absolute inset-0">
           <Image
             src="/images/hero-poster.jpg"
             alt=""
@@ -210,7 +206,8 @@ export function Hero() {
             className="object-cover"
             sizes="100vw"
           />
-        ) : (
+        </div>
+        <div className="hidden lg:block absolute inset-0">
           <video
             autoPlay
             muted
@@ -222,7 +219,7 @@ export function Hero() {
           >
             <source src="/videos/hero-bg-opt.mp4" type="video/mp4" />
           </video>
-        )}
+        </div>
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
       </div>

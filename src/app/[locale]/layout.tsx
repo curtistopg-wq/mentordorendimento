@@ -86,6 +86,12 @@ export default async function LocaleLayout({
             __html: `(function(){function getCookie(name){var match=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));return match?match[2]:null;}var urlParams=new URLSearchParams(window.location.search);var fbclid=urlParams.get('fbclid');if(fbclid&&!getCookie('_fbc')){var fbc='fb.1.'+Date.now()+'.'+fbclid;var d=new Date();d.setTime(d.getTime()+(90*24*60*60*1000));var domain=window.location.hostname.replace(/^www\\./,'');document.cookie='_fbc='+fbc+'; expires='+d.toUTCString()+'; path=/; domain=.'+domain+'; SameSite=Lax';}})();`,
           }}
         />
+        {/* UTM persistence - capture before in-app browsers strip params */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var p=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k){var v=p.get(k);if(v)sessionStorage.setItem('mdr_'+k,v);});if(!sessionStorage.getItem('mdr_landing'))sessionStorage.setItem('mdr_landing',location.href);if(!sessionStorage.getItem('mdr_referrer'))sessionStorage.setItem('mdr_referrer',document.referrer);}catch(e){}})();`,
+          }}
+        />
         {/* Preconnect hints */}
         <link rel="preconnect" href="https://www.clarity.ms" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
