@@ -1,11 +1,9 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
-import { RecaptchaVerifier, signInWithPhoneNumber, ConfirmationResult } from 'firebase/auth'
-import { auth } from '@/lib/firebase'
 
 interface UsePhoneOtpReturn {
-  sendOtp: (phoneE164: string) => Promise<boolean>
+  sendOtp: (email: string) => Promise<boolean>
   verifyOtp: (code: string) => Promise<boolean>
   otpSent: boolean
   otpVerified: boolean
@@ -19,96 +17,73 @@ export function usePhoneOtp(): UsePhoneOtpReturn {
   const [otpVerified, setOtpVerified] = useState(false)
   const [otpLoading, setOtpLoading] = useState(false)
   const [otpError, setOtpError] = useState<string | null>(null)
-  const confirmationRef = useRef<ConfirmationResult | null>(null)
-  const recaptchaRef = useRef<RecaptchaVerifier | null>(null)
 
-  const getRecaptcha = useCallback(() => {
-    if (recaptchaRef.current) return recaptchaRef.current
+  // Store token and timestamp from send-otp response for verification
+  const tokenRef = useRef<string>('')
+  const timestampRef = useRef<number>(0)
+  const emailRef = useRef<string>('')
 
-    // Create invisible reCAPTCHA container if not exists
-    let container = document.getElementById('recaptcha-container')
-    if (!container) {
-      container = document.createElement('div')
-      container.id = 'recaptcha-container'
-      document.body.appendChild(container)
-    }
-
-    recaptchaRef.current = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: () => {
-        // reCAPTCHA solved
-      },
-    })
-
-    return recaptchaRef.current
-  }, [])
-
-  const sendOtp = useCallback(async (phoneE164: string): Promise<boolean> => {
+  const sendOtp = useCallback(async (email: string): Promise<boolean> => {
     setOtpLoading(true)
     setOtpError(null)
+    emailRef.current = email
 
     try {
-      const recaptcha = getRecaptcha()
-      const confirmation = await signInWithPhoneNumber(auth, phoneE164, recaptcha)
-      confirmationRef.current = confirmation
+      const res = await fetch('/api/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      const data = await res.json()
+
+      if (!data.success) {
+        setOtpError(data.error || 'Erro ao enviar código. Tente novamente.')
+        setOtpLoading(false)
+        return false
+      }
+
+      tokenRef.current = data.token
+      timestampRef.current = data.timestamp
       setOtpSent(true)
       setOtpLoading(false)
       return true
-    } catch (err: unknown) {
-      const error = err as { code?: string; message?: string }
-      console.error('OTP send error:', error)
-
-      // Reset reCAPTCHA on error so it can be retried
-      if (recaptchaRef.current) {
-        try { recaptchaRef.current.clear() } catch { /* ignore */ }
-        recaptchaRef.current = null
-      }
-
-      if (error.code === 'auth/too-many-requests') {
-        setOtpError('Muitas tentativas. Aguarde alguns minutos.')
-      } else if (error.code === 'auth/invalid-phone-number') {
-        setOtpError('Número de telefone inválido.')
-      } else if (error.code === 'auth/quota-exceeded') {
-        setOtpError('Limite de SMS atingido. Tente novamente amanhã.')
-      } else {
-        setOtpError('Erro ao enviar SMS. Tente novamente.')
-      }
-
+    } catch (err) {
+      console.error('Send OTP error:', err)
+      setOtpError('Erro ao enviar código. Tente novamente.')
       setOtpLoading(false)
       return false
     }
-  }, [getRecaptcha])
+  }, [])
 
   const verifyOtp = useCallback(async (code: string): Promise<boolean> => {
-    if (!confirmationRef.current) {
-      setOtpError('Envie o código primeiro.')
-      return false
-    }
-
     setOtpLoading(true)
     setOtpError(null)
 
     try {
-      await confirmationRef.current.confirm(code)
-      setOtpVerified(true)
-      setOtpLoading(false)
+      const res = await fetch('/api/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: emailRef.current,
+          code,
+          token: tokenRef.current,
+          timestamp: timestampRef.current,
+        }),
+      })
+      const data = await res.json()
 
-      // Sign out immediately - we only need verification, not auth session
-      await auth.signOut()
-
-      return true
-    } catch (err: unknown) {
-      const error = err as { code?: string }
-      console.error('OTP verify error:', error)
-
-      if (error.code === 'auth/invalid-verification-code') {
-        setOtpError('Código incorreto. Verifique e tente novamente.')
-      } else if (error.code === 'auth/code-expired') {
-        setOtpError('Código expirado. Solicite um novo.')
-      } else {
-        setOtpError('Erro na verificação. Tente novamente.')
+      if (data.verified) {
+        setOtpVerified(true)
+        setOtpLoading(false)
+        return true
       }
 
+      setOtpError(data.error || 'Código incorreto. Verifique e tente novamente.')
+      setOtpLoading(false)
+      return false
+    } catch (err) {
+      console.error('Verify OTP error:', err)
+      setOtpError('Erro na verificação. Tente novamente.')
       setOtpLoading(false)
       return false
     }
@@ -119,11 +94,9 @@ export function usePhoneOtp(): UsePhoneOtpReturn {
     setOtpVerified(false)
     setOtpLoading(false)
     setOtpError(null)
-    confirmationRef.current = null
-    if (recaptchaRef.current) {
-      try { recaptchaRef.current.clear() } catch { /* ignore */ }
-      recaptchaRef.current = null
-    }
+    tokenRef.current = ''
+    timestampRef.current = 0
+    emailRef.current = ''
   }, [])
 
   return {

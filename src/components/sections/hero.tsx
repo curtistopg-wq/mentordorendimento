@@ -91,8 +91,7 @@ export function Hero() {
     }
 
     // Send OTP
-    const e164Phone = phoneResult.formatted!
-    const sent = await sendOtp(e164Phone)
+    const sent = await sendOtp(email.toLowerCase().trim())
     setLoading(false)
 
     if (!sent) {
@@ -356,7 +355,7 @@ export function Hero() {
             ) : !submitted && otpSent ? (
               <div className="space-y-3">
                 <p className="text-sm text-primary-700 font-medium">
-                  Código enviado para <strong>{phone}</strong>
+                  Enviamos um código de verificação para <strong>{email}</strong>
                 </p>
 
                 {otpError && (
@@ -393,7 +392,7 @@ export function Hero() {
                   onClick={() => { resetOtp(); setOtpCode('') }}
                   className="w-full text-xs text-primary-500 hover:text-primary-700 transition-colors"
                 >
-                  Voltar e alterar número
+                  Voltar
                 </button>
               </div>
             ) : (

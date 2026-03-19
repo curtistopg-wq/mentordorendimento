@@ -89,9 +89,8 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       // If API fails, proceed with client-side validated number
     }
 
-    // Send OTP via Firebase
-    const e164Phone = phoneResult.formatted!
-    const sent = await sendOtp(e164Phone)
+    // Send OTP via email
+    const sent = await sendOtp(formData.email.toLowerCase().trim())
     setLoading(false)
 
     if (!sent) {
@@ -333,10 +332,10 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
             ) : !submitted && otpSent ? (
               <div className="py-4">
                 <h2 className="text-2xl font-display font-bold text-primary-800 mb-2">
-                  Verificar telefone
+                  Verificar e-mail
                 </h2>
                 <p className="text-sm text-primary-500 mb-6">
-                  Enviamos um código SMS para <strong>{formData.phone}</strong>. Digite abaixo:
+                  Enviamos um código de verificação para <strong>{formData.email}</strong>. Verifique sua caixa de entrada.
                 </p>
 
                 {otpError && (
@@ -384,7 +383,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                     onClick={() => { resetOtp(); setOtpCode('') }}
                     className="w-full text-sm text-primary-500 hover:text-primary-700 transition-colors"
                   >
-                    Voltar e alterar número
+                    Voltar
                   </button>
                 </div>
               </div>
