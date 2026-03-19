@@ -2,9 +2,18 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'edge'
 
+const ALLOWED_ORIGINS = [
+  'https://mentordorendimento.com',
+  'https://www.mentordorendimento.com',
+  'https://binarypulse.pro',
+  'https://www.binarypulse.pro',
+]
+
 export async function GET(request: NextRequest) {
   const site = request.nextUrl.searchParams.get('site') || ''
   const apiBase = `${request.nextUrl.protocol}//${request.nextUrl.host}`
+  const origin = request.headers.get('origin') || ''
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
 
   const js = generateTracker(apiBase, site)
 
@@ -12,7 +21,7 @@ export async function GET(request: NextRequest) {
     headers: {
       'Content-Type': 'application/javascript; charset=utf-8',
       'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': allowedOrigin,
     },
   })
 }

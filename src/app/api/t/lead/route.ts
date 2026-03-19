@@ -6,17 +6,30 @@ const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 )
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
+const ALLOWED_ORIGINS = [
+  'https://mentordorendimento.com',
+  'https://www.mentordorendimento.com',
+  'https://binarypulse.pro',
+  'https://www.binarypulse.pro',
+]
+
+function getCorsHeaders(origin: string) {
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
+  return {
+    'Access-Control-Allow-Origin': allowedOrigin,
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  }
 }
 
-export async function OPTIONS() {
-  return new NextResponse(null, { status: 204, headers: CORS_HEADERS })
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin') || ''
+  return new NextResponse(null, { status: 204, headers: getCorsHeaders(origin) })
 }
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get('origin') || ''
+  const CORS_HEADERS = getCorsHeaders(origin)
   try {
     const { session_id, site, name, email, phone } = await request.json()
 

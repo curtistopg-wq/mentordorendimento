@@ -97,17 +97,30 @@ function buildEmailHtml(code: string): string {
 </html>`.trim();
 }
 
-const corsHeaders = {
-  "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type",
-};
+const ALLOWED_ORIGINS = [
+  'https://mentordorendimento.com',
+  'https://www.mentordorendimento.com',
+  'https://binarypulse.pro',
+  'https://www.binarypulse.pro',
+]
 
-export async function OPTIONS() {
-  return NextResponse.json(null, { status: 204, headers: corsHeaders });
+function getCorsHeaders(origin: string) {
+  const allowedOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0]
+  return {
+    "Access-Control-Allow-Origin": allowedOrigin,
+    "Access-Control-Allow-Methods": "POST, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type",
+  }
+}
+
+export async function OPTIONS(request: NextRequest) {
+  const origin = request.headers.get('origin') || ''
+  return NextResponse.json(null, { status: 204, headers: getCorsHeaders(origin) });
 }
 
 export async function POST(request: NextRequest) {
+  const origin = request.headers.get('origin') || ''
+  const corsHeaders = getCorsHeaders(origin)
   try {
     const body = await request.json();
     const { email } = body as { email?: string };
