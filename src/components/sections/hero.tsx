@@ -55,6 +55,13 @@ export function Hero() {
   // Step 1: Validate form and send OTP
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Prevent duplicate submissions from same browser
+    if (typeof window !== 'undefined' && localStorage.getItem('mdr_lead_submitted') === 'true') {
+      setSubmitted(true)
+      return
+    }
+
     setLoading(true)
     setError(false)
     setPhoneError(null)
@@ -104,26 +111,29 @@ export function Hero() {
 
     try {
       const supabase = createClient()
-      const { error: insertError } = await supabase.from('leads').insert({
-        name: name.trim(),
-        email: email.toLowerCase().trim(),
-        phone: phoneToInsert,
-        phone_verified: phoneVerified,
-        source: 'hero-inline-mobile',
-        page: window.location.pathname,
-        ga_client_id: tracking.ga_client_id,
-        ga_session_id: tracking.ga_session_id,
-        fbc: tracking.fbc,
-        fbp: tracking.fbp,
-        fbclid: tracking.fbclid,
-        utm_source: tracking.utm_source,
-        utm_medium: tracking.utm_medium,
-        utm_campaign: tracking.utm_campaign,
-        utm_content: tracking.utm_content,
-        utm_term: tracking.utm_term,
-        landing_page: tracking.landing_page,
-        referrer: tracking.referrer,
-      })
+      const { error: insertError } = await supabase.from('leads').upsert(
+        {
+          name: name.trim(),
+          email: email.toLowerCase().trim(),
+          phone: phoneToInsert,
+          phone_verified: phoneVerified,
+          source: 'hero-inline-mobile',
+          page: window.location.pathname,
+          ga_client_id: tracking.ga_client_id,
+          ga_session_id: tracking.ga_session_id,
+          fbc: tracking.fbc,
+          fbp: tracking.fbp,
+          fbclid: tracking.fbclid,
+          utm_source: tracking.utm_source,
+          utm_medium: tracking.utm_medium,
+          utm_campaign: tracking.utm_campaign,
+          utm_content: tracking.utm_content,
+          utm_term: tracking.utm_term,
+          landing_page: tracking.landing_page,
+          referrer: tracking.referrer,
+        },
+        { onConflict: 'email', ignoreDuplicates: true }
+      )
 
       if (insertError) {
         console.error('Lead insert failed:', insertError.message)
@@ -132,6 +142,7 @@ export function Hero() {
       }
 
       setSubmitted(true)
+      localStorage.setItem('mdr_lead_submitted', 'true')
 
       fetch('/api/send-email', {
         method: 'POST',
