@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
+import { useDraftLead } from '@/hooks/useDraftLead'
 
 interface SignupModalProps {
   isOpen: boolean
@@ -33,6 +34,11 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [phoneError, setPhoneError] = useState<string | null>(null)
+  const { saveDraft, markConverted } = useDraftLead('signup-modal')
+
+  const handleEmailBlur = () => {
+    if (formData.email) saveDraft({ ...formData, source: 'signup-modal' })
+  }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value ?? ''
@@ -49,6 +55,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     } else {
       setPhoneError(null)
     }
+    if (formData.email) saveDraft({ ...formData, source: 'signup-modal' })
   }
 
   // Submit form and save lead directly (no OTP gate)
@@ -129,6 +136,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       }
 
       setSubmitted(true)
+      markConverted()
 
       // Send welcome email (fire-and-forget)
       fetch('/api/send-email', {
@@ -264,6 +272,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                       required
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onBlur={handleEmailBlur}
                       className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-sm focus:outline-none focus:border-primary-700 transition-colors"
                       placeholder={t('emailPlaceholder')}
                     />

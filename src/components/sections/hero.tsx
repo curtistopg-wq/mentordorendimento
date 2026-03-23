@@ -8,6 +8,7 @@ import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, trackWhatsAppClick } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
+import { useDraftLead } from '@/hooks/useDraftLead'
 
 const WHATSAPP_NUMBER = '5511914134580'
 
@@ -31,6 +32,11 @@ export function Hero() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
+  const { saveDraft, markConverted } = useDraftLead('hero-inline-mobile')
+
+  const handleEmailBlur = () => {
+    if (email) saveDraft({ name, email, phone, source: 'hero-inline-mobile' })
+  }
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value ?? ''
@@ -47,6 +53,7 @@ export function Hero() {
     } else {
       setPhoneError(null)
     }
+    if (email) saveDraft({ name, email, phone, source: 'hero-inline-mobile' })
   }
 
   // Submit form and save lead directly (no OTP gate)
@@ -125,6 +132,7 @@ export function Hero() {
       }
 
       setSubmitted(true)
+      markConverted()
 
       fetch('/api/send-email', {
         method: 'POST',
@@ -258,6 +266,7 @@ export function Hero() {
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onBlur={handleEmailBlur}
                     placeholder={t('inlineForm.email')}
                     aria-label={t('inlineForm.email')}
                     autoComplete="email"
