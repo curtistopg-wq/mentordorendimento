@@ -8,7 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, trackWhatsAppClick } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
-import { usePhoneOtp } from '@/hooks/usePhoneOtp'
 
 const WHATSAPP_NUMBER = '5511914134580'
 
@@ -32,8 +31,6 @@ export function Hero() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
-  const [otpCode, setOtpCode] = useState('')
-  const { sendOtp, verifyOtp, otpSent, otpLoading, otpError, resetOtp } = usePhoneOtp()
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value ?? ''
@@ -52,15 +49,9 @@ export function Hero() {
     }
   }
 
-  // Step 1: Validate form and send OTP
+  // Submit form and save lead directly (no OTP gate)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Prevent duplicate submissions from same browser
-    if (typeof window !== 'undefined' && localStorage.getItem('mdr_lead_submitted') === 'true') {
-      setSubmitted(true)
-      return
-    }
 
     setLoading(true)
     setError(false)
@@ -93,14 +84,9 @@ export function Hero() {
       // If API fails, proceed
     }
 
-    // Send OTP
-    const sent = await sendOtp(email.toLowerCase().trim())
+    // Save lead directly — no OTP gate
+    await saveLeadInline(false)
     setLoading(false)
-
-    if (!sent) {
-      // Fallback: save lead without phone verification if OTP fails
-      await saveLeadInline(false)
-    }
   }
 
   // Save lead (shared between OTP-verified and fallback paths)
@@ -111,29 +97,26 @@ export function Hero() {
 
     try {
       const supabase = createClient()
-      const { error: insertError } = await supabase.from('leads').upsert(
-        {
-          name: name.trim(),
-          email: email.toLowerCase().trim(),
-          phone: phoneToInsert,
-          phone_verified: phoneVerified,
-          source: 'hero-inline-mobile',
-          page: window.location.pathname,
-          ga_client_id: tracking.ga_client_id,
-          ga_session_id: tracking.ga_session_id,
-          fbc: tracking.fbc,
-          fbp: tracking.fbp,
-          fbclid: tracking.fbclid,
-          utm_source: tracking.utm_source,
-          utm_medium: tracking.utm_medium,
-          utm_campaign: tracking.utm_campaign,
-          utm_content: tracking.utm_content,
-          utm_term: tracking.utm_term,
-          landing_page: tracking.landing_page,
-          referrer: tracking.referrer,
-        },
-        { onConflict: 'email', ignoreDuplicates: true }
-      )
+      const { error: insertError } = await supabase.from('leads').insert({
+        name: name.trim(),
+        email: email.toLowerCase().trim(),
+        phone: phoneToInsert,
+        phone_verified: phoneVerified,
+        source: 'hero-inline-mobile',
+        page: window.location.pathname,
+        ga_client_id: tracking.ga_client_id,
+        ga_session_id: tracking.ga_session_id,
+        fbc: tracking.fbc,
+        fbp: tracking.fbp,
+        fbclid: tracking.fbclid,
+        utm_source: tracking.utm_source,
+        utm_medium: tracking.utm_medium,
+        utm_campaign: tracking.utm_campaign,
+        utm_content: tracking.utm_content,
+        utm_term: tracking.utm_term,
+        landing_page: tracking.landing_page,
+        referrer: tracking.referrer,
+      })
 
       if (insertError) {
         console.error('Lead insert failed:', insertError.message)
@@ -142,7 +125,6 @@ export function Hero() {
       }
 
       setSubmitted(true)
-      localStorage.setItem('mdr_lead_submitted', 'true')
 
       fetch('/api/send-email', {
         method: 'POST',
@@ -189,16 +171,6 @@ export function Hero() {
     } catch {
       setError(true)
     }
-  }
-
-  // Step 2: Verify OTP and save lead
-  const handleVerifyOtp = async () => {
-    if (otpCode.length !== 6) return
-
-    const verified = await verifyOtp(otpCode)
-    if (!verified) return
-
-    await saveLeadInline(true)
   }
 
   const whatsappMessage = encodeURIComponent('Olá! Tenho interesse nos cursos do Mentor do Rendimento. Pode me ajudar?')
@@ -259,18 +231,12 @@ export function Hero() {
 
           {/* Inline Lead Form - Mobile only (below lg) */}
           <div ref={formRef} className="block lg:hidden mt-4 animate-hero-fade-up hero-delay-500" data-clarity-region="hero-inline-form">
-            {!submitted && !otpSent ? (
+            {!submitted ? (
               <>
                 <form onSubmit={handleSubmit} className="space-y-3">
                   {error && (
                     <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
                       {t('inlineForm.error')}
-                    </p>
-                  )}
-
-                  {otpError && (
-                    <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
-                      {otpError}
                     </p>
                   )}
 
@@ -323,11 +289,11 @@ export function Hero() {
 
                   <button
                     type="submit"
-                    disabled={loading || otpLoading}
+                    disabled={loading}
                     data-clarity-label="hero-inline-submit"
                     className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
                   >
-                    {loading || otpLoading ? '...' : t('inlineForm.submit')}
+                    {loading ? '...' : t('inlineForm.submit')}
                   </button>
                 </form>
 
@@ -360,49 +326,6 @@ export function Hero() {
                   </div>
                 </div>
               </>
-            ) : !submitted && otpSent ? (
-              <div className="space-y-3">
-                <p className="text-sm text-primary-700 font-medium">
-                  Enviamos um código de verificação para <strong>{email}</strong>
-                </p>
-
-                {otpError && (
-                  <p className="text-xs text-red-600 bg-red-50 px-3 py-2">{otpError}</p>
-                )}
-
-                {error && (
-                  <p className="text-xs text-red-600 bg-red-50 px-3 py-2">{t('inlineForm.error')}</p>
-                )}
-
-                <input
-                  type="text"
-                  inputMode="numeric"
-                  autoComplete="one-time-code"
-                  maxLength={6}
-                  value={otpCode}
-                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                  className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-xl text-center tracking-[0.5em] font-mono focus:outline-none focus:border-primary-700 transition-colors bg-white"
-                  placeholder="000000"
-                  autoFocus
-                />
-
-                <button
-                  type="button"
-                  onClick={handleVerifyOtp}
-                  disabled={otpCode.length !== 6 || otpLoading}
-                  className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
-                >
-                  {otpLoading ? '...' : 'VERIFICAR CÓDIGO'}
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => { resetOtp(); setOtpCode('') }}
-                  className="w-full text-xs text-primary-500 hover:text-primary-700 transition-colors"
-                >
-                  Voltar
-                </button>
-              </div>
             ) : (
               <div className="flex items-center gap-3 bg-green-50 border border-green-200 p-4">
                 <svg className="w-6 h-6 text-green-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">

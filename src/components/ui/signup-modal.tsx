@@ -8,7 +8,6 @@ import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
 import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
-import { usePhoneOtp } from '@/hooks/usePhoneOtp'
 
 interface SignupModalProps {
   isOpen: boolean
@@ -34,8 +33,6 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(false)
   const [phoneError, setPhoneError] = useState<string | null>(null)
-  const [otpCode, setOtpCode] = useState('')
-  const { sendOtp, verifyOtp, otpSent, otpVerified, otpLoading, otpError, resetOtp } = usePhoneOtp()
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e?.target?.value ?? ''
@@ -54,15 +51,9 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     }
   }
 
-  // Step 1: Validate form and send OTP
+  // Submit form and save lead directly (no OTP gate)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    // Prevent duplicate submissions from same browser
-    if (typeof window !== 'undefined' && localStorage.getItem('mdr_lead_submitted') === 'true') {
-      setSubmitted(true)
-      return
-    }
 
     setLoading(true)
     setError(false)
@@ -97,15 +88,9 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       // If API fails, proceed with client-side validated number
     }
 
-    // Send OTP via email
-    const sent = await sendOtp(formData.email.toLowerCase().trim())
+    // Save lead directly — no OTP gate
+    await saveLead(false)
     setLoading(false)
-
-    if (!sent) {
-      // Fallback: save lead without phone verification if OTP fails (quota, etc.)
-      await saveLead(false)
-      return
-    }
   }
 
   // Save lead to Supabase (shared between OTP-verified and fallback paths)
@@ -116,29 +101,26 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
 
     try {
       const supabase = createClient()
-      const { error: insertError } = await supabase.from('leads').upsert(
-        {
-          name: formData.name,
-          email: formData.email.toLowerCase().trim(),
-          phone: phoneToInsert,
-          phone_verified: phoneVerified,
-          source: 'signup-modal',
-          page: window.location.pathname,
-          ga_client_id: tracking.ga_client_id,
-          ga_session_id: tracking.ga_session_id,
-          fbc: tracking.fbc,
-          fbp: tracking.fbp,
-          fbclid: tracking.fbclid,
-          utm_source: tracking.utm_source,
-          utm_medium: tracking.utm_medium,
-          utm_campaign: tracking.utm_campaign,
-          utm_content: tracking.utm_content,
-          utm_term: tracking.utm_term,
-          landing_page: tracking.landing_page,
-          referrer: tracking.referrer,
-        },
-        { onConflict: 'email', ignoreDuplicates: true }
-      )
+      const { error: insertError } = await supabase.from('leads').insert({
+        name: formData.name,
+        email: formData.email.toLowerCase().trim(),
+        phone: phoneToInsert,
+        phone_verified: phoneVerified,
+        source: 'signup-modal',
+        page: window.location.pathname,
+        ga_client_id: tracking.ga_client_id,
+        ga_session_id: tracking.ga_session_id,
+        fbc: tracking.fbc,
+        fbp: tracking.fbp,
+        fbclid: tracking.fbclid,
+        utm_source: tracking.utm_source,
+        utm_medium: tracking.utm_medium,
+        utm_campaign: tracking.utm_campaign,
+        utm_content: tracking.utm_content,
+        utm_term: tracking.utm_term,
+        landing_page: tracking.landing_page,
+        referrer: tracking.referrer,
+      })
 
       if (insertError) {
         console.error('Lead insert failed:', insertError.message)
@@ -147,7 +129,6 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       }
 
       setSubmitted(true)
-      localStorage.setItem('mdr_lead_submitted', 'true')
 
       // Send welcome email (fire-and-forget)
       fetch('/api/send-email', {
@@ -198,24 +179,12 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
     }
   }
 
-  // Step 2: Verify OTP code and save lead
-  const handleVerifyOtp = async () => {
-    if (otpCode.length !== 6) return
-
-    const verified = await verifyOtp(otpCode)
-    if (!verified) return
-
-    await saveLead(true)
-  }
-
   const handleClose = () => {
     onClose()
     setTimeout(() => {
       setSubmitted(false)
       setFormData({ name: '', email: '', phone: '' })
       setPhoneError(null)
-      setOtpCode('')
-      resetOtp()
     }, 300)
   }
 
@@ -252,7 +221,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
               <X className="w-5 h-5" />
             </button>
 
-            {!submitted && !otpSent ? (
+            {!submitted ? (
               <>
                 <h2 id="signup-modal-title" className="text-2xl font-display font-bold text-primary-800 mb-2">
                   {t('title')}
@@ -264,12 +233,6 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                 {error && (
                   <p className="text-sm text-red-600 bg-red-50 px-4 py-3 mb-4">
                     {t('errorMessage')}
-                  </p>
-                )}
-
-                {otpError && (
-                  <p className="text-sm text-red-600 bg-red-50 px-4 py-3 mb-4">
-                    {otpError}
                   </p>
                 )}
 
@@ -333,72 +296,14 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                   {/* Submit */}
                   <button
                     type="submit"
-                    disabled={loading || otpLoading}
+                    disabled={loading}
                     data-clarity-label="signup-submit"
                     className="w-full py-3.5 bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors disabled:opacity-50"
                   >
-                    {loading || otpLoading ? '...' : t('submit')}
+                    {loading ? '...' : t('submit')}
                   </button>
                 </form>
               </>
-            ) : !submitted && otpSent ? (
-              <div className="py-4">
-                <h2 className="text-2xl font-display font-bold text-primary-800 mb-2">
-                  Verificar e-mail
-                </h2>
-                <p className="text-sm text-primary-500 mb-6">
-                  Enviamos um código de verificação para <strong>{formData.email}</strong>. Verifique sua caixa de entrada.
-                </p>
-
-                {otpError && (
-                  <p className="text-sm text-red-600 bg-red-50 px-4 py-3 mb-4">
-                    {otpError}
-                  </p>
-                )}
-
-                {error && (
-                  <p className="text-sm text-red-600 bg-red-50 px-4 py-3 mb-4">
-                    {t('errorMessage')}
-                  </p>
-                )}
-
-                <div className="space-y-5">
-                  <div>
-                    <label htmlFor="otp-code" className="block text-sm font-medium text-primary-700 mb-1.5">
-                      Código de verificação
-                    </label>
-                    <input
-                      id="otp-code"
-                      type="text"
-                      inputMode="numeric"
-                      autoComplete="one-time-code"
-                      maxLength={6}
-                      value={otpCode}
-                      onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                      className="w-full px-4 py-3 border border-gray-300 text-primary-800 text-2xl text-center tracking-[0.5em] font-mono focus:outline-none focus:border-primary-700 transition-colors"
-                      placeholder="000000"
-                      autoFocus
-                    />
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={handleVerifyOtp}
-                    disabled={otpCode.length !== 6 || otpLoading}
-                    className="w-full py-3.5 bg-accent text-white font-semibold text-sm hover:bg-accent/90 transition-colors disabled:opacity-50"
-                  >
-                    {otpLoading ? '...' : 'Verificar código'}
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => { resetOtp(); setOtpCode('') }}
-                    className="w-full text-sm text-primary-500 hover:text-primary-700 transition-colors"
-                  >
-                    Voltar
-                  </button>
-                </div>
-              </div>
             ) : (
               <motion.div
                 initial={{ opacity: 0, y: 10 }}
