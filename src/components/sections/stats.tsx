@@ -18,7 +18,7 @@ export function Stats() {
             return (
               <div
                 key={index}
-                className="flex items-center animate-on-scroll"
+                className="flex items-center justify-center animate-on-scroll"
               >
                 {index > 0 && (
                   <div className="hidden md:block w-px h-36 bg-gray-300 mx-10 lg:mx-14" />
