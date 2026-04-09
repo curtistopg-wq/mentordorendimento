@@ -1,10 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
+let _supabase: SupabaseClient | null = null
+function getSupabase() {
+  if (!_supabase) {
+    _supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+  }
+  return _supabase
+}
 
 const ALLOWED_ORIGINS = [
   'https://mentordorendimento.com',
@@ -40,7 +46,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { data, error } = await supabase.rpc('pd_track_lead', {
+    const { data, error } = await getSupabase().rpc('pd_track_lead', {
       p_session_id: session_id || null,
       p_site: site,
       p_name: name || null,

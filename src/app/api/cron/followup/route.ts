@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 import { Resend } from 'resend'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-)
-const resend = new Resend(process.env.RESEND_API_KEY)
+let _supabase: SupabaseClient | null = null
+function getSupabase() {
+  if (!_supabase) {
+    _supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    )
+  }
+  return _supabase
+}
+
+let _resend: Resend | null = null
+function getResend() {
+  if (!_resend) {
+    _resend = new Resend(process.env.RESEND_API_KEY)
+  }
+  return _resend
+}
 
 export const runtime = 'nodejs'
 export const maxDuration = 30
@@ -19,7 +32,7 @@ export async function GET(request: NextRequest) {
   }
 
   // Get leads needing follow-up via RPC (SECURITY DEFINER function)
-  const { data: leads, error } = await supabase.rpc('get_followup_leads')
+  const { data: leads, error } = await getSupabase().rpc('get_followup_leads')
 
   if (error) {
     console.error('Failed to fetch followup leads:', error.message)
@@ -38,7 +51,7 @@ export async function GET(request: NextRequest) {
     const template = getEmailTemplate(nextStage, lead.name)
 
     try {
-      const { error: sendError } = await resend.emails.send({
+      const { error: sendError } = await getResend().emails.send({
         from: 'Mentor do Rendimento <noreply@mentordorendimento.com>',
         to: lead.email,
         subject: template.subject,
@@ -52,7 +65,7 @@ export async function GET(request: NextRequest) {
       }
 
       // Mark as sent
-      await supabase.rpc('mark_followup_sent', {
+      await getSupabase().rpc('mark_followup_sent', {
         lead_id: lead.id,
         new_stage: nextStage,
       })
