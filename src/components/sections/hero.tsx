@@ -232,7 +232,7 @@ export function Hero() {
 
           {/* Main Heading */}
           <h1 className="text-xl md:text-4xl lg:text-5xl font-display font-normal text-primary-800 mb-2 md:mb-6 leading-tight animate-hero-fade-up hero-delay-300">
-            {t('title')}
+            Domine Sua Primeira Estratégia de Trading em 7 Dias
           </h1>
 
           {/* Subtitle */}
@@ -246,6 +246,21 @@ export function Hero() {
           <div ref={formRef} className="block lg:hidden mt-4 animate-hero-fade-up hero-delay-500" data-clarity-region="hero-inline-form">
             {!submitted ? (
               <>
+                {/* Trust micro-line above form */}
+                <div className="flex items-center gap-1.5 text-[11px] text-primary-500 mb-3 pointer-events-none select-none">
+                  <span>🔒 +9.800 Alunos</span>
+                  <span className="text-primary-300">·</span>
+                  <span>⭐ 4.7/5</span>
+                  <span className="text-primary-300">·</span>
+                  <span>Regulamentado CVM</span>
+                </div>
+
+                {/* Form title */}
+                <div className="mb-3">
+                  <p className="text-sm font-semibold text-primary-800">📩 Receba a Aula Gratuita</p>
+                  <p className="text-xs text-primary-500">Acesso imediato no seu e-mail e WhatsApp</p>
+                </div>
+
                 <form onSubmit={handleSubmit} className="space-y-3">
                   {error && (
                     <p className="text-xs text-red-600 bg-red-50 px-3 py-2">
@@ -281,21 +296,24 @@ export function Hero() {
                   />
 
                   <div>
-                    <input
-                      type="tel"
-                      required
-                      value={phone}
-                      onChange={handlePhoneChange}
-                      onBlur={handlePhoneBlur}
-                      placeholder={t('inlineForm.phone')}
-                      aria-label={t('inlineForm.phone')}
-                      autoComplete="off"
-                      inputMode="tel"
-                      data-clarity-label="hero-inline-phone"
-                      className={`w-full px-4 py-3 border text-primary-800 text-base focus:outline-none transition-colors bg-white ${
-                        phoneError ? 'border-red-400 focus:border-red-500' : 'border-gray-300 focus:border-primary-700'
-                      }`}
-                    />
+                    <div className={`flex items-center border bg-white transition-colors ${
+                      phoneError ? 'border-red-400 focus-within:border-red-500' : 'border-gray-300 focus-within:border-primary-700'
+                    }`}>
+                      <span className="pl-4 pr-2 text-sm text-primary-500 select-none whitespace-nowrap" aria-hidden="true">🇧🇷 +55</span>
+                      <input
+                        type="tel"
+                        required
+                        value={phone}
+                        onChange={handlePhoneChange}
+                        onBlur={handlePhoneBlur}
+                        placeholder="Seu WhatsApp"
+                        aria-label="Seu WhatsApp"
+                        autoComplete="off"
+                        inputMode="tel"
+                        data-clarity-label="hero-inline-phone"
+                        className="w-full px-2 py-3 text-primary-800 text-base focus:outline-none bg-transparent"
+                      />
+                    </div>
                     {phoneError && (
                       <p className="text-xs text-red-600 mt-1">{phoneError}</p>
                     )}
@@ -305,9 +323,9 @@ export function Hero() {
                     type="submit"
                     disabled={loading}
                     data-clarity-label="hero-inline-submit"
-                    className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                    className="w-full py-3.5 bg-orange-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-orange-600 transition-colors disabled:opacity-50"
                   >
-                    {loading ? '...' : t('inlineForm.submit')}
+                    {loading ? '...' : 'QUERO MINHA AULA GRÁTIS →'}
                   </button>
                 </form>
 
@@ -328,13 +346,12 @@ export function Hero() {
                   <span className="text-xs text-primary-400">—</span>
                 </div>
 
-                {/* Micro-copy + Star Rating */}
+                {/* Sub-form trust text + Star Rating */}
                 <div className="mt-3 space-y-2 pointer-events-none select-none">
-                  <p className="text-xs text-primary-500 flex items-center gap-1">
-                    <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
-                    {t('inlineForm.privacy')}
+                  <p className="text-xs text-primary-500 text-center">
+                    100% gratuito · Sem cartão · Resposta em 2 minutos
                   </p>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center justify-center gap-2">
                     <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
                     <span className="text-xs font-semibold text-primary-700">{t('inlineForm.rating')}</span>
                   </div>

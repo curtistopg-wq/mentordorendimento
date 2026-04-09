@@ -280,7 +280,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
                     type="submit"
                     disabled={loading}
                     data-clarity-label="followup-submit"
-                    className="w-full py-3.5 bg-emerald-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-emerald-600 transition-colors disabled:opacity-50"
+                    className="w-full py-3.5 bg-orange-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-orange-600 transition-colors disabled:opacity-50"
                   >
                     {loading ? '...' : 'FINALIZAR INSCRIÇÃO →'}
                   </button>

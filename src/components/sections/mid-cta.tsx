@@ -21,7 +21,7 @@ export function MidCTA() {
             open()
           }}
           data-clarity-label="mid-cta-button"
-          className="px-8 py-4 bg-emerald-500 text-white font-bold text-base hover:bg-emerald-600 transition-colors"
+          className="px-8 py-4 bg-orange-500 text-white font-bold text-base hover:bg-orange-600 transition-colors"
         >
           {t('button')}
         </button>

@@ -21,21 +21,21 @@ export function StickyCTA() {
     <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-[88px] p-3 bg-white/[0.98] backdrop-blur-sm border-t border-primary-200 safe-area-pb">
       {/* Urgency indicator */}
       <p className="text-xs text-primary-600 text-center mb-1.5 leading-none">
-        {t('urgencySlots')}
+        🟢 Aula grátis disponível — acesse agora
       </p>
 
       <button
         onClick={scrollToHero}
         data-clarity-label="sticky-cta"
-        className="relative w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm leading-none rounded-lg transition-colors"
+        className="relative w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm leading-none rounded-lg transition-colors"
       >
-        {/* Pulsing green dot */}
+        {/* Pulsing dot */}
         <span className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center">
-          <span className="absolute inline-flex h-2.5 w-2.5 rounded-full bg-emerald-300 animate-ping opacity-75" />
+          <span className="absolute inline-flex h-2.5 w-2.5 rounded-full bg-orange-300 animate-ping opacity-75" />
           <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
         </span>
 
-        {t('cta')}
+        QUERO MINHA AULA →
       </button>
     </div>
   )
