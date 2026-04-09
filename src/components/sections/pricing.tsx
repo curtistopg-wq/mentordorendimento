@@ -299,6 +299,36 @@ export function Pricing() {
                   >
                     {t('whatsappCta')}
                   </a>
+
+                  {/* Payment methods + Guarantee */}
+                  <div className={cn(
+                    'mt-4 pt-4 border-t space-y-2',
+                    config.variant === 'dark' ? 'border-primary-700' : 'border-gray-200'
+                  )}>
+                    <div className="flex items-center justify-center gap-3">
+                      <span className={cn('text-[10px] uppercase tracking-wider font-medium', config.variant === 'dark' ? 'text-primary-500' : 'text-primary-400')}>
+                        Formas de pagamento:
+                      </span>
+                      <div className="flex items-center gap-2">
+                        {['PIX', 'Boleto', 'Cartão'].map((method) => (
+                          <span key={method} className={cn(
+                            'text-[10px] px-2 py-0.5 rounded border font-medium',
+                            config.variant === 'dark'
+                              ? 'border-primary-600 text-primary-400'
+                              : 'border-gray-300 text-primary-500'
+                          )}>
+                            {method}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    <p className={cn(
+                      'text-[11px] text-center flex items-center justify-center gap-1',
+                      config.variant === 'dark' ? 'text-primary-400' : 'text-primary-500'
+                    )}>
+                      <span>🛡️</span> Garantia de satisfação — reembolso em até 7 dias
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             )

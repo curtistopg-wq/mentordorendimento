@@ -1,23 +1,23 @@
-import { Clock, Eye, ArrowRightToLine, CalendarDays } from 'lucide-react'
-import { useTranslations } from 'next-intl'
+import { Users, ThumbsUp, Star, Headphones } from 'lucide-react'
 
-const statIcons = [Clock, Eye, ArrowRightToLine, CalendarDays]
-const statValues = ['10,321', '7,251', '5,764', '9,877']
-const statKeys = ['completed', 'dedicated', 'multi', 'satisfied'] as const
+const stats = [
+  { icon: Users, value: '9,877', label: 'Alunos Ativos', sublabel: '' },
+  { icon: ThumbsUp, value: '97%', label: 'Taxa de', sublabel: 'Satisfação' },
+  { icon: Star, value: '4.7/5', label: 'Avaliação', sublabel: 'Média' },
+  { icon: Headphones, value: '24/7', label: 'Suporte', sublabel: 'Disponível' },
+]
 
 export function Stats() {
-  const t = useTranslations('stats')
-
   return (
     <section id="stats" data-clarity-region="stats" className="py-20 bg-gray-100">
       <div className="container-custom">
         <div className="grid grid-cols-2 md:flex md:flex-row items-center justify-center gap-6 md:gap-0">
-          {statKeys.map((key, index) => {
-            const Icon = statIcons[index]
+          {stats.map((stat, index) => {
+            const Icon = stat.icon
 
             return (
               <div
-                key={key}
+                key={index}
                 className="flex items-center animate-on-scroll"
               >
                 {index > 0 && (
@@ -30,11 +30,11 @@ export function Stats() {
                   </div>
 
                   <p className="text-2xl md:text-5xl font-light text-primary-700 mb-1 md:mb-3">
-                    {statValues[index]}
+                    {stat.value}
                   </p>
 
-                  <p className="text-xs md:text-sm text-primary-600">{t(`items.${key}.label`)}</p>
-                  <p className="text-xs md:text-sm text-primary-600">{t(`items.${key}.sublabel`)}</p>
+                  <p className="text-xs md:text-sm text-primary-600">{stat.label}</p>
+                  {stat.sublabel && <p className="text-xs md:text-sm text-primary-600">{stat.sublabel}</p>}
                 </div>
               </div>
             )
