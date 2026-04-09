@@ -17,12 +17,20 @@
     "socialProofCount": "+9,800",
     "socialProofText": "students already enrolled",
     "urgencySlots": "🔴 47 spots remaining — sign up now",
+    "titleNew": "Master Your First Trading Strategy in 7 Days",
+    "trustMicro": "🔒 +9,800 Students · ⭐ 4.7/5 · CVM Regulated",
+    "formTitle": "📩 Get Your Free Lesson",
+    "formSubtitle": "Instant access via email and WhatsApp",
+    "stickyText": "🟢 Free lesson available — access now",
+    "stickyCta": "I WANT MY LESSON →",
+    "subFormTrust": "100% free · No card · Reply in 2 minutes",
     "inlineForm": {
       "name": "Your full name",
       "surname": "Your last name",
-      "phone": "+1 (555) 000-0000",
+      "phone": "Your WhatsApp",
+      "phonePrefix": "🇧🇷 +55",
       "email": "Your best email",
-      "submit": "ACCESS FREE LESSON →",
+      "submit": "I WANT MY FREE LESSON →",
       "step2Title": "Almost there! Complete your signup:",
       "step2Submit": "COMPLETE SIGNUP →",
       "emailSaved": "✓ Email registered!",
@@ -35,6 +43,35 @@
       "phoneLandlineError": "Please use a mobile number",
       "phoneRequired": "Phone number is required"
     }
+  },
+  "howItWorks": {
+    "title": "How It Works",
+    "subtitle": "Start trading in 3 simple steps",
+    "steps": {
+      "0": { "number": "01", "title": "Sign Up Free", "description": "Fill out the form and get instant access to starter materials." },
+      "1": { "number": "02", "title": "Receive Materials", "description": "Lessons, strategies and direct support on your WhatsApp and email." },
+      "2": { "number": "03", "title": "Start Trading", "description": "With live mentoring and a supportive community to accelerate your results." }
+    }
+  },
+  "heroTestimonial": {
+    "text": "I went from losing money to consistently profitable within 6 months. The mentorship and community support are invaluable.",
+    "name": "Lucas Fernandes",
+    "location": "São Paulo, SP"
+  },
+  "statsNew": {
+    "items": {
+      "0": { "value": "9,877", "label": "Active Students", "sublabel": "" },
+      "1": { "value": "97%", "label": "Satisfaction", "sublabel": "Rate" },
+      "2": { "value": "4.7/5", "label": "Average", "sublabel": "Rating" },
+      "3": { "value": "24/7", "label": "Support", "sublabel": "Available" }
+    }
+  },
+  "pricingExtra": {
+    "paymentMethods": "Payment methods:",
+    "pix": "PIX",
+    "boleto": "Bank Slip",
+    "card": "Card",
+    "guarantee": "🛡️ Satisfaction guarantee — refund within 7 days"
   },
   "features": {
     "titleLine1": "Take the Road Towards",

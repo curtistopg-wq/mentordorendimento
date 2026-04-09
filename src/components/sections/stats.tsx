@@ -1,23 +1,22 @@
 import { Users, ThumbsUp, Star, Headphones } from 'lucide-react'
+import { useTranslations } from 'next-intl'
 
-const stats = [
-  { icon: Users, value: '9,877', label: 'Alunos Ativos', sublabel: '' },
-  { icon: ThumbsUp, value: '97%', label: 'Taxa de', sublabel: 'Satisfação' },
-  { icon: Star, value: '4.7/5', label: 'Avaliação', sublabel: 'Média' },
-  { icon: Headphones, value: '24/7', label: 'Suporte', sublabel: 'Disponível' },
-]
+const statIcons = [Users, ThumbsUp, Star, Headphones]
+const statKeys = ['0', '1', '2', '3'] as const
 
 export function Stats() {
+  const t = useTranslations('statsNew')
+
   return (
     <section id="stats" data-clarity-region="stats" className="py-20 bg-gray-100">
       <div className="container-custom">
         <div className="grid grid-cols-2 md:flex md:flex-row items-center justify-center gap-6 md:gap-0">
-          {stats.map((stat, index) => {
-            const Icon = stat.icon
+          {statKeys.map((key, index) => {
+            const Icon = statIcons[index]
 
             return (
               <div
-                key={index}
+                key={key}
                 className="flex items-center justify-center animate-on-scroll"
               >
                 {index > 0 && (
@@ -30,11 +29,11 @@ export function Stats() {
                   </div>
 
                   <p className="text-2xl md:text-5xl font-light text-primary-700 mb-1 md:mb-3">
-                    {stat.value}
+                    {t(`items.${key}.value`)}
                   </p>
 
-                  <p className="text-xs md:text-sm text-primary-600">{stat.label}</p>
-                  {stat.sublabel && <p className="text-xs md:text-sm text-primary-600">{stat.sublabel}</p>}
+                  <p className="text-xs md:text-sm text-primary-600">{t(`items.${key}.label`)}</p>
+                  {t(`items.${key}.sublabel`) && <p className="text-xs md:text-sm text-primary-600">{t(`items.${key}.sublabel`)}</p>}
                 </div>
               </div>
             )

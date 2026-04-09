@@ -250,7 +250,7 @@ export function Hero() {
 
           {/* Main Heading */}
           <h1 className="text-xl md:text-4xl lg:text-5xl font-display font-normal text-primary-800 mb-2 md:mb-6 leading-tight animate-hero-fade-up hero-delay-300">
-            Domine Sua Primeira Estratégia de Trading em 7 Dias
+            {t('titleNew')}
           </h1>
 
           {/* Subtitle */}
@@ -265,18 +265,14 @@ export function Hero() {
             {!submitted ? (
               <>
                 {/* Trust micro-line above form */}
-                <div className="flex items-center gap-1.5 text-[11px] text-primary-500 mb-3 pointer-events-none select-none">
-                  <span>🔒 +9.800 Alunos</span>
-                  <span className="text-primary-300">·</span>
-                  <span>⭐ 4.7/5</span>
-                  <span className="text-primary-300">·</span>
-                  <span>Regulamentado CVM</span>
-                </div>
+                <p className="text-[11px] text-primary-500 mb-3 pointer-events-none select-none">
+                  {t('trustMicro')}
+                </p>
 
                 {/* Form title */}
                 <div className="mb-3">
-                  <p className="text-sm font-semibold text-primary-800">📩 Receba a Aula Gratuita</p>
-                  <p className="text-xs text-primary-500">Acesso imediato no seu e-mail e WhatsApp</p>
+                  <p className="text-sm font-semibold text-primary-800">{t('formTitle')}</p>
+                  <p className="text-xs text-primary-500">{t('formSubtitle')}</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-3">
@@ -317,15 +313,15 @@ export function Hero() {
                     <div className={`flex items-center border bg-white transition-colors ${
                       phoneError ? 'border-red-400 focus-within:border-red-500' : 'border-gray-300 focus-within:border-primary-700'
                     }`}>
-                      <span className="pl-4 pr-2 text-sm text-primary-500 select-none whitespace-nowrap" aria-hidden="true">🇧🇷 +55</span>
+                      <span className="pl-4 pr-2 text-sm text-primary-500 select-none whitespace-nowrap" aria-hidden="true">{t('inlineForm.phonePrefix')}</span>
                       <input
                         type="tel"
                         required
                         value={phone}
                         onChange={handlePhoneChange}
                         onBlur={handlePhoneBlur}
-                        placeholder="Seu WhatsApp"
-                        aria-label="Seu WhatsApp"
+                        placeholder={t('inlineForm.phone')}
+                        aria-label={t('inlineForm.phone')}
                         autoComplete="off"
                         inputMode="tel"
                         data-clarity-label="hero-inline-phone"
@@ -343,7 +339,7 @@ export function Hero() {
                     data-clarity-label="hero-inline-submit"
                     className="w-full py-3.5 bg-orange-500 text-white font-bold text-sm uppercase tracking-wide hover:bg-orange-600 transition-colors disabled:opacity-50"
                   >
-                    {loading ? '...' : 'QUERO MINHA AULA GRÁTIS →'}
+                    {loading ? '...' : t('inlineForm.submit')}
                   </button>
                 </form>
 
@@ -367,7 +363,7 @@ export function Hero() {
                 {/* Sub-form trust text + Star Rating */}
                 <div className="mt-3 space-y-2 pointer-events-none select-none">
                   <p className="text-xs text-primary-500 text-center">
-                    100% gratuito · Sem cartão · Resposta em 2 minutos
+                    {t('subFormTrust')}
                   </p>
                   <div className="flex items-center justify-center gap-2">
                     <span className="text-yellow-400 text-sm tracking-wide" aria-hidden="true">&#9733;&#9733;&#9733;&#9733;&#9733;</span>

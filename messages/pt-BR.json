@@ -17,12 +17,20 @@
     "socialProofCount": "+9.800",
     "socialProofText": "alunos já se inscreveram",
     "urgencySlots": "🔴 47 vagas restantes — inscreva-se agora",
+    "titleNew": "Domine Sua Primeira Estratégia de Trading em 7 Dias",
+    "trustMicro": "🔒 +9.800 Alunos · ⭐ 4.7/5 · Regulamentado CVM",
+    "formTitle": "📩 Receba a Aula Gratuita",
+    "formSubtitle": "Acesso imediato no seu e-mail e WhatsApp",
+    "stickyText": "🟢 Aula grátis disponível — acesse agora",
+    "stickyCta": "QUERO MINHA AULA →",
+    "subFormTrust": "100% gratuito · Sem cartão · Resposta em 2 minutos",
     "inlineForm": {
       "name": "Seu nome completo",
       "surname": "Seu sobrenome",
-      "phone": "+55 (11) 99999-9999",
+      "phone": "Seu WhatsApp",
+      "phonePrefix": "🇧🇷 +55",
       "email": "Seu melhor e-mail",
-      "submit": "ACESSAR AULA GRÁTIS →",
+      "submit": "QUERO MINHA AULA GRÁTIS →",
       "step2Title": "Quase lá! Complete seu cadastro:",
       "step2Submit": "FINALIZAR INSCRIÇÃO →",
       "emailSaved": "✓ E-mail registrado!",
@@ -35,6 +43,35 @@
       "phoneLandlineError": "Por favor, use um número de celular",
       "phoneRequired": "Telefone é obrigatório"
     }
+  },
+  "howItWorks": {
+    "title": "Como Funciona",
+    "subtitle": "Comece a operar em 3 passos simples",
+    "steps": {
+      "0": { "number": "01", "title": "Inscreva-se Grátis", "description": "Preencha o formulário e receba acesso imediato aos materiais iniciais." },
+      "1": { "number": "02", "title": "Receba os Materiais", "description": "Aulas, estratégias e suporte direto no seu WhatsApp e e-mail." },
+      "2": { "number": "03", "title": "Comece a Operar", "description": "Com mentoria ao vivo e uma comunidade de apoio para acelerar seus resultados." }
+    }
+  },
+  "heroTestimonial": {
+    "text": "Saí do prejuízo pra lucro consistente em 6 meses. A mentoria e o suporte da comunidade são inestimáveis.",
+    "name": "Lucas Fernandes",
+    "location": "São Paulo, SP"
+  },
+  "statsNew": {
+    "items": {
+      "0": { "value": "9,877", "label": "Alunos Ativos", "sublabel": "" },
+      "1": { "value": "97%", "label": "Taxa de", "sublabel": "Satisfação" },
+      "2": { "value": "4.7/5", "label": "Avaliação", "sublabel": "Média" },
+      "3": { "value": "24/7", "label": "Suporte", "sublabel": "Disponível" }
+    }
+  },
+  "pricingExtra": {
+    "paymentMethods": "Formas de pagamento:",
+    "pix": "PIX",
+    "boleto": "Boleto",
+    "card": "Cartão",
+    "guarantee": "🛡️ Garantia de satisfação — reembolso em até 7 dias"
   },
   "features": {
     "titleLine1": "Siga o Caminho Rumo",

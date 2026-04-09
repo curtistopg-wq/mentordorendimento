@@ -26,6 +26,7 @@ const BANK_DETAILS = {
 
 export function Pricing() {
   const t = useTranslations('pricing')
+  const te = useTranslations('pricingExtra')
   const { open } = useSignupModal()
   const [showBankDetails, setShowBankDetails] = useState<string | null>(null)
   const [copiedField, setCopiedField] = useState<string | null>(null)
@@ -307,10 +308,10 @@ export function Pricing() {
                   )}>
                     <div className="flex items-center justify-center gap-3">
                       <span className={cn('text-[10px] uppercase tracking-wider font-medium', config.variant === 'dark' ? 'text-primary-500' : 'text-primary-400')}>
-                        Formas de pagamento:
+                        {te('paymentMethods')}
                       </span>
                       <div className="flex items-center gap-2">
-                        {['PIX', 'Boleto', 'Cartão'].map((method) => (
+                        {[te('pix'), te('boleto'), te('card')].map((method) => (
                           <span key={method} className={cn(
                             'text-[10px] px-2 py-0.5 rounded border font-medium',
                             config.variant === 'dark'
@@ -326,7 +327,7 @@ export function Pricing() {
                       'text-[11px] text-center flex items-center justify-center gap-1',
                       config.variant === 'dark' ? 'text-primary-400' : 'text-primary-500'
                     )}>
-                      <span>🛡️</span> Garantia de satisfação — reembolso em até 7 dias
+                      {te('guarantee')}
                     </p>
                   </div>
                 </div>
