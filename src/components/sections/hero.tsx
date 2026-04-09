@@ -24,6 +24,10 @@ export function Hero() {
   const { open } = useSignupModal()
   const formRef = useRef<HTMLDivElement>(null)
 
+  // Dynamic month for badge (avoids stale "Turma de Março" in April, etc.)
+  const currentMonth = new Date().toLocaleString('pt-BR', { month: 'long' })
+  const capitalizedMonth = currentMonth.charAt(0).toUpperCase() + currentMonth.slice(1)
+
   // Single-step form state
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
@@ -195,7 +199,8 @@ export function Hero() {
             fill
             priority
             className="object-cover"
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1920px"
+            quality={75}
           />
         </div>
         <div className="hidden lg:block absolute inset-0">
@@ -221,7 +226,7 @@ export function Hero() {
           {/* Badge */}
           <div className="animate-hero-fade-up hero-delay-200">
             <span className="inline-flex items-center px-3 py-1 md:px-4 md:py-2 bg-accent text-white text-xs md:text-sm font-semibold mb-3 md:mb-6">
-              {t('badge')}
+              Vagas Limitadas — Turma de {capitalizedMonth}
             </span>
           </div>
 
@@ -284,7 +289,7 @@ export function Hero() {
                       onBlur={handlePhoneBlur}
                       placeholder={t('inlineForm.phone')}
                       aria-label={t('inlineForm.phone')}
-                      autoComplete="tel"
+                      autoComplete="off"
                       inputMode="tel"
                       data-clarity-label="hero-inline-phone"
                       className={`w-full px-4 py-3 border text-primary-800 text-base focus:outline-none transition-colors bg-white ${
@@ -324,7 +329,7 @@ export function Hero() {
                 </div>
 
                 {/* Micro-copy + Star Rating */}
-                <div className="mt-3 space-y-2">
+                <div className="mt-3 space-y-2 pointer-events-none select-none">
                   <p className="text-xs text-primary-500 flex items-center gap-1">
                     <svg className="w-3 h-3 text-primary-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
                     {t('inlineForm.privacy')}
@@ -359,9 +364,9 @@ export function Hero() {
           </div>
 
           {/* Social Proof + Inline Trust Logos */}
-          <div className="mt-3 lg:mt-6 space-y-2 animate-hero-fade-up hero-delay-600">
+          <div className="mt-3 lg:mt-6 space-y-2 animate-hero-fade-up hero-delay-600 pointer-events-none select-none">
             <div className="flex items-center gap-2">
-              <div className="flex -space-x-2">
+              <div className="flex -space-x-2" aria-hidden="true">
                 {['L', 'M', 'G', 'R'].map((initial, i) => (
                   <div
                     key={i}
@@ -378,7 +383,7 @@ export function Hero() {
             </div>
 
             {/* Trust logos inline - visible in hero card */}
-            <div className="flex items-center gap-2 lg:hidden">
+            <div className="flex items-center gap-2 lg:hidden" aria-hidden="true">
               {trustLogos.map((logo) => (
                 <Image
                   key={logo.alt}

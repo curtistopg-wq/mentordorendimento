@@ -171,6 +171,44 @@ export function trackWhatsAppClick(pageSection: string) {
   })
 }
 
+// Track bank details dropdown open - Clarity + GA4 dataLayer + Meta Pixel
+export function trackBankDetailsOpen(planKey: string) {
+  window.fbq?.('trackCustom', 'BankDetailsOpen', {
+    plan: planKey,
+    content_category: 'Trading Course',
+  })
+
+  window.clarity?.('event', 'bank_details_open')
+  window.clarity?.('set', 'bank_details_plan', planKey)
+
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({
+    event: 'bank_details_open',
+    plan: planKey,
+    page_section: `pricing-${planKey}`,
+  })
+}
+
+// Track bank detail field copy - Clarity + GA4 dataLayer + Meta Pixel
+export function trackBankDetailsCopy(planKey: string, field: string) {
+  window.fbq?.('trackCustom', 'BankDetailCopy', {
+    plan: planKey,
+    field,
+    content_category: 'Trading Course',
+  })
+
+  window.clarity?.('event', 'bank_detail_copy')
+  window.clarity?.('set', 'bank_copy_field', field)
+
+  window.dataLayer = window.dataLayer || []
+  window.dataLayer.push({
+    event: 'bank_detail_copy',
+    plan: planKey,
+    field,
+    page_section: `pricing-${planKey}`,
+  })
+}
+
 // Tag Clarity session with lead info
 export async function tagClarityLead(params: {
   email: string

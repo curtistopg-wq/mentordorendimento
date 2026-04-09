@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
 import { useSignupModal } from '@/components/providers/signup-modal-provider'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
-import { trackWhatsAppClick } from '@/lib/tracking'
+import { trackWhatsAppClick, trackBankDetailsOpen, trackBankDetailsCopy } from '@/lib/tracking'
 
 const planKeys = ['silver', 'gold', 'platinum'] as const
 const planConfig = {
@@ -30,9 +30,10 @@ export function Pricing() {
   const [showBankDetails, setShowBankDetails] = useState<string | null>(null)
   const [copiedField, setCopiedField] = useState<string | null>(null)
 
-  const handleCopy = async (value: string, field: string) => {
+  const handleCopy = async (value: string, field: string, planKey: string) => {
     await navigator.clipboard.writeText(value)
     setCopiedField(field)
+    trackBankDetailsCopy(planKey, field)
     setTimeout(() => setCopiedField(null), 2000)
   }
 
@@ -157,7 +158,11 @@ export function Pricing() {
 
                   {/* Bank Transfer Button */}
                   <button
-                    onClick={() => setShowBankDetails(showBankDetails === planKey ? null : planKey)}
+                    onClick={() => {
+                      const isOpening = showBankDetails !== planKey
+                      setShowBankDetails(isOpening ? planKey : null)
+                      if (isOpening) trackBankDetailsOpen(planKey)
+                    }}
                     data-clarity-label={`pricing-${planKey}-bank-transfer`}
                     className={cn(
                       'block w-full text-center py-2.5 mt-2 text-sm font-semibold transition-all cursor-pointer rounded-lg border',
@@ -227,7 +232,7 @@ export function Pricing() {
                                   </p>
                                 </div>
                                 <button
-                                  onClick={() => handleCopy(value, key)}
+                                  onClick={() => handleCopy(value, key, planKey)}
                                   className={cn(
                                     'flex-shrink-0 p-1.5 rounded transition-colors mt-2',
                                     config.variant === 'dark'

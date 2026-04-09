@@ -92,6 +92,14 @@ export default async function LocaleLayout({
             __html: `(function(){try{var p=new URLSearchParams(location.search);['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k){var v=p.get(k);if(v)sessionStorage.setItem('mdr_'+k,v);});if(!sessionStorage.getItem('mdr_landing'))sessionStorage.setItem('mdr_landing',location.href);if(!sessionStorage.getItem('mdr_referrer'))sessionStorage.setItem('mdr_referrer',document.referrer);}catch(e){}})();`,
           }}
         />
+        {/* Preload hero image for faster LCP on mobile */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/hero-poster.jpg"
+          type="image/jpeg"
+          fetchPriority="high"
+        />
         {/* Preconnect hints */}
         <link rel="preconnect" href="https://www.clarity.ms" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
