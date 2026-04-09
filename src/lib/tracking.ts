@@ -63,9 +63,15 @@ export function getTrackingData(): TrackingData {
   const clck = getCookie('_clck')
   const clarityUserId = clck ? clck.split('|')[0] : ''
 
-  // SSR-safe sessionStorage fallback for UTM params (in-app browsers strip URL params)
+  // SSR-safe fallback chain: URL params → cookie (30d) → sessionStorage
   const ss = (key: string): string => {
-    try { return sessionStorage?.getItem(key) || '' } catch { return '' }
+    try {
+      // Try cookie first (survives tab close)
+      const cookieVal = getCookie(key)
+      if (cookieVal) return decodeURIComponent(cookieVal)
+      // Fall back to sessionStorage
+      return sessionStorage?.getItem(key) || ''
+    } catch { return '' }
   }
 
   return {

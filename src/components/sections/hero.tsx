@@ -156,8 +156,9 @@ export function Hero() {
         }).catch(() => {})
       }
 
-      requestAnimationFrame(() => {
-        setTimeout(() => {
+      // Use requestIdleCallback to avoid blocking main thread (better INP)
+      const scheduleTracking = window.requestIdleCallback || ((cb: () => void) => setTimeout(cb, 1))
+      scheduleTracking(() => {
           const eventId = generateEventId()
 
           pushLeadEvent({
@@ -176,9 +177,26 @@ export function Hero() {
             eventID: eventId,
           })
 
+          // Server-side CAPI for iOS/in-app browser attribution
+          fetch('/api/capi/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              event_name: 'Lead',
+              event_id: eventId,
+              email: email.toLowerCase().trim(),
+              phone: phoneToInsert,
+              first_name: name.trim(),
+              fbc: tracking.fbc,
+              fbp: tracking.fbp,
+              source_url: window.location.href,
+              user_agent: navigator.userAgent,
+            }),
+            keepalive: true,
+          }).catch(() => {})
+
           tagClarityLead({ email: email.toLowerCase().trim(), formType: 'hero-inline', leadSource: 'hero-inline-mobile' })
           window.clarity?.('set', 'form_step', 'profile_completed')
-        }, 0)
       })
     } catch {
       setError(true)

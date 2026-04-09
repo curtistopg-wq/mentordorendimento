@@ -179,6 +179,24 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
             eventID: eventId,
           })
 
+          // Server-side CAPI for iOS/in-app browser attribution
+          fetch('/api/capi/lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              event_name: 'Lead',
+              event_id: eventId,
+              email: formData.email.toLowerCase().trim(),
+              phone: phoneResult.formatted,
+              first_name: formData.name.trim(),
+              fbc: tracking.fbc,
+              fbp: tracking.fbp,
+              source_url: window.location.href,
+              user_agent: navigator.userAgent,
+            }),
+            keepalive: true,
+          }).catch(() => {})
+
           tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
         }, 0)
       })
