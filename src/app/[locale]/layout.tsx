@@ -60,6 +60,7 @@ export async function generateMetadata({
       languages: {
         'pt-BR': 'https://mentordorendimento.com/pt-BR',
         'en': 'https://mentordorendimento.com/en',
+        'x-default': 'https://mentordorendimento.com/pt-BR',
       },
     },
     robots: {
