@@ -16,6 +16,11 @@
     @apply bg-[#FAFAF5] text-primary-800;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  /* Branded loading state: navy flash before React hydrates */
+  html {
+    background-color: #0D1B2A;
+  }
 }
 
 @layer components {
