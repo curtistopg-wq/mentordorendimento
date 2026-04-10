@@ -58,7 +58,7 @@ function buildEmailHtml(code: string): string {
       <td align="center">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:460px;background-color:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
           <tr>
-            <td style="background-color:#5c6bc0;padding:28px 32px;">
+            <td style="background-color:#0D1B2A;padding:28px 32px;">
               <h1 style="margin:0;color:#ffffff;font-size:20px;font-weight:600;letter-spacing:-0.01em;">
                 Mentor do Rendimento
               </h1>

@@ -46,24 +46,24 @@ function getWelcomeEmailHtml(): string {
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;max-width:100%;">
           <tr>
-            <td style="background-color:#1a202c;padding:30px;text-align:center;">
+            <td style="background-color:#0D1B2A;padding:30px;text-align:center;">
               <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:700;">Mentor do Rendimento</h1>
             </td>
           </tr>
           <tr>
             <td style="padding:40px 30px;">
-              <h2 style="color:#1a202c;margin:0 0 20px;font-size:22px;">Bem-vindo! 🎉</h2>
-              <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
+              <h2 style="color:#0D1B2A;margin:0 0 20px;font-size:22px;">Bem-vindo! 🎉</h2>
+              <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 20px;">
                 Obrigado por se cadastrar! Você deu o primeiro passo rumo a uma jornada de excelência no mercado financeiro.
               </p>
-              <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
+              <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 30px;">
                 Para garantir acesso completo à sua <strong>aula gratuita</strong>, complete seu cadastro clicando no botão abaixo:
               </p>
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td align="center">
                     <a href="https://mentordorendimento.com/pt-BR#hero"
-                       style="display:inline-block;background-color:#48bb78;color:#ffffff;font-size:16px;font-weight:bold;padding:14px 40px;text-decoration:none;border-radius:4px;">
+                       style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:16px;font-weight:bold;padding:14px 40px;text-decoration:none;border-radius:4px;">
                       COMPLETAR CADASTRO
                     </a>
                   </td>

@@ -91,10 +91,10 @@ function getEmailTemplate(stage: number, name?: string) {
           greeting,
           headline: 'Sua vaga está reservada! 🎯',
           body: `
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 20px;">
               Você se cadastrou para a <strong>aula gratuita</strong> do Mentor do Rendimento, mas ainda não completou sua inscrição.
             </p>
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 30px;">
               Complete agora para garantir acesso ao conteúdo exclusivo que vai transformar sua forma de operar no mercado.
             </p>
           `,
@@ -110,16 +110,16 @@ function getEmailTemplate(stage: number, name?: string) {
           greeting,
           headline: 'Milhares já estão transformando suas carreiras',
           body: `
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 20px;">
               Enquanto você lê este e-mail, mais de <strong>3.000 alunos</strong> estão aplicando nossas estratégias testadas no mercado real.
             </p>
             <div style="background:#f7fafc;border-left:4px solid #48bb78;padding:16px 20px;margin:0 0 20px;">
-              <p style="color:#2d3748;font-size:15px;line-height:1.6;margin:0;font-style:italic;">
+              <p style="color:#334E68;font-size:15px;line-height:1.6;margin:0;font-style:italic;">
                 "Esse curso mudou completamente minha forma de ver o trading. Saí do prejuízo pra lucro consistente em 3 meses."
               </p>
               <p style="color:#718096;font-size:13px;margin:8px 0 0;"><strong>— Lucas Fernandes</strong>, São Paulo</p>
             </div>
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 30px;">
               Sua aula gratuita ainda está disponível. Acesse agora e veja por que nossos alunos recomendam com nota <strong>4.9/5</strong>.
             </p>
           `,
@@ -135,23 +135,23 @@ function getEmailTemplate(stage: number, name?: string) {
           greeting,
           headline: 'Última oportunidade ⏰',
           body: `
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 20px;">
               Essa é nossa última mensagem sobre sua vaga na <strong>aula gratuita</strong>.
             </p>
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 20px;">
               Nossas turmas são limitadas e novas vagas estão sendo preenchidas todos os dias. Não queremos que você perca essa oportunidade.
             </p>
             <div style="background:#fff5f5;border-left:4px solid #e53e3e;padding:16px 20px;margin:0 0 20px;">
-              <p style="color:#2d3748;font-size:15px;line-height:1.6;margin:0;">
+              <p style="color:#334E68;font-size:15px;line-height:1.6;margin:0;">
                 <strong>O que você recebe gratuitamente:</strong>
               </p>
-              <ul style="color:#4a5568;font-size:14px;line-height:1.8;margin:8px 0 0;padding-left:20px;">
+              <ul style="color:#486581;font-size:14px;line-height:1.8;margin:8px 0 0;padding-left:20px;">
                 <li>Aula completa com estratégias reais</li>
                 <li>Acesso à comunidade de traders</li>
                 <li>Material de estudo exclusivo</li>
               </ul>
             </div>
-            <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 30px;">
+            <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 30px;">
               Clique abaixo para garantir sua vaga antes que ela expire.
             </p>
           `,
@@ -181,14 +181,14 @@ function buildEmail(params: {
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="background-color:#ffffff;border-radius:8px;overflow:hidden;max-width:100%;">
           <tr>
-            <td style="background-color:#1a202c;padding:30px;text-align:center;">
+            <td style="background-color:#0D1B2A;padding:30px;text-align:center;">
               <h1 style="color:#ffffff;margin:0;font-size:22px;font-weight:700;">Mentor do Rendimento</h1>
             </td>
           </tr>
           <tr>
             <td style="padding:40px 30px;">
-              <h2 style="color:#1a202c;margin:0 0 20px;font-size:22px;">${params.headline}</h2>
-              <p style="color:#4a5568;font-size:16px;line-height:1.6;margin:0 0 20px;">
+              <h2 style="color:#0D1B2A;margin:0 0 20px;font-size:22px;">${params.headline}</h2>
+              <p style="color:#486581;font-size:16px;line-height:1.6;margin:0 0 20px;">
                 Olá, <strong>${params.greeting}</strong>!
               </p>
               ${params.body}
@@ -196,7 +196,7 @@ function buildEmail(params: {
                 <tr>
                   <td align="center">
                     <a href="${params.ctaUrl}"
-                       style="display:inline-block;background-color:#48bb78;color:#ffffff;font-size:16px;font-weight:bold;padding:14px 40px;text-decoration:none;border-radius:4px;">
+                       style="display:inline-block;background-color:#F97316;color:#ffffff;font-size:16px;font-weight:bold;padding:14px 40px;text-decoration:none;border-radius:4px;">
                       ${params.ctaText}
                     </a>
                   </td>
