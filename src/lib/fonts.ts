@@ -11,6 +11,7 @@ export const poppins = Poppins({
   display: 'swap',
   weight: ['600', '700'],
   variable: '--font-poppins',
+  preload: false,
 })
 
 export const dmSerif = DM_Serif_Display({
@@ -18,4 +19,5 @@ export const dmSerif = DM_Serif_Display({
   display: 'swap',
   weight: '400',
   variable: '--font-serif',
+  preload: false,
 })

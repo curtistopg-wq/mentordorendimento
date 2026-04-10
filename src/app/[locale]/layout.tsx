@@ -11,6 +11,7 @@ import { WhatsAppButton } from '@/components/ui/whatsapp-button'
 import { SignupModalProvider } from '@/components/providers/signup-modal-provider'
 import { MotionProvider } from '@/components/providers/motion-provider'
 import { MetaPixelEvents } from '@/components/analytics/meta-pixel-events'
+import { TrackingCapture } from '@/components/analytics/tracking-capture'
 import { inter, poppins, dmSerif } from '@/lib/fonts'
 import '../globals.css'
 
@@ -81,18 +82,6 @@ export default async function LocaleLayout({
     <html lang={locale} className={`${inter.variable} ${poppins.variable} ${dmSerif.variable}`}>
       <head>
         <StructuredData locale={locale} />
-        {/* 1. fbclid capture - tiny and critical for attribution */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){function getCookie(name){var match=document.cookie.match(new RegExp('(^| )'+name+'=([^;]+)'));return match?match[2]:null;}var urlParams=new URLSearchParams(window.location.search);var fbclid=urlParams.get('fbclid');if(fbclid&&!getCookie('_fbc')){var fbc='fb.1.'+Date.now()+'.'+fbclid;var d=new Date();d.setTime(d.getTime()+(90*24*60*60*1000));var domain=window.location.hostname.replace(/^www\\./,'');document.cookie='_fbc='+fbc+'; expires='+d.toUTCString()+'; path=/; domain=.'+domain+'; SameSite=Lax';}})();`,
-          }}
-        />
-        {/* UTM persistence - first-party cookies (30d) survive tab close & in-app browsers */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){try{var p=new URLSearchParams(location.search);var d=new Date();d.setTime(d.getTime()+(30*24*60*60*1000));var ex='; expires='+d.toUTCString()+'; path=/; SameSite=Lax';var dm='; domain=.'+location.hostname.replace(/^www\\./,'');['utm_source','utm_medium','utm_campaign','utm_content','utm_term','fbclid'].forEach(function(k){var v=p.get(k);if(v){document.cookie='mdr_'+k+'='+encodeURIComponent(v)+ex+dm;sessionStorage.setItem('mdr_'+k,v);}});if(!document.cookie.match('mdr_landing=')){document.cookie='mdr_landing='+encodeURIComponent(location.href)+ex+dm;}if(!document.cookie.match('mdr_referrer=')){document.cookie='mdr_referrer='+encodeURIComponent(document.referrer)+ex+dm;}if(!sessionStorage.getItem('mdr_landing'))sessionStorage.setItem('mdr_landing',location.href);if(!sessionStorage.getItem('mdr_referrer'))sessionStorage.setItem('mdr_referrer',document.referrer);}catch(e){}})();`,
-          }}
-        />
         {/* Preload hero image for faster LCP on mobile */}
         <link
           rel="preload"
@@ -146,6 +135,7 @@ export default async function LocaleLayout({
             </SignupModalProvider>
           </MotionProvider>
         </NextIntlClientProvider>
+        <TrackingCapture />
         <MetaPixelEvents />
         <Analytics />
         {/* 2. GTM - deferred to after page interactive */}
@@ -175,7 +165,7 @@ export default async function LocaleLayout({
         {/* 5. PeopleDown tracker - pageview + session + UTM capture */}
         <Script
           src="/api/t/script?site=mentordorendimento.com"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
         />
       </body>
     </html>
