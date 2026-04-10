@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { Plus, Minus } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
@@ -49,7 +49,7 @@ export function CoursesAccordion() {
 
                 <AnimatePresence>
                   {openIndex === index && (
-                    <motion.div
+                    <m.div
                       initial={{ height: 0, opacity: 0 }}
                       animate={{ height: 'auto', opacity: 1 }}
                       exit={{ height: 0, opacity: 0 }}
@@ -59,7 +59,7 @@ export function CoursesAccordion() {
                       <p className="pb-6 text-primary-300 leading-relaxed">
                         {t(`items.${key}.content`)}
                       </p>
-                    </motion.div>
+                    </m.div>
                   )}
                 </AnimatePresence>
               </div>

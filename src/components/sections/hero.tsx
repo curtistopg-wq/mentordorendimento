@@ -231,7 +231,7 @@ export function Hero() {
             poster="/images/hero-poster.jpg"
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 min-w-full min-h-full w-auto h-auto object-cover"
           >
-            <source src="/videos/hero-bg-opt.mp4" type="video/mp4" />
+            <source src="/videos/hero-bg-720p.mp4" type="video/mp4" />
           </video>
         </div>
         {/* Overlay */}

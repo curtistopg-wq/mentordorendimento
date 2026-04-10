@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
@@ -219,7 +219,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
           {/* Backdrop */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -228,7 +228,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
           />
 
           {/* Modal */}
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -332,7 +332,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                 </form>
               </>
             ) : (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center py-8"
@@ -348,9 +348,9 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
                 <p className="text-sm text-primary-500">
                   {t('successMessage')}
                 </p>
-              </motion.div>
+              </m.div>
             )}
-          </motion.div>
+          </m.div>
         </div>
       )}
     </AnimatePresence>

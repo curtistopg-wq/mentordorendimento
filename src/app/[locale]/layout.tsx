@@ -9,6 +9,7 @@ import { Footer } from '@/components/layout/footer'
 import { StickyCTA } from '@/components/ui/sticky-cta'
 import { WhatsAppButton } from '@/components/ui/whatsapp-button'
 import { SignupModalProvider } from '@/components/providers/signup-modal-provider'
+import { MotionProvider } from '@/components/providers/motion-provider'
 import { MetaPixelEvents } from '@/components/analytics/meta-pixel-events'
 import { inter, poppins, dmSerif } from '@/lib/fonts'
 import '../globals.css'
@@ -135,13 +136,15 @@ export default async function LocaleLayout({
           />
         </noscript>
         <NextIntlClientProvider messages={messages}>
-          <SignupModalProvider>
-            <Header />
-            <main>{children}</main>
-            <Footer />
-            <StickyCTA />
-            <WhatsAppButton />
-          </SignupModalProvider>
+          <MotionProvider>
+            <SignupModalProvider>
+              <Header />
+              <main>{children}</main>
+              <Footer />
+              <StickyCTA />
+              <WhatsAppButton />
+            </SignupModalProvider>
+          </MotionProvider>
         </NextIntlClientProvider>
         <MetaPixelEvents />
         <Analytics />

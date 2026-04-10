@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
+import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js/min'
 
 export async function POST(request: Request) {
   try {

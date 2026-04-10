@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { trackWhatsAppClick } from '@/lib/tracking'
 
@@ -39,7 +39,7 @@ export function WhatsAppButton() {
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.a
+        <m.a
           href={href}
           target="_blank"
           rel="noopener noreferrer"
@@ -54,7 +54,7 @@ export function WhatsAppButton() {
         >
           <WhatsAppIcon className="w-6 h-6" />
           <span className="absolute inset-0 rounded-full animate-ping bg-[#25D366]/20 pointer-events-none" />
-        </motion.a>
+        </m.a>
       )}
     </AnimatePresence>
   )

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { m, AnimatePresence } from 'framer-motion'
 import { Check, X, Copy, CheckCheck } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useTranslations } from 'next-intl'
@@ -42,7 +42,7 @@ export function Pricing() {
     <section id="pricing" className="py-20 bg-gradient-to-b from-primary-700 to-primary-800">
       <div className="container-custom">
         {/* Section Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -58,7 +58,7 @@ export function Pricing() {
             <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
             <span className="text-accent-light text-sm font-medium">{t('urgency')}</span>
           </div>
-        </motion.div>
+        </m.div>
 
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
@@ -69,7 +69,7 @@ export function Pricing() {
             )
 
             return (
-              <motion.div
+              <m.div
                 key={planKey}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -178,7 +178,7 @@ export function Pricing() {
                   {/* Bank Details Panel */}
                   <AnimatePresence>
                     {showBankDetails === planKey && (
-                      <motion.div
+                      <m.div
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
@@ -282,7 +282,7 @@ export function Pricing() {
                             {t('bankDetailsNote')}
                           </p>
                         </div>
-                      </motion.div>
+                      </m.div>
                     )}
                   </AnimatePresence>
 
@@ -331,7 +331,7 @@ export function Pricing() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </m.div>
             )
           })}
         </div>

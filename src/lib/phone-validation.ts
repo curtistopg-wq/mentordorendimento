@@ -1,4 +1,4 @@
-import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js'
+import { parsePhoneNumber, isValidPhoneNumber } from 'libphonenumber-js/min'
 
 export interface PhoneValidationResult {
   valid: boolean
