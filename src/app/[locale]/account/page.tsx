@@ -1,6 +1,6 @@
 'use client'
 
-import { m } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { User, Mail, Phone, Shield } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 
@@ -10,7 +10,7 @@ export default function AccountPage() {
   return (
     <div className="pt-36 pb-20 bg-gray-50 min-h-screen">
       <div className="container-custom max-w-2xl">
-        <m.div
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -84,7 +84,7 @@ export default function AccountPage() {
               ))}
             </div>
           </div>
-        </m.div>
+        </motion.div>
       </div>
     </div>
   )

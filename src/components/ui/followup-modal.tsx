@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { m, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
@@ -155,7 +155,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
       {isOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center px-4">
           {/* Backdrop */}
-          <m.div
+          <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -164,7 +164,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
           />
 
           {/* Modal */}
-          <m.div
+          <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -287,7 +287,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
                 </form>
               </>
             ) : (
-              <m.div
+              <motion.div
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 className="text-center py-8"
@@ -303,9 +303,9 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
                 <p className="text-sm text-primary-500">
                   Verifique seu e-mail para acessar a aula gratuita.
                 </p>
-              </m.div>
+              </motion.div>
             )}
-          </m.div>
+          </motion.div>
         </div>
       )}
     </AnimatePresence>

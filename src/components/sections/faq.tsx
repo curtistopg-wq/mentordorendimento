@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { m, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { ChevronDown, HelpCircle } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { cn } from '@/lib/utils'
@@ -37,7 +37,7 @@ function AccordionItem({
       </button>
       <AnimatePresence>
         {isOpen && (
-          <m.div
+          <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -47,7 +47,7 @@ function AccordionItem({
             <p className="pb-5 text-primary-600 dark:text-primary-300 leading-relaxed">
               {answer}
             </p>
-          </m.div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
@@ -63,7 +63,7 @@ export function FAQ() {
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Image Side */}
-          <m.div
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -81,7 +81,7 @@ export function FAQ() {
             </div>
 
             {/* Floating Element */}
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -90,12 +90,12 @@ export function FAQ() {
             >
               <p className="text-3xl font-bold">{t('supportHours')}</p>
               <p className="text-sm opacity-90">{t('supportText')}</p>
-            </m.div>
-          </m.div>
+            </motion.div>
+          </motion.div>
 
           {/* FAQ Side */}
           <div>
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -110,9 +110,9 @@ export function FAQ() {
               <p className="text-primary-600 dark:text-primary-300">
                 {t('subtitle')}
               </p>
-            </m.div>
+            </motion.div>
 
-            <m.div
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -127,7 +127,7 @@ export function FAQ() {
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 />
               ))}
-            </m.div>
+            </motion.div>
           </div>
         </div>
       </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import { m } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 
 export default function PrivacyPage() {
@@ -9,7 +9,7 @@ export default function PrivacyPage() {
   return (
     <div className="pt-36 pb-20 bg-white min-h-screen">
       <div className="container-custom max-w-3xl">
-        <m.div
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -55,7 +55,7 @@ export default function PrivacyPage() {
               <p>{t('sections.contact.content')}</p>
             </section>
           </div>
-        </m.div>
+        </motion.div>
       </div>
     </div>
   )

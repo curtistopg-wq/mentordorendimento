@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { m } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 
 export function Platform() {
@@ -11,7 +11,7 @@ export function Platform() {
     <section id="platform" data-clarity-region="platform" className="py-16 bg-[#FAFAF5]">
       <div className="container-custom">
         {/* Section Header */}
-        <m.div
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -21,10 +21,10 @@ export function Platform() {
             {t('title')}
           </h2>
           <div className="w-full max-w-4xl mx-auto h-px bg-primary-300" />
-        </m.div>
+        </motion.div>
 
         {/* Platform Image */}
-        <m.div
+        <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -39,7 +39,7 @@ export function Platform() {
             className="w-full h-auto"
             loading="lazy"
           />
-        </m.div>
+        </motion.div>
       </div>
     </section>
   )

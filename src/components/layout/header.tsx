@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { Link, usePathname, useRouter } from '@/i18n/navigation'
-import { m, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ChevronDown } from 'lucide-react'
 import { useTranslations, useLocale } from 'next-intl'
 import { cn } from '@/lib/utils'
@@ -101,7 +101,7 @@ export function Header() {
 
                 <AnimatePresence>
                   {langMenuOpen && (
-                    <m.div
+                    <motion.div
                       initial={{ opacity: 0, y: -10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
@@ -120,7 +120,7 @@ export function Header() {
                           <span>{lang.name}</span>
                         </button>
                       ))}
-                    </m.div>
+                    </motion.div>
                   )}
                 </AnimatePresence>
               </div>
@@ -139,7 +139,7 @@ export function Header() {
           {/* Mobile Navigation */}
           <AnimatePresence>
             {mobileMenuOpen && (
-              <m.div
+              <motion.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -178,7 +178,7 @@ export function Header() {
                     </div>
                   </div>
                 </div>
-              </m.div>
+              </motion.div>
             )}
           </AnimatePresence>
         </div>
