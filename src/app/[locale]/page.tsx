@@ -1,5 +1,3 @@
-export const revalidate = 3600
-
 import { Hero } from '@/components/sections/hero'
 import { HeroTestimonial } from '@/components/sections/hero-testimonial'
 import { TrustStrip } from '@/components/sections/trust-strip'
