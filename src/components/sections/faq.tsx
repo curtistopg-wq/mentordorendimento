@@ -59,7 +59,7 @@ export function FAQ() {
   const t = useTranslations('faq')
 
   return (
-    <section id="faq" className="section-padding bg-white dark:bg-primary-900">
+    <section id="faq" className="section-padding bg-[#FAFAF5] dark:bg-primary-900">
       <div className="container-custom">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           {/* Image Side */}

@@ -4,7 +4,7 @@ export function HeroTestimonial() {
   const t = useTranslations('heroTestimonial')
 
   return (
-    <section className="py-6 md:py-8 bg-white" data-clarity-region="hero-testimonial">
+    <section className="py-6 md:py-8 bg-[#FAFAF5] section-separator" data-clarity-region="hero-testimonial">
       <div className="container-custom">
         <div className="max-w-xl mx-auto bg-gray-50 border border-gray-200 p-4 md:p-6 rounded-lg">
           <div className="flex items-start gap-3">

@@ -5,15 +5,15 @@
 
 @layer base {
   :root {
-    --background: 255 255 255;
-    --foreground: 23 25 35;
+    --background: 250 249 245;
+    --foreground: 13 27 42;
   }
 
 }
 
 @layer base {
   body {
-    @apply bg-white text-primary-800;
+    @apply bg-[#FAFAF5] text-primary-800;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -187,6 +187,11 @@
   .hero-delay-600 {
     animation-delay: 0s !important;
   }
+}
+
+/* Gold separator between light sections */
+.section-separator {
+  border-bottom: 1px solid rgba(200, 149, 46, 0.15);
 }
 
 /* Smooth scroll */

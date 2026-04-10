@@ -13,7 +13,7 @@ export function Testimonials() {
   const t = useTranslations('testimonials')
 
   return (
-    <section id="testimonials" className="py-20 bg-white">
+    <section id="testimonials" className="py-20 bg-[#FAFAF5] section-separator">
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
