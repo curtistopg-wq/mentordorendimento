@@ -48,7 +48,7 @@ export function Pricing() {
           viewport={{ once: true }}
           className="text-center max-w-3xl mx-auto mb-16"
         >
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-white mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-normal text-white mb-4">
             {t('title')}
           </h2>
           <p className="text-primary-300 text-lg">

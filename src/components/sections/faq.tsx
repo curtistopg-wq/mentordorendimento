@@ -104,7 +104,7 @@ export function FAQ() {
               <span className="text-accent font-medium text-sm uppercase tracking-wider">
                 {t('label')}
               </span>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-primary-800 dark:text-white mt-3 mb-4">
+              <h2 className="text-3xl md:text-4xl font-serif font-normal text-primary-800 dark:text-white mt-3 mb-4">
                 {t('title')}
               </h2>
               <p className="text-primary-600 dark:text-primary-300">

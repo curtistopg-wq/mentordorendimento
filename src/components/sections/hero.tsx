@@ -249,7 +249,7 @@ export function Hero() {
           </div>
 
           {/* Main Heading */}
-          <h1 className="text-xl md:text-4xl lg:text-5xl font-display font-normal text-primary-800 mb-2 md:mb-6 leading-tight animate-hero-fade-up hero-delay-300">
+          <h1 className="text-xl md:text-4xl lg:text-5xl font-serif font-normal text-primary-800 mb-2 md:mb-6 leading-tight animate-hero-fade-up hero-delay-300">
             {t('titleNew')}
           </h1>
 

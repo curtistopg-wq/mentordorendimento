@@ -17,7 +17,7 @@ export function Testimonials() {
       <div className="container-custom">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-primary-800 mb-4">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-normal text-primary-800 mb-4">
             {t('title')}
           </h2>
           <p className="text-primary-600">

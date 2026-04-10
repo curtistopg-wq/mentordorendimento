@@ -14,7 +14,7 @@ export function Features() {
       <div className="container-custom relative z-10">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16 animate-on-scroll">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-display font-light text-white mb-6 leading-tight">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-serif font-normal text-white mb-6 leading-tight">
             {t('titleLine1')}
             <br />
             {t('titleLine2')}

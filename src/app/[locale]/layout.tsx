@@ -10,7 +10,7 @@ import { StickyCTA } from '@/components/ui/sticky-cta'
 import { WhatsAppButton } from '@/components/ui/whatsapp-button'
 import { SignupModalProvider } from '@/components/providers/signup-modal-provider'
 import { MetaPixelEvents } from '@/components/analytics/meta-pixel-events'
-import { inter, poppins } from '@/lib/fonts'
+import { inter, poppins, dmSerif } from '@/lib/fonts'
 import '../globals.css'
 
 export async function generateMetadata({
@@ -77,7 +77,7 @@ export default async function LocaleLayout({
   const messages = await getMessages()
 
   return (
-    <html lang={locale} className={`${inter.variable} ${poppins.variable}`}>
+    <html lang={locale} className={`${inter.variable} ${poppins.variable} ${dmSerif.variable}`}>
       <head>
         <StructuredData locale={locale} />
         {/* 1. fbclid capture - tiny and critical for attribution */}

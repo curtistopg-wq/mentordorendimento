@@ -11,7 +11,7 @@ export function HowItWorks() {
     <section id="como-funciona" className="py-16 md:py-20 bg-primary-900">
       <div className="container-custom">
         <div className="text-center max-w-2xl mx-auto mb-12 md:mb-16">
-          <h2 className="text-2xl md:text-4xl font-display font-light text-white mb-3">
+          <h2 className="text-2xl md:text-4xl font-serif font-normal text-white mb-3">
             {t('title')}
           </h2>
           <p className="text-gray-400 text-sm md:text-base">

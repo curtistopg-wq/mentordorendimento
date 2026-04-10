@@ -1,4 +1,4 @@
-import { Inter, Poppins } from 'next/font/google'
+import { Inter, Poppins, DM_Serif_Display } from 'next/font/google'
 
 export const inter = Inter({
   subsets: ['latin'],
@@ -11,4 +11,11 @@ export const poppins = Poppins({
   display: 'swap',
   weight: ['600', '700'],
   variable: '--font-poppins',
+})
+
+export const dmSerif = DM_Serif_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: '400',
+  variable: '--font-serif',
 })
