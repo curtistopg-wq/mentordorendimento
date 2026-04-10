@@ -30,7 +30,7 @@ function AccordionItem({
         </span>
         <ChevronDown
           className={cn(
-            'w-5 h-5 text-accent flex-shrink-0 transition-transform duration-300',
+            'w-5 h-5 text-accent-text flex-shrink-0 transition-transform duration-300',
             isOpen && 'rotate-180'
           )}
         />
@@ -101,7 +101,7 @@ export function FAQ() {
               viewport={{ once: true }}
               className="mb-8"
             >
-              <span className="text-accent font-medium text-sm uppercase tracking-wider">
+              <span className="text-accent-text font-medium text-sm uppercase tracking-wider">
                 {t('label')}
               </span>
               <h2 className="text-3xl md:text-4xl font-serif font-normal text-primary-800 dark:text-white mt-3 mb-4">

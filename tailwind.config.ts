@@ -27,6 +27,7 @@ const config: Config = {
           DEFAULT: '#C8952E',
           light: '#E8C872',
           dark: '#A67A1E',
+          text: '#8B6820',
         },
         gold: '#C8952E',
         silver: '#c0c0c0',

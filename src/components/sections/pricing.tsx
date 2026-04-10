@@ -56,7 +56,7 @@ export function Pricing() {
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-accent/20 border border-accent/30 rounded-full">
             <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-            <span className="text-accent-light text-sm font-medium">{t('urgency')}</span>
+            <span className="text-accent-text text-sm font-medium">{t('urgency')}</span>
           </div>
         </m.div>
 

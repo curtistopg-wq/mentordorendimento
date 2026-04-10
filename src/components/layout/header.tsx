@@ -45,7 +45,7 @@ export function Header() {
       {/* Top Bar - Logo centered */}
       <div className="bg-primary-800 py-4">
         <div className="container-custom flex justify-center">
-          <Link href="/">
+          <Link href="/" aria-label="Mentor do Rendimento - Página inicial">
             <Image
               src="/logo.svg"
               alt="Mentor do Rendimento"
@@ -70,7 +70,7 @@ export function Header() {
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="text-sm font-medium text-primary-600 hover:text-accent transition-colors tracking-wide whitespace-nowrap"
+                  className="text-sm font-medium text-primary-600 hover:text-accent-text transition-colors tracking-wide whitespace-nowrap"
                 >
                   {item.name}
                 </Link>
