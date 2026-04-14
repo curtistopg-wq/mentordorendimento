@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 
-const PIXEL_ID = '1856669588586928'
+const PIXEL_ID = '1942865179739073'
 const API_VERSION = 'v21.0'
 
 function getAccessToken() {
