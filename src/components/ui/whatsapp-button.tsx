@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useTranslations } from 'next-intl'
 import { trackWhatsAppClick } from '@/lib/tracking'
 
-const WHATSAPP_NUMBER = '5511914134580'
+const WHATSAPP_NUMBER = '5511926928065'
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (

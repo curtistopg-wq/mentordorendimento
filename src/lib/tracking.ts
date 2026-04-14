@@ -157,7 +157,7 @@ export function trackWhatsAppClick(pageSection: string) {
       utm_campaign: tracking.utm_campaign,
       landing_page: tracking.landing_page,
       referrer: tracking.referrer,
-      whatsapp_number: '5511914134580',
+      whatsapp_number: '5511926928065',
       page_section: pageSection,
     }).then(({ error }) => {
       if (error) console.error('WhatsApp click tracking failed:', error.message)

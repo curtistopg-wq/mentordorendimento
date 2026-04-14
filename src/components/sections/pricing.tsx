@@ -288,7 +288,7 @@ export function Pricing() {
 
                   {/* WhatsApp alternative */}
                   <a
-                    href={`https://wa.me/5511914134580?text=${encodeURIComponent(`Olá! Tenho interesse no plano ${t(`plans.${planKey}.name`)}. Pode me ajudar?`)}`}
+                    href={`https://wa.me/5511926928065?text=${encodeURIComponent(`Olá! Tenho interesse no plano ${t(`plans.${planKey}.name`)}. Pode me ajudar?`)}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     onClick={() => trackWhatsAppClick(`pricing-${planKey}`)}

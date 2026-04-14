@@ -70,7 +70,7 @@ function getWelcomeEmailHtml(): string {
                 </tr>
               </table>
               <p style="color:#718096;font-size:14px;line-height:1.6;margin:30px 0 0;">
-                Dúvidas? Fale conosco pelo WhatsApp: <a href="https://wa.me/5511914134580" style="color:#25D366;">+55 11 91413-4580</a>
+                Dúvidas? Fale conosco pelo WhatsApp: <a href="https://wa.me/5511926928065" style="color:#25D366;">+55 11 92692-8065</a>
               </p>
             </td>
           </tr>
