@@ -32,10 +32,27 @@ export function Pricing() {
   const [copiedField, setCopiedField] = useState<string | null>(null)
 
   const handleCopy = async (value: string, field: string, planKey: string) => {
-    await navigator.clipboard.writeText(value)
-    setCopiedField(field)
-    trackBankDetailsCopy(planKey, field)
-    setTimeout(() => setCopiedField(null), 2000)
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value)
+      } else {
+        const textarea = document.createElement('textarea')
+        textarea.value = value
+        textarea.style.position = 'fixed'
+        textarea.style.left = '-9999px'
+        document.body.appendChild(textarea)
+        textarea.select()
+        document.execCommand('copy')
+        document.body.removeChild(textarea)
+      }
+      setCopiedField(field)
+      trackBankDetailsCopy(planKey, field)
+      setTimeout(() => setCopiedField(null), 2000)
+    } catch {
+      setCopiedField(field)
+      trackBankDetailsCopy(planKey, field)
+      setTimeout(() => setCopiedField(null), 2000)
+    }
   }
 
   return (
@@ -217,7 +234,16 @@ export function Pricing() {
                               { label: t('bankDetailsPixKey'), value: BANK_DETAILS.pixKey, key: 'pix' },
                               { label: t('bankDetailsCurrency'), value: BANK_DETAILS.currency, key: 'currency' },
                             ].map(({ label, value, key }) => (
-                              <div key={key} className="flex items-start justify-between gap-2">
+                              <button
+                                key={key}
+                                onClick={() => handleCopy(value, key, planKey)}
+                                className={cn(
+                                  'flex items-start justify-between gap-2 w-full text-left p-2 -mx-2 rounded-md transition-colors cursor-pointer',
+                                  config.variant === 'dark'
+                                    ? 'hover:bg-primary-700/50 active:bg-primary-700'
+                                    : 'hover:bg-primary-50 active:bg-primary-100'
+                                )}
+                              >
                                 <div className="min-w-0 flex-1">
                                   <p className={cn(
                                     'text-[10px] uppercase tracking-wider font-medium',
@@ -232,22 +258,18 @@ export function Pricing() {
                                     {value}
                                   </p>
                                 </div>
-                                <button
-                                  onClick={() => handleCopy(value, key, planKey)}
-                                  className={cn(
-                                    'flex-shrink-0 p-1.5 rounded transition-colors mt-2',
-                                    config.variant === 'dark'
-                                      ? 'text-primary-400 hover:text-white hover:bg-primary-700'
-                                      : 'text-primary-400 hover:text-primary-700 hover:bg-primary-50'
-                                  )}
-                                  title="Copy"
-                                >
+                                <span className={cn(
+                                  'flex-shrink-0 p-1.5 rounded transition-colors mt-2',
+                                  copiedField === key
+                                    ? 'text-green-500'
+                                    : config.variant === 'dark' ? 'text-primary-400' : 'text-primary-400'
+                                )}>
                                   {copiedField === key
-                                    ? <CheckCheck className="w-3.5 h-3.5 text-green-500" />
+                                    ? <CheckCheck className="w-3.5 h-3.5" />
                                     : <Copy className="w-3.5 h-3.5" />
                                   }
-                                </button>
-                              </div>
+                                </span>
+                              </button>
                             ))}
                           </div>
 
