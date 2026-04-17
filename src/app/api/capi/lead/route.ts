@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 
-const PIXEL_ID = '1942865179739073'
+const PRIMARY_PIXEL_ID = '1942865179739073'
+const BACKUP_PIXEL_ID = '1548652783347184'
 const API_VERSION = 'v21.0'
 const ALLOWED_EVENTS = ['Lead', 'CompleteRegistration', 'InitiateCheckout', 'PageView', 'Contact']
 
@@ -94,22 +95,35 @@ export async function POST(request: NextRequest) {
       ],
     }
 
-    const url = `https://graph.facebook.com/${API_VERSION}/${PIXEL_ID}/events?access_token=${token}`
+    const backupToken = process.env.META_CAPI_BACKUP_TOKEN || ''
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    // Send to both pixels in parallel
+    const [primaryResult, backupResult] = await Promise.allSettled([
+      fetch(`https://graph.facebook.com/${API_VERSION}/${PRIMARY_PIXEL_ID}/events?access_token=${token}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      }).then(r => r.json()),
+      backupToken
+        ? fetch(`https://graph.facebook.com/${API_VERSION}/${BACKUP_PIXEL_ID}/events?access_token=${backupToken}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }).then(r => r.json())
+        : Promise.resolve({ skipped: true }),
+    ])
+
+    const primaryOk = primaryResult.status === 'fulfilled'
+    const backupOk = backupResult.status === 'fulfilled'
+
+    if (!primaryOk) console.error('CAPI primary error:', primaryResult)
+    if (!backupOk) console.error('CAPI backup error:', backupResult)
+
+    return NextResponse.json({
+      success: primaryOk || backupOk,
+      primary: primaryOk ? primaryResult.value : 'failed',
+      backup: backupOk ? backupResult.value : 'failed',
     })
-
-    const result = await response.json()
-
-    if (!response.ok) {
-      console.error('CAPI error:', JSON.stringify(result))
-      return NextResponse.json({ error: 'CAPI request failed', details: result }, { status: 500 })
-    }
-
-    return NextResponse.json({ success: true, events_received: result.events_received })
   } catch (err) {
     console.error('CAPI exception:', err)
     return NextResponse.json({ error: 'Internal error' }, { status: 500 })
