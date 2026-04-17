@@ -29,7 +29,7 @@ export function Pricing() {
   const te = useTranslations('pricingExtra')
   const { open } = useSignupModal()
   const [showBankDetails, setShowBankDetails] = useState<string | null>(null)
-  const [copiedField, setCopiedField] = useState<string | null>(null)
+  const [copiedField, setCopiedField] = useState<{ planKey: string; field: string } | null>(null)
 
   const handleCopy = async (value: string, field: string, planKey: string) => {
     try {
@@ -41,15 +41,18 @@ export function Pricing() {
         textarea.style.position = 'fixed'
         textarea.style.left = '-9999px'
         document.body.appendChild(textarea)
-        textarea.select()
-        document.execCommand('copy')
-        document.body.removeChild(textarea)
+        try {
+          textarea.select()
+          document.execCommand('copy')
+        } finally {
+          document.body.removeChild(textarea)
+        }
       }
-      setCopiedField(field)
+      setCopiedField({ planKey, field })
       trackBankDetailsCopy(planKey, field)
       setTimeout(() => setCopiedField(null), 2000)
     } catch {
-      setCopiedField(field)
+      setCopiedField({ planKey, field })
       trackBankDetailsCopy(planKey, field)
       setTimeout(() => setCopiedField(null), 2000)
     }
@@ -260,11 +263,11 @@ export function Pricing() {
                                 </div>
                                 <span className={cn(
                                   'flex-shrink-0 p-1.5 rounded transition-colors mt-2',
-                                  copiedField === key
+                                  copiedField?.planKey === planKey && copiedField?.field === key
                                     ? 'text-green-500'
                                     : config.variant === 'dark' ? 'text-primary-400' : 'text-primary-400'
                                 )}>
-                                  {copiedField === key
+                                  {copiedField?.planKey === planKey && copiedField?.field === key
                                     ? <CheckCheck className="w-3.5 h-3.5" />
                                     : <Copy className="w-3.5 h-3.5" />
                                   }

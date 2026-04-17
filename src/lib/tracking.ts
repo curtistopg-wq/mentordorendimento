@@ -139,9 +139,15 @@ export function pushLeadEvent(params: {
   })
 }
 
-// Track WhatsApp click - inserts into Supabase + Clarity + GA4 dataLayer
+// Track WhatsApp click - inserts into Supabase + Clarity + GA4 dataLayer + Meta Pixel
 export function trackWhatsAppClick(pageSection: string) {
   const tracking = getTrackingData()
+
+  // Meta Pixel — Contact event for WhatsApp clicks
+  window.fbq?.('track', 'Contact', {
+    content_name: 'WhatsApp Click',
+    content_category: pageSection,
+  })
 
   // Lazy import to avoid circular deps
   import('@/lib/supabase/client').then(({ createClient }) => {

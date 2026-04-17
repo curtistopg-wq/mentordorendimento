@@ -9,12 +9,39 @@ function getResend() {
   return _resend
 }
 
+// Rate limit: 3 emails per email address per 10 minutes
+const rateLimitMap = new Map<string, { count: number; firstRequestTime: number }>()
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000
+const RATE_LIMIT_MAX = 3
+
+function isRateLimited(email: string): boolean {
+  const key = email.toLowerCase()
+  const now = Date.now()
+  const entry = rateLimitMap.get(key)
+  if (!entry || now - entry.firstRequestTime > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(key, { count: 1, firstRequestTime: now })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return true
+  entry.count += 1
+  return false
+}
+
 export async function POST(request: NextRequest) {
   try {
     const { email } = await request.json()
 
     if (!email || typeof email !== 'string') {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 })
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
+    }
+
+    if (isRateLimited(email)) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
     }
 
     const { data, error } = await getResend().emails.send({

@@ -108,9 +108,25 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
 
     try {
       const supabase = createClient()
+      const normalizedEmail = formData.email.toLowerCase().trim()
+
+      // Dedup: check if this email submitted in the last 24h
+      const { data: existing } = await supabase
+        .from('leads')
+        .select('id')
+        .eq('email', normalizedEmail)
+        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
+        .limit(1)
+
+      if (existing && existing.length > 0) {
+        setSubmitted(true)
+        markConverted()
+        return
+      }
+
       const { error: insertError } = await supabase.from('leads').insert({
         name: formData.name,
-        email: formData.email.toLowerCase().trim(),
+        email: normalizedEmail,
         phone: phoneToInsert,
         phone_verified: phoneVerified,
         source: 'signup-modal',

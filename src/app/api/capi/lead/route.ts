@@ -3,6 +3,24 @@ import { createHash } from 'crypto'
 
 const PIXEL_ID = '1942865179739073'
 const API_VERSION = 'v21.0'
+const ALLOWED_EVENTS = ['Lead', 'CompleteRegistration', 'InitiateCheckout', 'PageView', 'Contact']
+
+// Rate limit: 30 requests per IP per minute
+const rateLimitMap = new Map<string, { count: number; firstRequestTime: number }>()
+const RATE_LIMIT_WINDOW_MS = 60 * 1000
+const RATE_LIMIT_MAX = 30
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now - entry.firstRequestTime > RATE_LIMIT_WINDOW_MS) {
+    rateLimitMap.set(ip, { count: 1, firstRequestTime: now })
+    return false
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return true
+  entry.count += 1
+  return false
+}
 
 function getAccessToken() {
   return process.env.META_CAPI_ACCESS_TOKEN || ''
@@ -13,8 +31,20 @@ function sha256(value: string): string {
   return createHash('sha256').update(value.toLowerCase().trim()).digest('hex')
 }
 
+function getClientIp(request: NextRequest): string {
+  return request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+    || request.headers.get('x-real-ip')
+    || ''
+}
+
 export async function POST(request: NextRequest) {
   try {
+    const clientIp = getClientIp(request)
+
+    if (isRateLimited(clientIp || 'unknown')) {
+      return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+    }
+
     const {
       event_name,
       event_id,
@@ -25,11 +55,14 @@ export async function POST(request: NextRequest) {
       fbp,
       source_url,
       user_agent,
-      ip_address,
     } = await request.json()
 
     if (!event_name || !event_id) {
       return NextResponse.json({ error: 'Missing event_name or event_id' }, { status: 400 })
+    }
+
+    if (!ALLOWED_EVENTS.includes(event_name)) {
+      return NextResponse.json({ error: 'Invalid event_name' }, { status: 400 })
     }
 
     const token = getAccessToken()
@@ -45,7 +78,7 @@ export async function POST(request: NextRequest) {
     if (first_name) user_data.fn = [sha256(first_name)]
     if (fbc) user_data.fbc = fbc
     if (fbp) user_data.fbp = fbp
-    if (ip_address) user_data.client_ip_address = ip_address
+    if (clientIp) user_data.client_ip_address = clientIp
     if (user_agent) user_data.client_user_agent = user_agent
 
     const payload = {
