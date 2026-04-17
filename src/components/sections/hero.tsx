@@ -108,26 +108,9 @@ export function Hero() {
 
     try {
       const supabase = createClient()
-      const normalizedEmail = email.toLowerCase().trim()
-
-      // Dedup: check if this email submitted in the last 24h
-      const { data: existing } = await supabase
-        .from('leads')
-        .select('id')
-        .eq('email', normalizedEmail)
-        .gte('created_at', new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString())
-        .limit(1)
-
-      if (existing && existing.length > 0) {
-        // Already submitted — skip insert, still show success
-        setSubmitted(true)
-        markConverted()
-        return
-      }
-
       const { error: insertError } = await supabase.from('leads').insert({
         name: name.trim(),
-        email: normalizedEmail,
+        email: email.toLowerCase().trim(),
         phone: phoneToInsert,
         phone_verified: phoneVerified,
         source: 'hero-inline-mobile',
