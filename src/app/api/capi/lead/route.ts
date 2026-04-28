@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createHash } from 'crypto'
 
-const PRIMARY_PIXEL_ID = '1942865179739073'
+const PRIMARY_PIXEL_ID = '2202983003822057'
 const BACKUP_PIXEL_ID = '1548652783347184'
 const API_VERSION = 'v21.0'
 const ALLOWED_EVENTS = ['Lead', 'CompleteRegistration', 'InitiateCheckout', 'PageView', 'Contact']
