@@ -127,6 +127,7 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
         trackFbq('track', 'Lead', {
           content_name: 'Followup Modal',
           content_category: 'Free Lesson',
+        }, {
           eventID: eventId,
         })
 

@@ -176,6 +176,7 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
           trackFbq('track', 'Lead', {
             content_name: 'Signup Form',
             content_category: 'Free Lesson',
+          }, {
             eventID: eventId,
           })
 
