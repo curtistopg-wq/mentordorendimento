@@ -1,28 +1,28 @@
 {
   "nav": {
     "home": "INÍCIO",
-    "premiumPackages": "PACOTES PREMIUM",
+    "premiumPackages": "SERVIÇOS",
     "refundPolicy": "POLÍTICA DE REEMBOLSO",
     "contact": "CONTATO"
   },
   "hero": {
-    "badge": "Vagas Limitadas — Turma de Março",
-    "title": "Aprenda a Operar no Mercado com Mentores que Lucram de Verdade",
+    "badge": "Vagas Limitadas — Entre Agora",
+    "title": "Aprenda. Opere. Mude. Tudo em um só lugar.",
     "subtitleStart": "",
-    "subtitleKnowledge": "+9.800 alunos",
-    "subtitleAnd": "já estão",
-    "subtitleSkills": "lucrando",
-    "subtitleEnd": "com nossas estratégias testadas no mercado real.",
+    "subtitleKnowledge": "+9.800 membros",
+    "subtitleAnd": "já usam",
+    "subtitleSkills": "nossa plataforma",
+    "subtitleEnd": "para aprender, operar e acessar mercados globais.",
     "cta": "GARANTIR MINHA VAGA",
     "socialProofCount": "+9.800",
-    "socialProofText": "alunos já se inscreveram",
+    "socialProofText": "membros na plataforma",
     "urgencySlots": "🔴 47 vagas restantes — inscreva-se agora",
-    "titleNew": "Domine Sua Primeira Estratégia de Trading em 7 Dias",
-    "trustMicro": "🔒 +9.800 Alunos · ⭐ 4.7/5 · Regulamentado CVM",
-    "formTitle": "📩 Receba a Aula Gratuita",
-    "formSubtitle": "Acesso imediato no seu e-mail e WhatsApp",
-    "stickyText": "🟢 Aula grátis disponível — acesse agora",
-    "stickyCta": "QUERO MINHA AULA →",
+    "titleNew": "Aprenda. Opere. Mude. Tudo em um só lugar.",
+    "trustMicro": "🔒 +9.800 Membros · ⭐ 4.7/5 · Regulamentado CVM",
+    "formTitle": "📩 Acesso Gratuito",
+    "formSubtitle": "Explore mentores, ferramentas IA e acesso suíço",
+    "stickyText": "🟢 Acesso grátis disponível — entre agora",
+    "stickyCta": "QUERO ACESSO →",
     "subFormTrust": "100% gratuito · Sem cartão · Resposta em 2 minutos",
     "inlineForm": {
       "name": "Seu nome completo",
@@ -46,11 +46,11 @@
   },
   "howItWorks": {
     "title": "Como Funciona",
-    "subtitle": "Comece a operar em 3 passos simples",
+    "subtitle": "Comece em 3 passos simples",
     "steps": {
-      "0": { "number": "01", "title": "Inscreva-se Grátis", "description": "Preencha o formulário e receba acesso imediato aos materiais iniciais." },
-      "1": { "number": "02", "title": "Receba os Materiais", "description": "Aulas, estratégias e suporte direto no seu WhatsApp e e-mail." },
-      "2": { "number": "03", "title": "Comece a Operar", "description": "Com mentoria ao vivo e uma comunidade de apoio para acelerar seus resultados." }
+      "0": { "number": "01", "title": "Escolha Seu Caminho", "description": "Banco suíço, mentoria especializada ou trading com IA — escolha o que combina com seus objetivos." },
+      "1": { "number": "02", "title": "Acesso Personalizado", "description": "Receba recursos sob medida, ferramentas e suporte direto via WhatsApp e e-mail." },
+      "2": { "number": "03", "title": "Comece a Crescer", "description": "Com mentoria ao vivo, ferramentas de IA e acesso global para acelerar seus resultados." }
     }
   },
   "heroTestimonial": {
@@ -60,7 +60,7 @@
   },
   "statsNew": {
     "items": {
-      "0": { "value": "9,877", "label": "Alunos Ativos", "sublabel": "" },
+      "0": { "value": "9,877", "label": "Membros Ativos", "sublabel": "" },
       "1": { "value": "97%", "label": "Taxa de", "sublabel": "Satisfação" },
       "2": { "value": "4.7/5", "label": "Avaliação", "sublabel": "Média" },
       "3": { "value": "24/7", "label": "Suporte", "sublabel": "Disponível" }
@@ -74,22 +74,22 @@
     "guarantee": "🛡️ Garantia de satisfação — reembolso em até 7 dias"
   },
   "features": {
-    "titleLine1": "Siga o Caminho Rumo",
-    "titleLine2": "a uma Carreira de",
-    "titleLine3": "Excelência no Trading",
-    "subtitle": "Como nosso aluno, você vai fazer parte de uma comunidade de aprendizado comprometida com a excelência.",
+    "titleLine1": "Três Pilares para",
+    "titleLine2": "o Seu Crescimento",
+    "titleLine3": "Financeiro",
+    "subtitle": "Como membro, você tem acesso a banco suíço, mentores especializados e ferramentas de trading com IA — tudo em uma plataforma.",
     "items": {
       "education": {
-        "title": "Educação",
-        "description": "Aprendizado online passo a passo"
+        "title": "Acesso Suíço",
+        "description": "Abra as portas para um dos ecossistemas bancários mais confiáveis do mundo"
       },
       "innovation": {
-        "title": "Inovação",
-        "description": "Aprenda, treine e desenvolva suas habilidades com tecnologia de ponta"
+        "title": "Trading com IA",
+        "description": "Use inteligência artificial para analisar mercados e operar com mais precisão"
       },
       "community": {
-        "title": "Comunidade",
-        "description": "Faça parte de uma comunidade focada em evolução constante"
+        "title": "Mentores Especializados",
+        "description": "Orientação personalizada de profissionais das maiores instituições financeiras"
       }
     }
   },
@@ -179,31 +179,31 @@
         "sublabel": "Serviços"
       },
       "satisfied": {
-        "label": "Alunos",
+        "label": "Membros",
         "sublabel": "Satisfeitos"
       }
     }
   },
   "courses": {
-    "imagePlaceholder": "Imagem do Curso",
+    "imagePlaceholder": "Imagem da Plataforma",
     "items": {
       "everyLevel": {
-        "title": "Cursos pra Todos os Níveis",
-        "content": "Seja você iniciante ou querendo aprimorar suas habilidades, nossos cursos foram feitos pra te encontrar onde você está. Dos fundamentos básicos às estratégias avançadas, temos um caminho pra cada um."
+        "title": "Soluções para Todos os Níveis",
+        "content": "Seja você iniciante ou querendo escalar globalmente, nossa plataforma foi feita pra te encontrar onde você está. De cursos básicos a acesso banc��rio suíço e ferramentas de IA, temos um caminho pra cada um."
       },
       "experts": {
-        "title": "Aprenda com Especialistas do Mercado",
-        "content": "Nossos instrutores são traders experientes com anos de vivência no mercado real. Eles não ensinam só teoria – compartilham insights práticos das suas próprias carreiras de sucesso no trading."
+        "title": "Guiado por Líderes do Mercado",
+        "content": "Nossos mentores vêm das maiores instituições financeiras do mundo. Eles não ensinam só teoria — compartilham estratégias reais de décadas de experiência nos mercados globais."
       },
       "moreThan": {
         "title": "Mais do que Apenas Educação",
-        "content": "Faça parte de uma comunidade de traders que pensam igual. Tenha acesso a sessões ao vivo, análises exclusivas do mercado e uma rede de apoio que te ajuda a evoluir em cada etapa."
+        "content": "Faça parte de uma plataforma que combina aprendizado, trading e acesso global. De análise com IA a banco suíço, tenha tudo que precisa para crescer seu futuro financeiro."
       }
     }
   },
   "testimonials": {
-    "title": "O Que Nossos Alunos Dizem",
-    "subtitle": "Junte-se a milhares de traders de sucesso que transformaram suas carreiras com nossos cursos",
+    "title": "O Que Nossos Membros Dizem",
+    "subtitle": "Junte-se a milhares de membros que transformaram seu futuro financeiro com nossa plataforma",
     "items": {
       "lucas": {
         "name": "Lucas Fernandes",
@@ -228,37 +228,37 @@
     }
   },
   "cta": {
-    "badge": "INVISTA NA SUA EDUCAÇÃO FINANCEIRA HOJE",
-    "text": "Cadastre-se no nosso programa de treinamento e trilhe o caminho rumo a uma carreira profissional no trading.",
+    "badge": "SEU FUTURO FINANCEIRO COMEÇA AQUI",
+    "text": "Aprenda com mentores especializados, opere com IA e acesse banco suíço — tudo em uma plataforma.",
     "button": "COMEÇAR AGORA"
   },
   "faq": {
     "label": "FAQ",
     "title": "Perguntas Frequentes",
-    "subtitle": "Encontre respostas para as dúvidas mais comuns sobre nossos cursos e serviços",
+    "subtitle": "Encontre respostas para as dúvidas mais comuns sobre nossa plataforma e serviços",
     "illustration": "Ilustração FAQ",
     "supportHours": "24/7",
     "supportText": "Suporte Disponível",
     "items": {
       "0": {
-        "question": "O que está incluído no curso?",
-        "answer": "Nossos cursos completos incluem aulas em vídeo, sessões ao vivo de trading, acesso à comunidade, ferramentas de trading e mentoria pessoal, dependendo do plano escolhido. Todo o material fica acessível 24/7 em qualquer dispositivo."
+        "question": "O que a plataforma inclui?",
+        "answer": "Nossa plataforma oferece três serviços principais: mentoria especializada de profissionais financeiros de ponta, ferramentas de trading com IA para análises mais inteligentes, e acesso a banco suíço através de nossas parcerias internacionais. Tudo acessível 24/7 em qualquer dispositivo."
       },
       "1": {
         "question": "Preciso ter experiência prévia em trading?",
-        "answer": "Nenhuma experiência prévia é necessária. Nossos cursos foram desenvolvidos pra te levar de iniciante completo a trader confiante. Começamos pelos fundamentos e construímos seu conhecimento e habilidades progressivamente."
+        "answer": "Nenhuma experiência prévia é necessária. Nossos mentores e ferramentas de IA foram pensados pra te guiar dos fundamentos às estratégias avançadas. Seja iniciante ou trader experiente, temos soluções sob medida pro seu nível."
       },
       "2": {
-        "question": "Por quanto tempo tenho acesso ao curso?",
-        "answer": "Após a compra de um plano, você tem acesso vitalício a todo o material do curso incluído no seu nível. Isso inclui quaisquer atualizações e adições futuras ao currículo."
+        "question": "Como funciona o acesso ao banco suíço?",
+        "answer": "Através de nossas parcerias com as principais instituições financeiras suíças, facilitamos a abertura de conta e o onboarding. O processo é 100% digital e pode ser concluído em minutos, de qualquer lugar do mundo."
       },
       "3": {
-        "question": "Posso fazer upgrade do meu plano depois?",
-        "answer": "Sim! Você pode fazer upgrade pra um nível superior a qualquer momento. Você paga apenas a diferença entre o plano atual e o novo plano. Entre em contato com nossa equipe de suporte para assistência."
+        "question": "Quais ferramentas de IA estão disponíveis?",
+        "answer": "Nosso pacote de IA inclui análise de mercado, reconhecimento de padrões e ferramentas de execução de estratégias. A IA aprende com dados do mercado em tempo real e fornece insights acionáveis para te ajudar a tomar melhores decisões."
       },
       "4": {
-        "question": "Quais formas de pagamento vocês aceitam?",
-        "answer": "Aceitamos todos os principais cartões de crédito, débito e PayPal. Todos os pagamentos são processados com segurança através dos nossos parceiros de pagamento com criptografia de nível bancário."
+        "question": "Posso fazer upgrade do meu plano depois?",
+        "answer": "Sim! Você pode fazer upgrade pra um nível superior a qualquer momento. Você paga apenas a diferença entre o plano atual e o novo plano. Entre em contato com nossa equipe de suporte para assistência."
       },
       "5": {
         "question": "Como funciona a garantia de devolução?",
@@ -267,7 +267,7 @@
     }
   },
   "signup": {
-    "title": "Garanta sua Aula Grátis",
+    "title": "Acesso Gratuito",
     "subtitle": "Preencha seus dados para acesso imediato.",
     "name": "Nome Completo",
     "namePlaceholder": "Seu nome completo",
@@ -282,6 +282,29 @@
     "successTitle": "Pronto! Verifique seu E-mail",
     "successMessage": "Enviamos o acesso à sua aula gratuita. Confira sua caixa de entrada.",
     "errorMessage": "Algo deu errado. Por favor, tente novamente."
+  },
+  "contentPanel": {
+    "red": {
+      "line1": "Mude para a Suíça",
+      "line2": "em menos de",
+      "line3": "um minuto",
+      "description": "Por meio de parcerias internacionais estratégicas com as principais instituições financeiras suíças, oferecemos acesso simplificado a um dos ecossistemas bancários mais confiáveis do mundo — tudo no conforto da sua casa.",
+      "cta": "Saiba Mais"
+    },
+    "navy": {
+      "line1": "Um Mentor",
+      "line2": "à sua",
+      "line3": "medida",
+      "description": "Mentores experientes das maiores instituições financeiras do mundo, a apenas uma chamada de distância. Orientação personalizada para acelerar seus resultados no mercado.",
+      "cta": "Conhecer Mentores"
+    },
+    "orange": {
+      "line1": "Opere com",
+      "line2": "inteligência,",
+      "line3": "opere com IA",
+      "description": "A IA já faz parte do seu dia a dia? A tecnologia que mudou o mundo agora chega ao trading. Ela pensa, resolve e gera lucro. Não fique para trás.",
+      "cta": "Descobrir Ferramentas IA"
+    }
   },
   "whatsapp": {
     "message": "Olá! Tenho interesse nos cursos do Mentor do Rendimento. Pode me ajudar?",

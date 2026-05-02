@@ -1,11 +1,11 @@
 import { Hero } from '@/components/sections/hero'
-import { HeroTestimonial } from '@/components/sections/hero-testimonial'
 import { TrustStrip } from '@/components/sections/trust-strip'
 import { Features } from '@/components/sections/features'
+import { ContentPanel } from '@/components/sections/content-panel'
 import dynamic from 'next/dynamic'
 
+const TestimonialCarousel = dynamic(() => import('@/components/sections/testimonial-carousel').then(m => ({ default: m.TestimonialCarousel })))
 const HowItWorks = dynamic(() => import('@/components/sections/how-it-works').then(m => ({ default: m.HowItWorks })))
-const Testimonials = dynamic(() => import('@/components/sections/testimonials').then(m => ({ default: m.Testimonials })))
 const Stats = dynamic(() => import('@/components/sections/stats').then(m => ({ default: m.Stats })))
 const MidCTA = dynamic(() => import('@/components/sections/mid-cta').then(m => ({ default: m.MidCTA })))
 const Pricing = dynamic(() => import('@/components/sections/pricing').then(m => ({ default: m.Pricing })))
@@ -16,10 +16,10 @@ export default function Home() {
   return (
     <main>
       <Hero />
-      <HeroTestimonial />
+      <TestimonialCarousel />
       <TrustStrip />
       <HowItWorks />
-      <Testimonials />
+      <ContentPanel />
       <Features />
       <Stats />
       <MidCTA />
