@@ -36,6 +36,20 @@ export function getTrackingData(): TrackingData {
 
   const params = new URLSearchParams(window.location.search)
 
+  // Persist UTM params in localStorage on first ad click (survives sessions)
+  const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'] as const
+  const hasUtm = utmKeys.some(k => params.has(k))
+  if (hasUtm) {
+    try {
+      for (const k of utmKeys) {
+        const v = params.get(k)
+        if (v) localStorage.setItem(`mdr_first_${k}`, v)
+      }
+      localStorage.setItem('mdr_first_landing', window.location.href)
+      localStorage.setItem('mdr_first_referrer', document.referrer)
+    } catch { /* localStorage unavailable */ }
+  }
+
   // GA4 Client ID from _ga cookie (strip GA1.1. prefix)
   const gaRaw = getCookie('_ga')
   const gaClientId = gaRaw ? gaRaw.substring(6) : ''
@@ -50,20 +64,21 @@ export function getTrackingData(): TrackingData {
   }
 
   // Meta FBC cookie (or construct from fbclid)
+  // Fallback chain: _fbc cookie → mdr_fbclid cookie → URL param
   let fbc = getCookie('_fbc')
-  const fbclid = params.get('fbclid') || ''
+  const fbclid = params.get('fbclid') || getCookie('mdr_fbclid') || ''
   if (!fbc && fbclid) {
     fbc = 'fb.1.' + Date.now() + '.' + fbclid
   }
 
-  // Meta FBP cookie
-  const fbp = getCookie('_fbp')
+  // Meta FBP cookie - try primary then backup
+  const fbp = getCookie('_fbp') || getCookie('mdr_fbp')
 
   // Clarity user ID from _clck cookie
   const clck = getCookie('_clck')
   const clarityUserId = clck ? clck.split('|')[0] : ''
 
-  // SSR-safe fallback chain: URL params → cookie (30d) → sessionStorage
+  // SSR-safe fallback chain: URL params → cookie (30d) → sessionStorage → localStorage (first touch)
   const ss = (key: string): string => {
     try {
       // Try cookie first (survives tab close)
@@ -74,19 +89,24 @@ export function getTrackingData(): TrackingData {
     } catch { return '' }
   }
 
+  // First-touch localStorage fallback (persists across sessions)
+  const ft = (key: string): string => {
+    try { return localStorage?.getItem(`mdr_first_${key}`) || '' } catch { return '' }
+  }
+
   return {
     ga_client_id: gaClientId,
     ga_session_id: gaSessionId,
     fbc,
     fbp,
-    fbclid: fbclid || ss('mdr_fbclid'),
-    utm_source: params.get('utm_source') || ss('mdr_utm_source'),
-    utm_medium: params.get('utm_medium') || ss('mdr_utm_medium'),
-    utm_campaign: params.get('utm_campaign') || ss('mdr_utm_campaign'),
-    utm_content: params.get('utm_content') || ss('mdr_utm_content'),
-    utm_term: params.get('utm_term') || ss('mdr_utm_term'),
+    fbclid: fbclid || ss('mdr_fbclid') || ft('fbclid'),
+    utm_source: params.get('utm_source') || ss('mdr_utm_source') || ft('utm_source'),
+    utm_medium: params.get('utm_medium') || ss('mdr_utm_medium') || ft('utm_medium'),
+    utm_campaign: params.get('utm_campaign') || ss('mdr_utm_campaign') || ft('utm_campaign'),
+    utm_content: params.get('utm_content') || ss('mdr_utm_content') || ft('utm_content'),
+    utm_term: params.get('utm_term') || ss('mdr_utm_term') || ft('utm_term'),
     landing_page: window.location.href || ss('mdr_landing'),
-    referrer: document.referrer || ss('mdr_referrer'),
+    referrer: document.referrer || ss('mdr_referrer') || ft('referrer'),
     clarity_user_id: clarityUserId,
   }
 }
@@ -111,6 +131,31 @@ export async function hashPII(value: string): Promise<string> {
   const hashBuffer = await crypto.subtle.digest('SHA-256', data)
   const hashArray = Array.from(new Uint8Array(hashBuffer))
   return hashArray.map(b => b.toString(16).padStart(2, '0')).join('')
+}
+
+// Re-init Meta Pixels with user data for Advanced Matching
+// Call BEFORE firing Lead/Contact events so Meta can match the visitor to a FB account
+const PRIMARY_PIXEL_ID = '2202983003822057'
+const BACKUP_PIXEL_ID = '1548652783347184'
+
+export function setAdvancedMatching(params: {
+  email?: string
+  phone?: string
+  firstName?: string
+  lastName?: string
+}) {
+  if (typeof window === 'undefined' || typeof window.fbq !== 'function') return
+
+  const userData: Record<string, string> = {}
+  if (params.email) userData.em = params.email.toLowerCase().trim()
+  if (params.phone) userData.ph = params.phone.replace(/\D/g, '')
+  if (params.firstName) userData.fn = params.firstName.toLowerCase().trim()
+  if (params.lastName) userData.ln = params.lastName.toLowerCase().trim()
+
+  if (Object.keys(userData).length === 0) return
+
+  window.fbq('init', PRIMARY_PIXEL_ID, userData)
+  window.fbq('init', BACKUP_PIXEL_ID, userData)
 }
 
 // Push lead event to dataLayer with tracking + dedup event_id
@@ -139,15 +184,33 @@ export function pushLeadEvent(params: {
   })
 }
 
-// Track WhatsApp click - inserts into Supabase + Clarity + GA4 dataLayer + Meta Pixel
+// Track WhatsApp click - inserts into Supabase + Clarity + GA4 dataLayer + Meta Pixel + CAPI
 export function trackWhatsAppClick(pageSection: string) {
   const tracking = getTrackingData()
+  const eventId = generateEventId()
 
-  // Meta Pixel — Contact event for WhatsApp clicks
+  // Meta Pixel — Contact event for WhatsApp clicks (with eventID for CAPI dedup)
   window.fbq?.('track', 'Contact', {
     content_name: 'WhatsApp Click',
     content_category: pageSection,
+  }, {
+    eventID: eventId,
   })
+
+  // Server-side CAPI for Contact event (matches pixel eventID for dedup)
+  fetch('/api/capi/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event_name: 'Contact',
+      event_id: eventId,
+      fbc: tracking.fbc,
+      fbp: tracking.fbp,
+      source_url: window.location.href,
+      user_agent: navigator.userAgent,
+    }),
+    keepalive: true,
+  }).catch(() => {})
 
   // Lazy import to avoid circular deps
   import('@/lib/supabase/client').then(({ createClient }) => {

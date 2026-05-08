@@ -6,7 +6,7 @@ import { X } from 'lucide-react'
 import { useTranslations } from 'next-intl'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
-import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
+import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, setAdvancedMatching } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
 import { useDraftLead } from '@/hooks/useDraftLead'
 
@@ -158,10 +158,34 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
         }).catch(() => {})
       }
 
-      // Defer all tracking to next frame so UI updates instantly (INP optimization)
+      // Fire CAPI immediately (non-blocking fetch) for reliable server-side attribution
+      const eventId = generateEventId()
+
+      fetch('/api/capi/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          event_name: 'Lead',
+          event_id: eventId,
+          email: formData.email.toLowerCase().trim(),
+          phone: phoneResult.formatted,
+          first_name: formData.name.trim(),
+          fbc: tracking.fbc,
+          fbp: tracking.fbp,
+          source_url: window.location.href,
+          user_agent: navigator.userAgent,
+        }),
+        keepalive: true,
+      }).catch(() => {})
+
+      // Defer browser-side tracking to next frame so UI updates instantly (INP optimization)
       requestAnimationFrame(() => {
         setTimeout(() => {
-          const eventId = generateEventId()
+          setAdvancedMatching({
+            email: formData.email,
+            phone: phoneToInsert,
+            firstName: formData.name,
+          })
 
           pushLeadEvent({
             formType: 'signup-modal',
@@ -179,24 +203,6 @@ export function SignupModal({ isOpen, onClose }: SignupModalProps) {
           }, {
             eventID: eventId,
           })
-
-          // Server-side CAPI for iOS/in-app browser attribution
-          fetch('/api/capi/lead', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              event_name: 'Lead',
-              event_id: eventId,
-              email: formData.email.toLowerCase().trim(),
-              phone: phoneResult.formatted,
-              first_name: formData.name.trim(),
-              fbc: tracking.fbc,
-              fbp: tracking.fbp,
-              source_url: window.location.href,
-              user_agent: navigator.userAgent,
-            }),
-            keepalive: true,
-          }).catch(() => {})
 
           tagClarityLead({ email: formData.email, formType: 'signup-modal', leadSource: 'signup-modal' })
         }, 0)

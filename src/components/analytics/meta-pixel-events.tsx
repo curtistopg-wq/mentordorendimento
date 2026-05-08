@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { generateEventId, getTrackingData } from '@/lib/tracking'
 
 function trackFbq(...args: unknown[]) {
   if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
@@ -9,6 +10,24 @@ function trackFbq(...args: unknown[]) {
 }
 
 export { trackFbq }
+
+// Send standard event to CAPI with dedup event_id
+function sendCapi(eventName: string, eventId: string) {
+  const tracking = getTrackingData()
+  fetch('/api/capi/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event_name: eventName,
+      event_id: eventId,
+      fbc: tracking.fbc,
+      fbp: tracking.fbp,
+      source_url: window.location.href,
+      user_agent: navigator.userAgent,
+    }),
+    keepalive: true,
+  }).catch(() => {})
+}
 
 function requestIdleCallbackPolyfill(cb: () => void): number {
   if (typeof window !== 'undefined' && typeof window.requestIdleCallback === 'function') {
@@ -90,9 +109,12 @@ export function MetaPixelEvents() {
           entries.forEach((entry) => {
             if (entry.isIntersecting && !pricingTracked) {
               pricingTracked = true
+              const vcEventId = generateEventId()
               trackFbq('track', 'ViewContent', {
                 content_name: 'Pricing Section',
                 content_category: 'Pacotes Premium',
+              }, {
+                eventID: vcEventId,
               })
             }
           })
@@ -111,9 +133,11 @@ export function MetaPixelEvents() {
       const anchor = (e.target as HTMLElement).closest('a')
       if (!anchor || !anchor.href) return
 
-      // Email clicks
+      // Email clicks - with event_id for dedup + CAPI
       if (anchor.href.includes('mailto:')) {
-        trackFbq('track', 'Contact', { content_name: 'Email Click' })
+        const contactEventId = generateEventId()
+        trackFbq('track', 'Contact', { content_name: 'Email Click' }, { eventID: contactEventId })
+        sendCapi('Contact', contactEventId)
       }
 
       // Outbound link clicks

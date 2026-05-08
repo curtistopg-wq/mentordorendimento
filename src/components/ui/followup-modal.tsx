@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 import { trackFbq } from '@/components/analytics/meta-pixel-events'
-import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead } from '@/lib/tracking'
+import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, setAdvancedMatching } from '@/lib/tracking'
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
 
 interface FollowupModalProps {
@@ -108,11 +108,36 @@ export function FollowupModal({ isOpen, onClose, onSuccess, email, leadId }: Fol
     setLoading(false)
     setSubmitted(true)
 
-    // Defer all tracking to next frame so UI updates instantly (INP optimization)
+    // Fire CAPI immediately (non-blocking fetch) for reliable server-side attribution
+    const eventId = generateEventId()
+    const tracking = getTrackingData()
+
+    fetch('/api/capi/lead', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event_name: 'Lead',
+        event_id: eventId,
+        email: email.toLowerCase().trim(),
+        phone: phoneToUpdate,
+        first_name: formData.name.trim(),
+        fbc: tracking.fbc,
+        fbp: tracking.fbp,
+        source_url: window.location.href,
+        user_agent: navigator.userAgent,
+      }),
+      keepalive: true,
+    }).catch(() => {})
+
+    // Defer browser-side tracking to next frame so UI updates instantly (INP optimization)
     requestAnimationFrame(() => {
       setTimeout(() => {
-        const eventId = generateEventId()
-        const tracking = getTrackingData()
+        setAdvancedMatching({
+          email,
+          phone: phoneToUpdate,
+          firstName: formData.name,
+          lastName: formData.surname,
+        })
 
         pushLeadEvent({
           formType: 'followup-modal',
