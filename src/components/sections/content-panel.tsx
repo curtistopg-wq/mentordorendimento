@@ -29,7 +29,13 @@ export function ContentPanel() {
         <div className="max-w-5xl mx-auto flex flex-col gap-10">
           {PANELS.map((panel) => (
             <div key={panel.key}>
-              <div className={`relative min-h-[300px] md:min-h-[450px] mx-4 md:mx-0 rounded-2xl bg-gradient-to-br ${panel.gradient} overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12),0_20px_60px_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.08)]`}>
+              <div
+                onClick={open}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open() } }}
+                className={`relative min-h-[300px] md:min-h-[450px] mx-4 md:mx-0 rounded-2xl bg-gradient-to-br ${panel.gradient} overflow-hidden shadow-[0_8px_30px_rgba(0,0,0,0.12),0_20px_60px_rgba(0,0,0,0.15),0_1px_3px_rgba(0,0,0,0.08)] cursor-pointer`}
+              >
                 <div className="absolute inset-0 backdrop-blur-xl bg-white/10" />
                 <div className="relative z-10 flex flex-col md:flex-row md:justify-between h-full min-h-[300px] md:min-h-[450px] px-8 md:px-14 py-8 md:py-12">
                   {/* Headline - left, vertically centered */}

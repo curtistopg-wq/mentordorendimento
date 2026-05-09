@@ -17,13 +17,18 @@ export function StickyCTA() {
   }
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-[88px] p-3 bg-white/[0.98] backdrop-blur-sm border-t border-primary-200 safe-area-pb">
+    <div
+      onClick={scrollToHero}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollToHero() } }}
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 h-[88px] p-3 bg-white/[0.98] backdrop-blur-sm border-t border-primary-200 safe-area-pb cursor-pointer"
+    >
       <p className="text-xs text-primary-600 text-center mb-1.5 leading-none">
         {t('stickyText')}
       </p>
 
       <button
-        onClick={scrollToHero}
         data-clarity-label="sticky-cta"
         className="relative w-full py-4 bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm leading-none rounded-lg transition-colors"
       >

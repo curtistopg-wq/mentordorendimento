@@ -2,10 +2,10 @@ import Image from 'next/image'
 import { useTranslations } from 'next-intl'
 
 const trustLogos = [
-  { src: '/logos/b3.svg', alt: 'B3' },
-  { src: '/logos/cvm.svg', alt: 'CVM' },
-  { src: '/logos/anbima.svg', alt: 'ANBIMA' },
-  { src: '/logos/bacen.svg', alt: 'Banco Central' },
+  { src: '/logos/b3.svg', alt: 'B3', href: 'https://www.b3.com.br' },
+  { src: '/logos/cvm.svg', alt: 'CVM', href: 'https://www.gov.br/cvm' },
+  { src: '/logos/anbima.svg', alt: 'ANBIMA', href: 'https://www.anbima.com.br' },
+  { src: '/logos/bacen.svg', alt: 'Banco Central', href: 'https://www.bcb.gov.br' },
 ]
 
 export function TrustStrip() {
@@ -28,14 +28,21 @@ export function TrustStrip() {
           <div className="flex items-center gap-3 sm:gap-5">
             <span className="text-[10px] uppercase tracking-wider text-primary-400 font-medium">{t('regulated')}</span>
             {trustLogos.map((logo) => (
-              <Image
+              <a
                 key={logo.alt}
-                src={logo.src}
-                alt={logo.alt}
-                width={32}
-                height={32}
-                className="h-5 sm:h-6 w-auto opacity-50 grayscale"
-              />
+                href={logo.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={logo.alt}
+              >
+                <Image
+                  src={logo.src}
+                  alt={logo.alt}
+                  width={32}
+                  height={32}
+                  className="h-5 sm:h-6 w-auto opacity-50 grayscale hover:opacity-70 transition-opacity"
+                />
+              </a>
             ))}
           </div>
         </div>
