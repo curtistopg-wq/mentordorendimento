@@ -197,6 +197,17 @@ export function trackWhatsAppClick(pageSection: string) {
     eventID: eventId,
   })
 
+  // Lead event with lower value — gives Meta optimization signal for campaign learning phase
+  const leadEventId = generateEventId()
+  window.fbq?.('track', 'Lead', {
+    content_name: 'WhatsApp Click',
+    content_category: pageSection,
+    value: 2.00,
+    currency: 'BRL',
+  }, {
+    eventID: leadEventId,
+  })
+
   // Server-side CAPI for Contact event (matches pixel eventID for dedup)
   fetch('/api/capi/lead', {
     method: 'POST',
@@ -204,6 +215,21 @@ export function trackWhatsAppClick(pageSection: string) {
     body: JSON.stringify({
       event_name: 'Contact',
       event_id: eventId,
+      fbc: tracking.fbc,
+      fbp: tracking.fbp,
+      source_url: window.location.href,
+      user_agent: navigator.userAgent,
+    }),
+    keepalive: true,
+  }).catch(() => {})
+
+  // Server-side CAPI for Lead event (value-based, separate eventID for dedup)
+  fetch('/api/capi/lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      event_name: 'Lead',
+      event_id: leadEventId,
       fbc: tracking.fbc,
       fbp: tracking.fbp,
       source_url: window.location.href,

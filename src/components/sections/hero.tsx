@@ -198,6 +198,8 @@ export function Hero() {
           trackFbq('track', 'Lead', {
             content_name: 'Hero Inline Form',
             content_category: 'Free Lesson',
+            value: 10.00,
+            currency: 'BRL',
           }, {
             eventID: eventId,
           })
