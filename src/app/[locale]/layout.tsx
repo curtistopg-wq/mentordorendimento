@@ -94,15 +94,6 @@ export default async function LocaleLayout({
         <link rel="preconnect" href="https://www.clarity.ms" />
       </head>
       <body className="font-sans antialiased bg-white text-primary-800">
-        {/* GTM noscript fallback */}
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WQ7DNJRL"
-            height="0"
-            width="0"
-            style={{ display: 'none', visibility: 'hidden' }}
-          />
-        </noscript>
         {/* Meta Pixel noscript fallbacks */}
         <noscript>
           <img
@@ -132,15 +123,7 @@ export default async function LocaleLayout({
         <TrackingCapture />
         <MetaPixelEvents />
         <Analytics />
-        {/* 2. GTM - deferred to after page interactive */}
-        <Script
-          id="gtm-script"
-          strategy="afterInteractive"
-          dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-WQ7DNJRL');`,
-          }}
-        />
-        {/* 3. Meta Pixel - deferred to after page interactive */}
+        {/* 2. Meta Pixel - deferred to after page interactive */}
         <Script
           id="meta-pixel-script"
           strategy="afterInteractive"
