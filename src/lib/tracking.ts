@@ -135,7 +135,7 @@ export async function hashPII(value: string): Promise<string> {
 
 // Re-init Meta Pixels with user data for Advanced Matching
 // Call BEFORE firing Lead/Contact events so Meta can match the visitor to a FB account
-const PRIMARY_PIXEL_ID = '2202983003822057'
+const PRIMARY_PIXEL_ID = '1450798786797629'
 const BACKUP_PIXEL_ID = '1548652783347184'
 
 export function setAdvancedMatching(params: {

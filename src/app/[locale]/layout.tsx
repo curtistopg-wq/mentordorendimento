@@ -100,7 +100,7 @@ export default async function LocaleLayout({
             height="1"
             width="1"
             style={{ display: 'none' }}
-            src="https://www.facebook.com/tr?id=2202983003822057&ev=PageView&noscript=1"
+            src="https://www.facebook.com/tr?id=1450798786797629&ev=PageView&noscript=1"
             alt=""
           />
           <img
@@ -128,7 +128,7 @@ export default async function LocaleLayout({
           id="meta-pixel-script"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
-            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2202983003822057');fbq('init','1548652783347184');var _pvId='pv-'+Date.now()+'-'+Math.random().toString(36).substr(2,9);fbq('track','PageView',{},{eventID:_pvId});window.__mdrPageViewEventId=_pvId;`,
+            __html: `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1450798786797629');fbq('init','1548652783347184');var _pvId='pv-'+Date.now()+'-'+Math.random().toString(36).substr(2,9);fbq('track','PageView',{},{eventID:_pvId});window.__mdrPageViewEventId=_pvId;`,
           }}
         />
         {/* 4. Clarity - afterInteractive to capture FB/IG in-app browser sessions */}
