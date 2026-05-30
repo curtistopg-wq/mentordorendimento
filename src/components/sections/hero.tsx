@@ -10,7 +10,7 @@ import { getTrackingData, generateEventId, pushLeadEvent, tagClarityLead, trackW
 import { validateBrazilianPhone, formatBrazilianPhone } from '@/lib/phone-validation'
 import { useDraftLead } from '@/hooks/useDraftLead'
 
-const WHATSAPP_NUMBER = '5511926928065'
+const WHATSAPP_NUMBER = '5511996181548'
 
 const trustLogos = [
   { src: '/logos/b3.svg', alt: 'B3' },
